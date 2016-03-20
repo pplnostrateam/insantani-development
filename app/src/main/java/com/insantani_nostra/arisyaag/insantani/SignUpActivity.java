@@ -3,7 +3,6 @@ package com.insantani_nostra.arisyaag.insantani;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -38,7 +37,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class SignInActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -66,7 +65,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_sign_up);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -80,15 +79,6 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
                     return true;
                 }
                 return false;
-            }
-        });
-
-        TextView mRegisterTextView = (TextView) findViewById(R.id.register_text_view);
-        mRegisterTextView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //attemptLogin();
-                startActivity(new Intent(view.getContext(), SignUpActivity.class));
             }
         });
 
@@ -283,7 +273,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(SignInActivity.this,
+                new ArrayAdapter<>(SignUpActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
