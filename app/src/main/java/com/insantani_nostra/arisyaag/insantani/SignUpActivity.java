@@ -59,6 +59,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private EditText mPhoneView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -75,18 +76,30 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    attemptRegister();
                     return true;
                 }
                 return false;
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        mPhoneView = (EditText) findViewById(R.id.phone);
+        mPhoneView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    attemptRegister();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        Button mEmailSignUpButton = (Button) findViewById(R.id.email_sign_up_button);
+        mEmailSignUpButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                attemptRegister();
             }
         });
 
@@ -143,7 +156,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
+    private void attemptRegister() {
         if (mAuthTask != null) {
             return;
         }
@@ -151,20 +164,23 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
+        mPhoneView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String phone = mPhoneView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
+        /*
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
-        }
+        }*/
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
@@ -174,6 +190,28 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         } else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
+            cancel = true;
+        }
+
+        // Check for a valid password.
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        } else if (!isPasswordValid(password)) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+
+        // Check for a valid phone.
+        if (TextUtils.isEmpty(phone)) {
+            mPhoneView.setError(getString(R.string.error_field_required));
+            focusView = mPhoneView;
+            cancel = true;
+        } else if (!isPasswordValid(phone)) {
+            mPhoneView.setError(getString(R.string.error_field_required));
+            focusView = mPhoneView;
             cancel = true;
         }
 
