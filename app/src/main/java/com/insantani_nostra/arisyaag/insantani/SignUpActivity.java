@@ -60,6 +60,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mPhoneView;
+    private EditText mRepeatPasswordView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -85,6 +86,18 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
 
         mPhoneView = (EditText) findViewById(R.id.phone);
         mPhoneView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    attemptRegister();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        mRepeatPasswordView = (EditText) findViewById(R.id.repeatPassword);
+        mRepeatPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -165,11 +178,14 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         mEmailView.setError(null);
         mPasswordView.setError(null);
         mPhoneView.setError(null);
+        mRepeatPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         String phone = mPhoneView.getText().toString();
+        String repeatPassword = mRepeatPasswordView.getText().toString();
+
 
         boolean cancel = false;
         View focusView = null;
@@ -202,14 +218,21 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
+        } else if (!isPasswordMatch(password, repeatPassword)) {
+            mPasswordView.setError(getString(R.string.error_password_not_matched));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+
+        // Check for a valid repeat password.
+        if (TextUtils.isEmpty(repeatPassword)) {
+            mRepeatPasswordView.setError(getString(R.string.error_password_not_matched));
+            focusView = mRepeatPasswordView;
+            cancel = true;
         }
 
         // Check for a valid phone.
         if (TextUtils.isEmpty(phone)) {
-            mPhoneView.setError(getString(R.string.error_field_required));
-            focusView = mPhoneView;
-            cancel = true;
-        } else if (!isPasswordValid(phone)) {
             mPhoneView.setError(getString(R.string.error_field_required));
             focusView = mPhoneView;
             cancel = true;
@@ -236,6 +259,11 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
+    }
+
+    private boolean isPasswordMatch(String password, String repeatPassword) {
+        //TODO: Replace this with your own logic
+        return password.equals(repeatPassword);
     }
 
     /**
