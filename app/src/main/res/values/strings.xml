@@ -3,4 +3,5 @@
 
     <string name="launcher_button">Enter</string>
     <string name="main_text">Insantani</string>
+    <string name="title_activity_search_result">SearchResultActivity</string>
 </resources>

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="#FFFFFF"
     tools:context="com.insantani_nostra.arisyaag.insantani.SplashScreenActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -14,16 +14,17 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:keepScreenOn="true"
-        android:text="@string/main_text"
-        android:textColor="#33b5e5"
+        android:text="HALO"
+        android:textColor="#FFFFFF"
         android:textSize="50sp"
         android:textStyle="bold" />
+
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="270dp"
         android:fitsSystemWindows="true">
 
         <LinearLayout
@@ -45,6 +46,21 @@
                 android:text="@string/launcher_button" />
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal|top" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/textView2"
+            android:layout_gravity="left|top" />
     </FrameLayout>
 
 </FrameLayout>
