@@ -63,7 +63,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -73,17 +73,19 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (EditText) findViewById(R.id.email);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                /* masalahnya apa belum tau
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
+                */
                 return false;
             }
         });
@@ -105,8 +107,10 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             }
         });
 
+        /*
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        */
     }
 
     private void populateAutoComplete() {
@@ -280,6 +284,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
     }
 
+
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         List<String> emails = new ArrayList<>();
@@ -289,7 +294,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             cursor.moveToNext();
         }
 
-        addEmailsToAutoComplete(emails);
+        // addEmailsToAutoComplete(emails);
     }
 
     @Override
@@ -297,6 +302,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
     }
 
+    /*
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -305,6 +311,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
         mEmailView.setAdapter(adapter);
     }
+    */
 
 
     private interface ProfileQuery {
@@ -401,7 +408,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             } else {
                 throw new Exception("No user found");
             }*/
-        } catch (Exception e) {
+        } catch (Exception  e) {
             if(e instanceof ResourceAccessException){
                 throw new Exception("Connection to server failed");
             } else {
