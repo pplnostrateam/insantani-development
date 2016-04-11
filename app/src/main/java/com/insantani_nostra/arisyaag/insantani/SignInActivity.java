@@ -30,6 +30,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -337,7 +341,6 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
                 return false;
             }
 
-
             /*
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
@@ -348,7 +351,11 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             }
             */
 
-
+            try {
+                loginUserRestServer(mEmail, mPassword);
+            } catch (Exception e) {
+                return false;
+            }
 
             // TODO: register the new account here.
             return true;
@@ -371,6 +378,33 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+    }
+
+    public void loginUserRestServer(String email, String password) throws Exception {
+        User user = new User();
+        String url = "http://130.211.252.241:8080/user/";
+        RestTemplate rest = new RestTemplate();
+        rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+        try {
+            String queryURL = url + "search/findUserByEmail?email={email}";
+            User theUser = rest.getForObject(queryURL, User.class, email);
+            if (!(theUser == null)) {
+                if (password.equals(theUser.getPassword())) {
+                    user.setUsername(theUser.getUsername());
+                } else {
+                    throw new Exception("Password is incorrect");
+                }
+            } else {
+                throw new Exception("No user found");
+            }
+        } catch (Exception e) {
+            if(e instanceof ResourceAccessException){
+                throw new Exception("Connection to server failed");
+            } else {
+                throw new Exception(e.getMessage());
+            }
         }
     }
 }
