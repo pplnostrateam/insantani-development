@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -386,19 +387,20 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         String url = "http://130.211.252.241:8080/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        Log.d("##### TESTING #####", "Enter rest server");
 
         try {
-            String queryURL = url + "search/findUserByEmail?email={email}";
-            User theUser = rest.getForObject(queryURL, User.class, email);
+            Log.d("##### TESTING #####", "Enter TRY query");
+            String queryURL = url + "search/findUserByEmail?email=" + email;
+            Log.d("##### TESTING #####", "after query");
+            User theUser = rest.getForObject(queryURL, User.class);
+            Log.d("##### INPUT #####", "after get for object");
+            /*
             if (!(theUser == null)) {
-                if (password.equals(theUser.getPassword())) {
-                    user.setUsername(theUser.getUsername());
-                } else {
-                    throw new Exception("Password is incorrect");
-                }
+
             } else {
                 throw new Exception("No user found");
-            }
+            }*/
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){
                 throw new Exception("Connection to server failed");
@@ -406,6 +408,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
                 throw new Exception(e.getMessage());
             }
         }
+
     }
 }
 
