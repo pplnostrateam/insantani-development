@@ -80,12 +80,12 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                /* masalahnya apa belum tau
+               //  masalahnya apa belum tau
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
-                */
+
                 return false;
             }
         });

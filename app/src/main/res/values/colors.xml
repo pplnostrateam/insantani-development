@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<<<<<<< HEAD
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-=======
     <color name="colorPrimary">#4CAF50</color>
     <color name="colorPrimaryDark">#388E3C</color>
     <color name="colorAccent">#FF9800</color>
-    <color name="colorYangBawah"></color>
->>>>>>> 9a466eae29d6604a2934ed31e9c3b3f99fd97b4f
+    <color name="colorInput">#212121</color>
+
+    <color name="buttonOrange">#FF9800</color>
+    <color name="buttonRed">#F44336</color>
+    <color name="buttonBlue">#3b5998</color>
 
     <color name="black_overlay">#66000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="titleColor">#4CAF50</color>
 </resources>

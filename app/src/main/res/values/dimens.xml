@@ -2,5 +2,11 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
+    <!--Button-->
+    <dimen name="button_google_padding_right">30dp</dimen>
+    <dimen name="button_facebook_padding_right">10dp</dimen>
+    <dimen name="button_icon_padding_left">20dp</dimen>
+    <!--Button Font-->
+    <dimen name="button_font_size">18sp</dimen>
+
 </resources>

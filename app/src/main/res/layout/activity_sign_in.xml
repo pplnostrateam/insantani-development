@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorWhite"
     tools:context="com.insantani_nostra.arisyaag.insantani.SignInActivity">
 
     <!-- Login progress -->
@@ -28,7 +29,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="30dp"
             android:textSize="42dp"
-            android:textColor="#4CAF50" />
+            android:textColor="@color/titleColor" />
 
         <EditText
             android:layout_width="match_parent"
@@ -44,7 +45,7 @@
             android:hint="Email"
             android:paddingLeft="10dp"
             android:textSize="18dp"
-            android:textColor="#B6B6B6" />
+            android:textColor="@color/colorInput" />
 
         <EditText
             android:layout_width="match_parent"
@@ -55,11 +56,14 @@
             android:hint="Password"
             android:paddingLeft="10dp"
             android:textSize="18dp"
+            android:imeActionId="@+id/login"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionUnspecified"
             android:layout_below="@+id/email"
             android:layout_alignLeft="@+id/email"
             android:layout_alignStart="@+id/email"
             android:layout_marginTop="20dp"
-            android:textColor="#B6B6B6" />
+            android:textColor="@color/colorInput" />
 
         <Button
             android:layout_width="match_parent"
@@ -68,9 +72,9 @@
             android:id="@+id/email_sign_in_button"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:background="#FF9800"
-            android:textSize="20sp"
-            android:textColor="#FFFFFF" />
+            android:background="@color/buttonOrange"
+            android:textSize="@dimen/button_font_size"
+            android:textColor="@color/colorWhite" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -88,9 +92,12 @@
             android:layout_height="wrap_content"
             android:text="SIGN IN WITH GOOGLE"
             android:id="@+id/sign_in_google"
-            android:background="#F44336"
-            android:textSize="20sp"
-            android:textColor="#FFFFFF"
+            android:background="@color/buttonRed"
+            android:textSize="@dimen/button_font_size"
+            android:paddingRight="@dimen/button_google_padding_right"
+            android:textColor="@color/colorWhite"
+            android:drawableLeft="@drawable/ic_google_plus_48dp"
+            android:paddingLeft="@dimen/button_icon_padding_left"
             android:layout_below="@+id/Or"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
@@ -101,9 +108,12 @@
             android:layout_height="wrap_content"
             android:text="SIGN IN WITH FACEBOOK"
             android:id="@+id/sign_in_facebook"
-            android:background="#3b5998"
-            android:textSize="20sp"
-            android:textColor="#FFFFFF"
+            android:background="@color/buttonBlue"
+            android:textSize="@dimen/button_font_size"
+            android:paddingRight="@dimen/button_facebook_padding_right"
+            android:textColor="@color/colorWhite"
+            android:drawableLeft="@drawable/ic_facebook_box_48dp"
+            android:paddingLeft="20dp"
             android:layout_below="@+id/sign_in_google"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp" />
@@ -117,19 +127,21 @@
             android:layout_below="@+id/sign_in_facebook"
             android:layout_marginTop="20dp"
             android:textSize="15dp"
-            android:layout_marginLeft="20dp" />
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/colorInput"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:hint="email"
+            android:text="email"
             android:id="@+id/register_text_view"
             android:textSize="15dp"
             android:layout_alignTop="@+id/no_account"
             android:layout_toRightOf="@+id/no_account"
             android:layout_toEndOf="@+id/no_account"
             android:layout_marginLeft="5dp"
-            android:textColor="#4CAF50" />
+            android:textColor="@color/titleColor" />
+
     </RelativeLayout>
 </LinearLayout>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4CAF50">
+    android:background="@color/titleColor">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -10,10 +10,11 @@
         android:layout_gravity="center_vertical">
 
         <ImageView
+            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:id="@+id/imageView2"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_logo"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -30,16 +31,16 @@
             android:layout_marginBottom="20dp" />
 
         <EditText
-            android:layout_width="300dp"
+            android:layout_width="350dp"
             android:layout_height="60dp"
             android:id="@+id/search_vegetable"
-            android:background="#FFFFFF"
-            android:text="Type the vegetable&apos;s name..."
+            android:background="@color/colorWhite"
+            android:hint="Type the vegetable&apos;s name..."
             android:paddingLeft="10dp"
             android:layout_below="@+id/logoname"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
-            android:textColor="#B6B6B6" />
+            android:layout_marginTop="5dp"
+            android:textColor="@color/colorInput" />
 
         <Button
             android:layout_width="150dp"
@@ -47,8 +48,10 @@
             android:text="SEARCH"
             android:id="@+id/button"
             android:layout_marginTop="20dp"
-            android:background="#FF9800"
-            android:textSize="20sp"
+            android:background="@color/buttonOrange"
+            android:drawableLeft="@drawable/ic_search_dark_48dp"
+            android:padding="5dp"
+            android:textSize="18sp"
             android:layout_below="@+id/search_vegetable"
             android:layout_centerHorizontal="true" />
 
