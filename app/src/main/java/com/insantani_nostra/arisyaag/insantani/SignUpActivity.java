@@ -57,7 +57,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private EditText mPhoneView;
     private EditText mRepeatPasswordView;
@@ -69,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (EditText) findViewById(R.id.email);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -100,15 +100,17 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         mRepeatPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptRegister();
                     return true;
                 }
+
                 return false;
             }
         });
 
-        Button mEmailSignUpButton = (Button) findViewById(R.id.email_sign_up_button);
+        Button mEmailSignUpButton = (Button) findViewById(R.id.login);
         mEmailSignUpButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,8 +118,10 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             }
         });
 
+        /*
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        */
     }
 
     private void populateAutoComplete() {
@@ -328,7 +332,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             cursor.moveToNext();
         }
 
-        addEmailsToAutoComplete(emails);
+        // addEmailsToAutoComplete(emails);
     }
 
     @Override
@@ -336,6 +340,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
 
     }
 
+    /*
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -344,6 +349,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
 
         mEmailView.setAdapter(adapter);
     }
+    */
 
 
     private interface ProfileQuery {

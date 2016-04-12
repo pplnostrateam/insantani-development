@@ -3,6 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+<<<<<<< HEAD
+=======
+      <module fileurl="file://$PROJECT_DIR$/insantani-development.iml" filepath="$PROJECT_DIR$/insantani-development.iml" />
+>>>>>>> 9a466eae29d6604a2934ed31e9c3b3f99fd97b4f
       <module fileurl="file://$PROJECT_DIR$/insantani-frontend.iml" filepath="$PROJECT_DIR$/insantani-frontend.iml" />
     </modules>
   </component>

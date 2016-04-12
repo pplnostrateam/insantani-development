@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +30,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +63,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -68,17 +73,19 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (EditText) findViewById(R.id.email);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                /* masalahnya apa belum tau
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
+                */
                 return false;
             }
         });
@@ -100,8 +107,10 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             }
         });
 
+        /*
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        */
     }
 
     private void populateAutoComplete() {
@@ -275,6 +284,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
     }
 
+
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         List<String> emails = new ArrayList<>();
@@ -284,7 +294,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             cursor.moveToNext();
         }
 
-        addEmailsToAutoComplete(emails);
+        // addEmailsToAutoComplete(emails);
     }
 
     @Override
@@ -292,6 +302,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
     }
 
+    /*
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -300,6 +311,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
         mEmailView.setAdapter(adapter);
     }
+    */
 
 
     private interface ProfileQuery {
@@ -337,12 +349,20 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
                 return false;
             }
 
+            /*
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.
                     return pieces[1].equals(mPassword);
                 }
+            }
+            */
+
+            try {
+                loginUserRestServer(mEmail, mPassword);
+            } catch (Exception e) {
+                return false;
             }
 
             // TODO: register the new account here.
@@ -367,6 +387,35 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    public void loginUserRestServer(String email, String password) throws Exception {
+        User user = new User();
+        String url = "http://130.211.252.241:8080/user/";
+        RestTemplate rest = new RestTemplate();
+        rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        Log.d("##### TESTING #####", "Enter rest server");
+
+        try {
+            Log.d("##### TESTING #####", "Enter TRY query");
+            String queryURL = url + "search/findUserByEmail?email=" + email;
+            Log.d("##### TESTING #####", "after query");
+            User theUser = rest.getForObject(queryURL, User.class);
+            Log.d("##### INPUT #####", "after get for object");
+            /*
+            if (!(theUser == null)) {
+
+            } else {
+                throw new Exception("No user found");
+            }*/
+        } catch (Exception  e) {
+            if(e instanceof ResourceAccessException){
+                throw new Exception("Connection to server failed");
+            } else {
+                throw new Exception(e.getMessage());
+            }
+        }
+
     }
 }
 
