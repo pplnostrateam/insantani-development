@@ -105,6 +105,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             }
         });
 
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -158,9 +159,9 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private Boolean attemptLogin() {
+    private void attemptLogin() {
         if (mAuthTask != null) {
-            return false;
+            return;
         }
 
         // Reset errors.
@@ -216,8 +217,6 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
-
-        return mAuthTask.getmState();
     }
 
     private boolean isEmailValid(String email) {
