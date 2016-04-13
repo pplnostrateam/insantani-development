@@ -386,22 +386,23 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
     }
 
     public void loginUserRestServer(String email, String password) throws Exception {
-        User user = new User();
-        String url = "http://104.155.215.144:8080/api/vegetable/";
+        String url = "http://104.155.215.144:8080/api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         Log.d("##### TESTING #####", "Enter rest server");
 
         try {
             Log.d("##### TESTING #####", "Enter TRY query");
-            String queryURL = url + "find?name=" + email;
+            String queryURL = url + "find?email=" + email;
             Log.d("##### TESTING #####", "after query");
 
-            Vegetable theUser = rest.getForObject(queryURL, Vegetable.class);
+            User theUser = rest.getForObject(queryURL, User.class);
             Log.d("##### INPUT #####", "after get for object");
 
-            if (!(theUser.getName().contains("vegetable not found")) && Integer.toString(theUser.getPrice()).equals(password)) {
+            if (!(theUser.getName().contains("User not found"))) {
                 Log.d("##### OUTPUT #####", "BERHASIL");
+
+                Log.d("##### OUTPUT #####", theUser.getName());
             } else {
                 Log.d("##### OUTPUT #####", "GAGALLL!");
                 throw new Exception("No user found");
