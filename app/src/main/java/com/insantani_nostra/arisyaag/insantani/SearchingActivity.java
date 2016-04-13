@@ -1,5 +1,6 @@
 package com.insantani_nostra.arisyaag.insantani;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -26,7 +27,9 @@ public class SearchingActivity extends AppCompatActivity {
     //private EditText editTextName;
     private EditText search_vegetable;
     private Button button;
-    private TextView textView;
+    private TextView textView2;
+    private Activity activity;
+
     // private EditText editText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class SearchingActivity extends AppCompatActivity {
         //editTextName = (EditText) findViewById(R.id.editTextName);
         search_vegetable = (EditText) findViewById(R.id.search_vegetable);
         //   editText = (EditText) findViewById(R.id.editText);
-        textView = (TextView) findViewById(R.id.textView);
+        textView2 = (TextView) findViewById(R.id.textView2);
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,22 +84,40 @@ public class SearchingActivity extends AppCompatActivity {
                     try {
 
                         JSONArray vegetables = new JSONArray(data);
-                        for (int i = 0; i < vegetables.length(); i++){
+                        for (int i = 0; i < vegetables.length(); i++) {
                             JSONObject jsonobject = vegetables.getJSONObject(i);
 
                             final String name = jsonobject.optString("name").toString();
                             final double stock = Double.parseDouble(jsonobject.optString("stock").toString());
 
                             final double price = Double.parseDouble(jsonobject.optString("price").toString());
-                            temp += "Name= "+ name +" : \n Stock= "+ stock +" \n Price= "+ price +" \n ";
-                            System.out.println(temp);
+                            temp += "Name= " + name + "\n Stock= " + stock + " \n Price= " + price + " \n ";
+
                         }
+                        final String finalTemp = temp;
+                        //System.out.println(temp);
+                        //textView2.setText(temp);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+                //System.out.println(temp);
+
+                setText(textView2, temp);
             }
         })
 
         ;}
+    private void setText(final TextView text,final String value){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                text.setText(value);
+            }
+        });
+    }
+    public Activity getActivity() {
+        
+        return this.activity;
+    }
 }

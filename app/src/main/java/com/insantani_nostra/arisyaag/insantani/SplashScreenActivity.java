@@ -57,6 +57,7 @@ public class SplashScreenActivity extends Activity {
         });
 
         // The thread to wait for splash screen events
+        // kalo ada ini, abis dari login baru ke search tapi kita maunya search yang di awal. Biar ga dobel sama intent yang di atas juga
 //        mSplashThread =  new Thread() {
 //            public void run() {
 //                try{
