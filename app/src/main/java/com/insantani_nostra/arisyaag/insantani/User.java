@@ -13,138 +13,67 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-        "username",
-        "email",
-        "phone",
-        "password",
-        "_links"
-})
-public class User {
+    public class User {
 
-    @JsonProperty("username")
-    private String username;
-    @JsonProperty("email")
-    private String email;
-    @JsonProperty("phone")
-    private String phone;
-    @JsonProperty("password")
-    private String password;
-    @JsonProperty("_links")
-    private String Links;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+        // ------------------------
+        // PRIVATE FIELDS
+        // ------------------------
 
-    /**
-     *
-     * @return
-     * The username
-     */
-    @JsonProperty("username")
-    public String getUsername() {
-        return username;
-    }
+        private long id;
 
-    /**
-     *
-     * @param username
-     * The username
-     */
-    @JsonProperty("username")
-    public void setUsername(String username) {
-        this.username = username;
-    }
+        private String email;
 
-    /**
-     *
-     * @return
-     * The email
-     */
-    @JsonProperty("email")
-    public String getEmail() {
-        return email;
-    }
+        private String name;
 
-    /**
-     *
-     * @param email
-     * The email
-     */
-    @JsonProperty("email")
-    public void setEmail(String email) {
-        this.email = email;
-    }
+        private String password;
 
-    /**
-     *
-     * @return
-     * The phone
-     */
-    @JsonProperty("phone")
-    public String getPhone() {
-        return phone;
-    }
+        // ------------------------
+        // PUBLIC METHODS
+        // ------------------------
 
-    /**
-     *
-     * @param phone
-     * The phone
-     */
-    @JsonProperty("phone")
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+        public User() { }
 
-    /**
-     *
-     * @return
-     * The password
-     */
-    @JsonProperty("password")
-    public String getPassword() {
-        return password;
-    }
+        public User(long id) {
+            this.id = id;
+        }
 
-    /**
-     *
-     * @param password
-     * The password
-     */
-    @JsonProperty("password")
-    public void setPassword(String password) {
-        this.password = password;
-    }
+        public User(String email, String name, String password) {
+            this.email = email;
+            this.name = name;
+            this.password = password;
+        }
 
-    /**
-     *
-     * @return
-     * The Links
-     */
-    @JsonProperty("_links")
-    public String getLinks() {
-        return Links;
-    }
+        public long getId() {
+            return id;
+        }
 
-    /**
-     *
-     * @param Links
-     * The _links
-     */
-    @JsonProperty("_links")
-    public void setLinks(String Links) {
-        this.Links = Links;
-    }
+        public void setId(long value) {
+            this.id = value;
+        }
 
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
+        public String getEmail() {
+            return email;
+        }
 
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
+        public void setEmail(String value) {
+            this.email = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String value) {
+            this.name = value;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
 
 }
 

@@ -102,6 +102,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             @Override
             public void onClick(View view) {
                 attemptLogin();
+                // startActivity(new Intent(view.getContext(), MainActivity.class));
             }
         });
 
@@ -198,11 +199,13 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        }
+        /*
+        else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
-        }
+        }*/
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -384,23 +387,25 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
     public void loginUserRestServer(String email, String password) throws Exception {
         User user = new User();
-        String url = "http://130.211.252.241:8080/user/";
+        String url = "http://104.155.215.144:8080/api/vegetable/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         Log.d("##### TESTING #####", "Enter rest server");
 
         try {
             Log.d("##### TESTING #####", "Enter TRY query");
-            String queryURL = url + "search/findUserByEmail?email=" + email;
+            String queryURL = url + "find?name=" + email;
             Log.d("##### TESTING #####", "after query");
-            User theUser = rest.getForObject(queryURL, User.class);
-            Log.d("##### INPUT #####", "after get for object");
-            /*
-            if (!(theUser == null)) {
 
+            Vegetable theUser = rest.getForObject(queryURL, Vegetable.class);
+            Log.d("##### INPUT #####", "after get for object");
+
+            if (!(theUser.getName().contains("vegetable not found")) && Integer.toString(theUser.getPrice()).equals(password)) {
+                Log.d("##### OUTPUT #####", "BERHASIL");
             } else {
+                Log.d("##### OUTPUT #####", "GAGALLL!");
                 throw new Exception("No user found");
-            }*/
+            }
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){
                 throw new Exception("Connection to server failed");
