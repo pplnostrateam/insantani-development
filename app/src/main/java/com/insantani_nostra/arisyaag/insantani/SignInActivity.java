@@ -393,13 +393,13 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
         try {
             Log.d("##### TESTING #####", "Enter TRY query");
-            String queryURL = url + "find?email=" + email;
+            String queryURL = url + "login?email=" + email + "&password=" + password;
             Log.d("##### TESTING #####", "after query");
 
             User theUser = rest.getForObject(queryURL, User.class);
-            Log.d("##### INPUT #####", "after get for object");
+            Log.d("##### INPUT #####", Long.toString(theUser.getId()));
 
-            if (!(theUser.getName().contains("User not found"))) {
+            if (!(theUser == null)) {
                 Log.d("##### OUTPUT #####", "BERHASIL");
 
                 Log.d("##### OUTPUT #####", theUser.getName());
