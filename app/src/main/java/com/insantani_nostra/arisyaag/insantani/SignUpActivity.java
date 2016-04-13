@@ -63,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
 
     // UI references.
 
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mNameView;
     private EditText mPasswordView;
     private EditText mPhoneView;
@@ -137,10 +137,8 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             }
         });
 
-        /*
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        */
     }
 
     private void populateAutoComplete() {

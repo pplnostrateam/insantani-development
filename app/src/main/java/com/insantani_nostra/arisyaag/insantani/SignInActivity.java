@@ -107,14 +107,8 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             }
         });
 
-<<<<<<< HEAD
-        /*
-=======
-
->>>>>>> original
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        */
     }
 
     private void populateAutoComplete() {
@@ -421,13 +415,8 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             } else {
                 Log.d("##### OUTPUT #####", "GAGALLL!");
                 throw new Exception("No user found");
-<<<<<<< HEAD
-            }*/
-        } catch (Exception  e) {
-=======
             }
         } catch (Exception e) {
->>>>>>> original
             if(e instanceof ResourceAccessException){
                 throw new Exception("Connection to server failed");
             } else {
