@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +29,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,10 +59,11 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    private UserRegisterTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
+    private EditText mNameView;
     private EditText mPasswordView;
     private EditText mPhoneView;
     private EditText mRepeatPasswordView;
@@ -86,6 +92,18 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
 
         mPhoneView = (EditText) findViewById(R.id.phone);
         mPhoneView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    attemptRegister();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        mNameView = (EditText) findViewById(R.id.name);
+        mNameView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -175,12 +193,14 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         }
 
         // Reset errors.
+        mNameView.setError(null);
         mEmailView.setError(null);
         mPasswordView.setError(null);
         mPhoneView.setError(null);
         mRepeatPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
+        String name = mNameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         String phone = mPhoneView.getText().toString();
@@ -246,7 +266,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserRegisterTask(email, name, password);
             mAuthTask.execute((Void) null);
         }
     }
@@ -360,14 +380,16 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
         private final String mPassword;
+        private final String mName;
 
-        UserLoginTask(String email, String password) {
+        UserRegisterTask(String email, String name, String password) {
             mEmail = email;
             mPassword = password;
+            mName = name;
         }
 
         @Override
@@ -381,6 +403,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
                 return false;
             }
 
+            /*
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
@@ -388,7 +411,13 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
                     return pieces[1].equals(mPassword);
                 }
             }
+            */
 
+            try {
+                registerUserRestServer(mEmail, mName, mPassword);
+            } catch (Exception e) {
+                return false;
+            }
             // TODO: register the new account here.
             return true;
         }
@@ -410,6 +439,40 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+    }
+
+    public void registerUserRestServer(String email, String name, String password) throws Exception {
+        String url = "http://104.155.215.144:8080/api/user/";
+        RestTemplate rest = new RestTemplate();
+        rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        Log.d("##### TESTING #####", "Enter rest server");
+
+        try {
+            Log.d("##### TESTING #####", "Enter TRY query");
+            String queryURL = url + "create?email=" + email + "&name=" + name + "&password=" + password;
+            Log.d("##### TESTING #####", "after query");
+
+            rest.postForLocation(queryURL, User.class);
+
+            String getterURL = url + "find?email=" + email;
+            User theUser = rest.getForObject(getterURL, User.class);
+
+            Log.d("##### INPUT #####", Long.toString(theUser.getId()));
+
+            if (!(theUser == null)) {
+                Log.d("##### OUTPUT #####", "BERHASIL");
+                Log.d("##### OUTPUT #####", theUser.getName());
+            } else {
+                Log.d("##### OUTPUT #####", "GAGALLL!");
+                throw new Exception("No user found");
+            }
+        } catch (Exception e) {
+            if(e instanceof ResourceAccessException){
+                throw new Exception("Connection to server failed");
+            } else {
+                throw new Exception(e.getMessage());
+            }
         }
     }
 }

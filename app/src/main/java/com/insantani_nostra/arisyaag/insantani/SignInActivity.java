@@ -101,8 +101,9 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
-                // startActivity(new Intent(view.getContext(), MainActivity.class));
+                if(attemptLogin()) {
+                    startActivity(new Intent(view.getContext(), MainActivity.class));
+                }
             }
         });
 
@@ -159,9 +160,9 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
+    private Boolean attemptLogin() {
         if (mAuthTask != null) {
-            return;
+            return false;
         }
 
         // Reset errors.
@@ -200,12 +201,11 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             focusView = mEmailView;
             cancel = true;
         }
-        /*
         else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
-        }*/
+        }
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -218,6 +218,8 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
+
+        return mAuthTask.getmState();
     }
 
     private boolean isEmailValid(String email) {
@@ -328,10 +330,16 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
         private final String mEmail;
         private final String mPassword;
+        private Boolean mState;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+            mState = false;
+        }
+
+        protected Boolean getmState() {
+            return mState;
         }
 
         @Override
@@ -371,6 +379,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             showProgress(false);
 
             if (success) {
+                mState = true;
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -401,7 +410,6 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
             if (!(theUser == null)) {
                 Log.d("##### OUTPUT #####", "BERHASIL");
-
                 Log.d("##### OUTPUT #####", theUser.getName());
             } else {
                 Log.d("##### OUTPUT #####", "GAGALLL!");
@@ -414,7 +422,6 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
                 throw new Exception(e.getMessage());
             }
         }
-
     }
 }
 
