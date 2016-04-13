@@ -89,7 +89,7 @@ public class SearchingActivity extends AppCompatActivity {
 
                             final double price = Double.parseDouble(jsonobject.optString("price").toString());
                             temp += "Name= "+ name +" : \n Stock= "+ stock +" \n Price= "+ price +" \n ";
-
+                            System.out.println(temp);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

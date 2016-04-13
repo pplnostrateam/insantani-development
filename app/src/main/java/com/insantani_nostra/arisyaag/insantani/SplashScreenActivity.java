@@ -43,7 +43,7 @@ public class SplashScreenActivity extends Activity {
             public void onAnimationEnd(Animation animation) {
                 imavi.startAnimation(anim2);
                 finish();
-                Intent ii = new Intent(getBaseContext(), SignInActivity.class);
+                Intent ii = new Intent(getBaseContext(), SearchingActivity.class);
                 startActivity(ii);
 
             }
@@ -57,22 +57,22 @@ public class SplashScreenActivity extends Activity {
         });
 
         // The thread to wait for splash screen events
-        mSplashThread =  new Thread() {
-            public void run() {
-                try{
-                    synchronized (this) {
-                        wait(1000);
-                    }
-                } catch(InterruptedException e) {
-                    e.printStackTrace();
-                } finally {
-                    Intent openStartingPoint = new Intent(SplashScreenActivity.this, SignInActivity.class);
-                    startActivity(openStartingPoint);
-
-                }
-            }
-        };
-        mSplashThread.start();
+//        mSplashThread =  new Thread() {
+//            public void run() {
+//                try{
+//                    synchronized (this) {
+//                        wait(1000);
+//                    }
+//                } catch(InterruptedException e) {
+//                    e.printStackTrace();
+//                } finally {
+//                    Intent openStartingPoint = new Intent(SplashScreenActivity.this, SignInActivity.class);
+//                    startActivity(openStartingPoint);
+//
+//                }
+//            }
+//        };
+//        mSplashThread.start();
     }
 
     /*
