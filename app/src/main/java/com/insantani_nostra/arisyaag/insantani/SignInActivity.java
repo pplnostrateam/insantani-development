@@ -107,7 +107,11 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             }
         });
 
+<<<<<<< HEAD
         /*
+=======
+
+>>>>>>> original
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         */
@@ -202,7 +206,8 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        }
+        else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -332,10 +337,16 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
         private final String mEmail;
         private final String mPassword;
+        private Boolean mState;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+            mState = false;
+        }
+
+        protected Boolean getmState() {
+            return mState;
         }
 
         @Override
@@ -375,6 +386,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             showProgress(false);
 
             if (success) {
+                mState = true;
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -390,32 +402,38 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
     }
 
     public void loginUserRestServer(String email, String password) throws Exception {
-        User user = new User();
-        String url = "http://130.211.252.241:8080/user/";
+        String url = "http://104.155.215.144:8080/api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         Log.d("##### TESTING #####", "Enter rest server");
 
         try {
             Log.d("##### TESTING #####", "Enter TRY query");
-            String queryURL = url + "search/findUserByEmail?email=" + email;
+            String queryURL = url + "login?email=" + email + "&password=" + password;
             Log.d("##### TESTING #####", "after query");
-            User theUser = rest.getForObject(queryURL, User.class);
-            Log.d("##### INPUT #####", "after get for object");
-            /*
-            if (!(theUser == null)) {
 
+            User theUser = rest.getForObject(queryURL, User.class);
+            Log.d("##### INPUT #####", Long.toString(theUser.getId()));
+
+            if (!(theUser == null)) {
+                Log.d("##### OUTPUT #####", "BERHASIL");
+                Log.d("##### OUTPUT #####", theUser.getName());
             } else {
+                Log.d("##### OUTPUT #####", "GAGALLL!");
                 throw new Exception("No user found");
+<<<<<<< HEAD
             }*/
         } catch (Exception  e) {
+=======
+            }
+        } catch (Exception e) {
+>>>>>>> original
             if(e instanceof ResourceAccessException){
                 throw new Exception("Connection to server failed");
             } else {
                 throw new Exception(e.getMessage());
             }
         }
-
     }
 }
 
