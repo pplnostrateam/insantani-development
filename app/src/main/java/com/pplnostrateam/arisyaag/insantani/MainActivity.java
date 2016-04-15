@@ -1,4 +1,4 @@
-package com.insantani_nostra.arisyaag.insantani;
+package com.pplnostrateam.arisyaag.insantani;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

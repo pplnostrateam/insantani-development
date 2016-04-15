@@ -1,4 +1,4 @@
-package com.insantani_nostra.arisyaag.insantani;
+package com.pplnostrateam.arisyaag.insantani;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -80,7 +80,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         populateAutoComplete();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
+        // AppEventsLogger.activateApp(this);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
