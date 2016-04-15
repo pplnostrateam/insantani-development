@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.insantani_nostra.arisyaag.insantani"
+        applicationId "com.pplnostrateam.arisyaag.insantani"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
@@ -36,5 +36,6 @@ dependencies {
     compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.2'
 
-    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    // compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
 }

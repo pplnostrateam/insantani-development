@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.insantani_nostra.arisyaag.insantani.SignUpActivity"
+    tools:context="com.pplnostrateam.arisyaag.insantani.SignUpActivity"
     android:background="@color/colorWhite"
     android:weightSum="1">
 
@@ -28,7 +28,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -39,11 +39,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Sign Up"
                 android:id="@+id/textView"
-                android:textSize="42dp"
+                android:textSize="42sp"
                 android:textColor="@color/titleColor"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_marginTop="30dp" />
 
 

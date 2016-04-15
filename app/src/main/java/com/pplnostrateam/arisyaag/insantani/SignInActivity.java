@@ -31,14 +31,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.pplnostrateam.arisyaag.insantani.R;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -70,17 +77,54 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private LoginButton fbLoginButton;
+    private CallbackManager fbCallbackManager;
+
+    private TextView info;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_sign_in);
+
+        // TODO: check for internet connection
+
         // Set up the login form.
         mEmailView = (EditText) findViewById(R.id.email);
-        populateAutoComplete();
+        // populateAutoComplete();
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
         // AppEventsLogger.activateApp(this);
+        fbCallbackManager = CallbackManager.Factory.create();
+
+        info = (TextView)findViewById(R.id.info);
+        fbLoginButton = (LoginButton)findViewById(R.id.sign_in_facebook);
+        fbLoginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday")); // ####### Facebook Sign In Coding
+
+        fbLoginButton.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                info.setText(
+                        "User ID: "
+                                + loginResult.getAccessToken().getUserId()
+                                + "\n" +
+                                "Auth Token: "
+                                + loginResult.getAccessToken().getToken()
+                );
+            }
+
+            @Override
+            public void onCancel() {
+                info.setText("Login attempt canceled.");
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                info.setText("Login attempt failed.");
+            }
+        });
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -115,6 +159,11 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        fbCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private void populateAutoComplete() {

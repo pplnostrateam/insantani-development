@@ -30,6 +30,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.pplnostrateam.arisyaag.insantani.R;
+
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
