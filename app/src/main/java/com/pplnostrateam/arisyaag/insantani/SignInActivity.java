@@ -30,16 +30,19 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.pplnostrateam.arisyaag.insantani.R;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -47,6 +50,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -61,27 +66,17 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private EditText mEmailView;
+    private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
     private LoginButton fbLoginButton;
     private CallbackManager fbCallbackManager;
-
-    private TextView info;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,36 +88,37 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         // TODO: check for internet connection
 
         // Set up the login form.
-        mEmailView = (EditText) findViewById(R.id.email);
-        // populateAutoComplete();
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        populateAutoComplete();
 
         // AppEventsLogger.activateApp(this);
         fbCallbackManager = CallbackManager.Factory.create();
 
-        info = (TextView)findViewById(R.id.info);
         fbLoginButton = (LoginButton)findViewById(R.id.sign_in_facebook);
-        fbLoginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday")); // ####### Facebook Sign In Coding
+        fbLoginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday"));
 
         fbLoginButton.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                info.setText(
+                Toast.makeText(getApplicationContext(),
                         "User ID: "
                                 + loginResult.getAccessToken().getUserId()
                                 + "\n" +
                                 "Auth Token: "
-                                + loginResult.getAccessToken().getToken()
-                );
+                                + loginResult.getAccessToken().getToken(),
+                        Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onCancel() {
-                info.setText("Login attempt canceled.");
+                Toast.makeText(getApplicationContext(),
+                        "Login attempt canceled.", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(FacebookException e) {
-                info.setText("Login attempt failed.");
+                Toast.makeText(getApplicationContext(),
+                        "Login attempt failed.", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -130,7 +126,6 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-               //  masalahnya apa belum tau
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
@@ -144,7 +139,6 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         mRegisterTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //attemptLogin();
                 startActivity(new Intent(view.getContext(), SignUpActivity.class));
             }
         });
@@ -231,21 +225,9 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        /*
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }*/
-
-        // Check for a valid password.
+        // Check for an empty password.
         if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_field_required));
-            focusView = mPasswordView;
-            cancel = true;
-        } else if (!isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
@@ -255,8 +237,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        }
-        else if (!isEmailValid(email)) {
+        } else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -276,13 +257,11 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
+        final String emailPattern = "^[A-Za-z0-9+_.-]+@(.+)$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(email);
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 0;
+        return matcher.matches();
     }
 
     /**
@@ -348,7 +327,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             cursor.moveToNext();
         }
 
-        // addEmailsToAutoComplete(emails);
+        addEmailsToAutoComplete(emails);
     }
 
     @Override
@@ -356,7 +335,6 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
     }
 
-    /*
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -365,8 +343,6 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
         mEmailView.setAdapter(adapter);
     }
-    */
-
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -386,22 +362,15 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
         private final String mEmail;
         private final String mPassword;
-        private Boolean mState;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
-            mState = false;
-        }
-
-        protected Boolean getmState() {
-            return mState;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
@@ -409,23 +378,12 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
                 return false;
             }
 
-            /*
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-            */
-
             try {
                 loginUserRestServer(mEmail, mPassword);
             } catch (Exception e) {
                 return false;
             }
 
-            // TODO: register the new account here.
             return true;
         }
 
@@ -435,10 +393,11 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             showProgress(false);
 
             if (success) {
-                mState = true;
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                // mPasswordView.setError(getString(R.string.error_incorrect_password));
+                Toast.makeText(getApplicationContext(),
+                        "Email and password not found", Toast.LENGTH_LONG).show();
                 mPasswordView.requestFocus();
             }
         }
@@ -454,21 +413,22 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         String url = "http://104.155.215.144:8080/api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        Log.d("##### TESTING #####", "Enter rest server");
+        Log.d("#Debug", "Start");
 
         try {
-            Log.d("##### TESTING #####", "Enter TRY query");
             String queryURL = url + "login?email=" + email + "&password=" + password;
-            Log.d("##### TESTING #####", "after query");
-
             User theUser = rest.getForObject(queryURL, User.class);
-            Log.d("##### INPUT #####", Long.toString(theUser.getId()));
+            
+            Log.d("#Output", Boolean.toString(theUser == null));
+            Log.d("#Output", Long.toString(theUser.getId()));
 
             if (!(theUser == null)) {
-                Log.d("##### OUTPUT #####", "BERHASIL");
-                Log.d("##### OUTPUT #####", theUser.getName());
+                Log.d("Output", theUser.getName());
+                Toast.makeText(getApplicationContext(),
+                        "Login attempt success.", Toast.LENGTH_LONG).show();
             } else {
-                Log.d("##### OUTPUT #####", "GAGALLL!");
+                Toast.makeText(getApplicationContext(),
+                        "Login attempt failed: No user found.", Toast.LENGTH_LONG).show();
                 throw new Exception("No user found");
             }
         } catch (Exception e) {

@@ -38,11 +38,13 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
- * A login screen that offers login via email/password.
+ * A sign up screen that offers sign up via email.
  */
 public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
@@ -52,20 +54,13 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserRegisterTask mAuthTask = null;
 
     // UI references.
 
-    private EditText mEmailView;
+    private AutoCompleteTextView mEmailView;
     private EditText mNameView;
     private EditText mPasswordView;
     private EditText mPhoneView;
@@ -77,8 +72,9 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        // Set up the login form.
-        mEmailView = (EditText) findViewById(R.id.email);
+
+        // Set up the sign up form.
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -215,14 +211,6 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        /*
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }*/
-
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
@@ -240,7 +228,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             focusView = mPasswordView;
             cancel = true;
         } else if (!isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.setError(getString(R.string.error_invalid_password_format));
             focusView = mPasswordView;
             cancel = true;
         } else if (!isPasswordMatch(password, repeatPassword)) {
@@ -277,17 +265,24 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        final String emailPattern = "^[A-Za-z0-9+_.-]+@(.+)$";
+        Pattern pattern = Pattern.compile(emailPattern);
+        Matcher matcher = pattern.matcher(email);
+
+        return matcher.matches();
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        final String passwordPattern =
+                "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
+
+        Pattern pattern = Pattern.compile(passwordPattern);
+        Matcher matcher = pattern.matcher(password);
+
+        return matcher.matches();
     }
 
     private boolean isPasswordMatch(String password, String repeatPassword) {
-        //TODO: Replace this with your own logic
         return password.equals(repeatPassword);
     }
 
@@ -353,7 +348,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             cursor.moveToNext();
         }
 
-        // addEmailsToAutoComplete(emails);
+        addEmailsToAutoComplete(emails);
     }
 
     @Override
@@ -361,7 +356,6 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
 
     }
 
-    /*
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -370,8 +364,6 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
 
         mEmailView.setAdapter(adapter);
     }
-    */
-
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -410,22 +402,13 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
                 return false;
             }
 
-            /*
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-            */
 
             try {
                 registerUserRestServer(mEmail, mName, mPassword);
             } catch (Exception e) {
                 return false;
             }
-            // TODO: register the new account here.
+
             return true;
         }
 
@@ -437,7 +420,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             if (success) {
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError(getString(R.string.error_sign_up_failed));
                 mPasswordView.requestFocus();
             }
         }
@@ -453,25 +436,18 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         String url = "http://104.155.215.144:8080/api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-        Log.d("##### TESTING #####", "Enter rest server");
 
         try {
-            Log.d("##### TESTING #####", "Enter TRY query");
             String queryURL = url + "create?email=" + email + "&name=" + name + "&password=" + password;
-            Log.d("##### TESTING #####", "after query");
+            rest.postForLocation(queryURL, User.class, email, name, password);
 
-            rest.postForLocation(queryURL, User.class);
-
-            String getterURL = url + "find?email=" + email;
-            User theUser = rest.getForObject(getterURL, User.class);
-
-            Log.d("##### INPUT #####", Long.toString(theUser.getId()));
+            String getterURL = url + "find?email={email}";
+            User theUser = rest.getForObject(getterURL, User.class, email);
 
             if (!(theUser == null)) {
-                Log.d("##### OUTPUT #####", "BERHASIL");
-                Log.d("##### OUTPUT #####", theUser.getName());
+
             } else {
-                Log.d("##### OUTPUT #####", "GAGALLL!");
+
                 throw new Exception("No user found");
             }
         } catch (Exception e) {
