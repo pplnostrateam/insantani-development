@@ -1,31 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="75dp">
-    <TextView
-        android:layout_height="match_parent"
-        android:layout_width="120dp"
-        android:id="@+id/vName"
-        android:text="NAME"
-        android:layout_alignParentLeft="true"
-        android:gravity="center"
-        android:textAppearance="?android:textAppearanceLarge"
-        />
-    <TextView
-        android:layout_height="match_parent"
-        android:layout_width="120dp"
-        android:id="@+id/vPrice"
-        android:text="PRICE"
-        android:layout_toRightOf="@+id/vName"
-        android:gravity="center"
-        android:textAppearance="?android:textAppearanceLarge"
-        />
-    <TextView
-        android:layout_height="match_parent"
-        android:layout_width="120dp"
-        android:id="@+id/vStock"
-        android:text="STOCK"
-        android:layout_toRightOf="@+id/vPrice"
-        android:gravity="center"
-        android:textAppearance="?android:textAppearanceLarge"
-        />
+    android:layout_width="match_parent" android:layout_height="150dp">
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent" >
+
+            <RadioButton
+                android:id="@+id/radiobutton"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".1" />
+
+            <TextView
+                android:id="@+id/vName"
+                android:text="LALA"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                android:textAppearance="?android:textAppearanceLarge"/>
+            <TextView
+                android:id="@+id/vPrice"
+                android:text="HAHA"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                android:textAppearance="?android:textAppearanceLarge"/>
+
+            <TextView
+                android:id="@+id/vStock"
+                android:text="WAWA"
+                android:layout_width="0sp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                android:textAppearance="?android:textAppearanceLarge"/>
+
+        </TableRow>
+
+    </TableLayout>
 </RelativeLayout>
