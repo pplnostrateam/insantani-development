@@ -1,4 +1,4 @@
-package com.insantani_nostra.arisyaag.insantani;
+package com.pplnostrateam.arisyaag.insantani;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
