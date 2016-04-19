@@ -3,8 +3,11 @@ package com.pplnostrateam.arisyaag.insantani;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -36,22 +39,23 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.pplnostrateam.arisyaag.insantani.R;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.Request;
+import retrofit2.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -75,17 +79,18 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private LoginButton fbLoginButton;
     private CallbackManager fbCallbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_sign_in);
 
-        // TODO: check for internet connection
+        // check for internet connection
+        connectivityStatus();
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -94,8 +99,9 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         // AppEventsLogger.activateApp(this);
         fbCallbackManager = CallbackManager.Factory.create();
 
-        fbLoginButton = (LoginButton)findViewById(R.id.sign_in_facebook);
-        fbLoginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday"));
+        LoginButton fbLoginButton = (LoginButton)findViewById(R.id.sign_in_facebook);
+        assert fbLoginButton != null;
+        fbLoginButton.setReadPermissions(Collections.singletonList("public_profile, email, user_birthday"));
 
         fbLoginButton.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -136,6 +142,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         });
 
         TextView mRegisterTextView = (TextView) findViewById(R.id.register_text_view);
+        assert mRegisterTextView != null;
         mRegisterTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,12 +151,14 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        assert mEmailSignInButton != null;
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
+
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -202,7 +211,6 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             }
         }
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -351,7 +359,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
+        // int IS_PRIMARY = 1;
     }
 
     /**
@@ -370,9 +378,10 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+            // attempt authentication against a network service.
             try {
                 // Simulate network access.
+                connectivityStatus();
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
@@ -438,6 +447,12 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
                 throw new Exception(e.getMessage());
             }
         }
+    }
+
+    public boolean connectivityStatus() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
 
