@@ -28,7 +28,7 @@
     <string name="error_invalid_password">This password is invalid</string>
     <string name="error_password_not_matched">Password is not matched</string>
     <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_invalid_password_format"> must contains numeric digit\n must contains lowercase characters\n must contains uppercase characters\n must contains special symbols\n length at least 6 characters and maximum of 20"</string>
+    <string name="error_invalid_password_format">must contains numeric digit\nmust contains lowercase characters\nmust contains uppercase characters\nmust contains special symbols\nlength at least 6 characters and maximum of 20"</string>
     <string name="error_field_required">This field is required</string>
     <string name="error_sign_up_failed">"Sign up failed."</string>
 

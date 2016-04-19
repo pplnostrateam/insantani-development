@@ -29,8 +29,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.pplnostrateam.arisyaag.insantani.R;
+import android.widget.Toast;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.ResourceAccessException;
@@ -128,6 +127,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         });
 
         Button mEmailSignUpButton = (Button) findViewById(R.id.login);
+        assert  mEmailSignUpButton != null;
         mEmailSignUpButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -372,7 +372,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
+        // int IS_PRIMARY = 1;
     }
 
     /**
@@ -393,7 +393,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+            // attempt authentication against a network service.
 
             try {
                 // Simulate network access.
@@ -418,10 +418,15 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             showProgress(false);
 
             if (success) {
+                Toast.makeText(getApplicationContext(),
+                        "User has been successfully added.", Toast.LENGTH_LONG).show();
+
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_sign_up_failed));
-                mPasswordView.requestFocus();
+                Toast.makeText(getApplicationContext(),
+                        "Sign up failed...", Toast.LENGTH_LONG).show();
+                // mPasswordView.setError(getString(R.string.error_sign_up_failed));
+                // mPasswordView.requestFocus();
             }
         }
 
@@ -444,12 +449,8 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             String getterURL = url + "find?email={email}";
             User theUser = rest.getForObject(getterURL, User.class, email);
 
-            if (!(theUser == null)) {
+            Log.d("Output", theUser.getName());
 
-            } else {
-
-                throw new Exception("No user found");
-            }
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){
                 throw new Exception("Connection to server failed");

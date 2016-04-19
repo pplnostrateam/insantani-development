@@ -46,21 +46,16 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import okhttp3.Request;
-import retrofit2.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
- * A login screen that offers login via email/password.
+ * A login screen that offers login via email/password, facebook, or google+.
  */
 public class SignInActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
@@ -106,6 +101,10 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         fbLoginButton.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+
+                finish();
+
                 Toast.makeText(getApplicationContext(),
                         "User ID: "
                                 + loginResult.getAccessToken().getUserId()
@@ -402,9 +401,13 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             showProgress(false);
 
             if (success) {
+                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+
+                Toast.makeText(getApplicationContext(),
+                        "Login attempt success.", Toast.LENGTH_LONG).show();
+
                 finish();
             } else {
-                // mPasswordView.setError(getString(R.string.error_incorrect_password));
                 Toast.makeText(getApplicationContext(),
                         "Email and password not found", Toast.LENGTH_LONG).show();
                 mPasswordView.requestFocus();
@@ -427,19 +430,9 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         try {
             String queryURL = url + "login?email=" + email + "&password=" + password;
             User theUser = rest.getForObject(queryURL, User.class);
-            
-            Log.d("#Output", Boolean.toString(theUser == null));
-            Log.d("#Output", Long.toString(theUser.getId()));
 
-            if (!(theUser == null)) {
-                Log.d("Output", theUser.getName());
-                Toast.makeText(getApplicationContext(),
-                        "Login attempt success.", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(),
-                        "Login attempt failed: No user found.", Toast.LENGTH_LONG).show();
-                throw new Exception("No user found");
-            }
+            Log.d("Output", theUser.getName());
+
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){
                 throw new Exception("Connection to server failed");

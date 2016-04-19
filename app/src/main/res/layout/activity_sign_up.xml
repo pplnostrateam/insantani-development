@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Sign Up"
+                android:text="@string/action_sign_up_short"
                 android:id="@+id/textView"
                 android:textSize="42sp"
                 android:textColor="@color/titleColor"
