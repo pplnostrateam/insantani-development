@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_id": "insantani-31947",
+    "project_number": "801371837742",
+    "name": "Insantani"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801371837742:android:4e8930a53f9e90b3",
+        "client_id": "android:com.pplnostrateam.arisyaag.insantani",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.pplnostrateam.arisyaag.insantani",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "801371837742-p4gg2i8ro5sm17fkpjb4ohf168rher41.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pplnostrateam.arisyaag.insantani",
+            "certificate_hash": "D890295867F4BA674AC9FEAAB923A16898F6046F"
+          }
+        },
+        {
+          "client_id": "801371837742-j375eqbjtor8vuesig3k054jsrk7s5kf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
