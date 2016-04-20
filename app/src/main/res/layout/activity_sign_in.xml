@@ -115,6 +115,13 @@
                 android:textSize="24sp"
                 android:layout_marginTop="20dp" />
 
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/sign_in_google"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -130,6 +137,8 @@
                 android:paddingLeft="@dimen/button_icon_padding_left"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="0dp" />
+
+                -->
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/sign_in_facebook"
