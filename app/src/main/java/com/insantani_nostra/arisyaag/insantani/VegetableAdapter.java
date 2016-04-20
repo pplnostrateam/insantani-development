@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,8 +16,11 @@ import java.util.List;
  */
 public class VegetableAdapter extends ArrayAdapter {
     List list = new ArrayList();
+    RadioButton lastChecked;
+
     public VegetableAdapter(Context context, int resource) {
         super(context, resource);
+        lastChecked = new RadioButton(context);
     }
 
 
@@ -38,29 +42,46 @@ public class VegetableAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row;
-        row = convertView;
-        VegetableHolder vegetableHolder;
-        if(row == null){
-            LayoutInflater layoutInflater = (LayoutInflater)this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+//        row = convertView;
+//        VegetableHolder vegetableHolder;
+        LayoutInflater layoutInflater = (LayoutInflater)this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = layoutInflater.inflate(R.layout.row_layout,parent,false);
-            vegetableHolder = new VegetableHolder();
-            vegetableHolder.vName = (TextView) row.findViewById(R.id.vName);
-            vegetableHolder.vPrice = (TextView) row.findViewById(R.id.vPrice);
-            vegetableHolder.vStock = (TextView) row.findViewById(R.id.vStock);
-            row.setTag(vegetableHolder);
+            RadioButton radioButton = (RadioButton) row.findViewById(R.id.radiobutton);
 
-        }
-        else{
-            vegetableHolder = (VegetableHolder) row.getTag();
-        }
+//
+//        if(row == null){
+//            LayoutInflater layoutInflater = (LayoutInflater)this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            row = layoutInflater.inflate(R.layout.row_layout,parent,false);
+//            //RadioButton radioButton = (RadioButton) row.findViewById(R.id.radioButton);
+//            vegetableHolder = new VegetableHolder();
+//            //vegetableHolder.vName = (TextView) row.findViewById(R.id.vName);
+//            //vegetableHolder.vPrice = (TextView) row.findViewById(R.id.vPrice);
+//            //vegetableHolder.vStock = (TextView) row.findViewById(R.id.vStock);
+//            //vegetableHolder.vName = (RadioButton) row.findViewById(R.id.radioButton);
+//            row.setTag(vegetableHolder);
+//
+//        }
+//        else{
+//            vegetableHolder = (VegetableHolder) row.getTag();
+//        }
         Vegetable vegetable = (Vegetable) this.getItem(position);
-        vegetableHolder.vName.setText(vegetable.getName());
-        vegetableHolder.vPrice.setText(vegetable.getPrice());
-        vegetableHolder.vStock.setText(vegetable.getStock());
+       // vegetableHolder.vName.setText(vegetable.getName());
+        radioButton.setText(vegetable.getName());
+        //vegetableHolder.vPrice.setText(vegetable.getPrice());
+        //vegetableHolder.vStock.setText(vegetable.getStock());
 
+       radioButton.setOnClickListener(new View.OnClickListener(){
+
+           @Override
+           public void onClick(View v) {
+               lastChecked.setChecked(false);
+               lastChecked = (RadioButton) v;
+           }
+       });
         return row;
     }
     static class VegetableHolder{
-        TextView vName, vPrice, vStock;
+        RadioButton vName, vPrice, vStock;
     }
 }

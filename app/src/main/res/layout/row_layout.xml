@@ -1,46 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="150dp">
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="UselessParent" >
+    <RadioButton
+        android:id="@+id/radiobutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="vegetable_name"/>
 
-            <RadioButton
-                android:id="@+id/radiobutton"
-                android:layout_width="0sp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".1" />
-
-            <TextView
-                android:id="@+id/vName"
-                android:text="LALA"
-                android:layout_width="0sp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".3"
-                android:textAppearance="?android:textAppearanceLarge"/>
-            <TextView
-                android:id="@+id/vPrice"
-                android:text="HAHA"
-                android:layout_width="0sp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".3"
-                android:textAppearance="?android:textAppearanceLarge"/>
-
-            <TextView
-                android:id="@+id/vStock"
-                android:text="WAWA"
-                android:layout_width="0sp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".3"
-                android:textAppearance="?android:textAppearanceLarge"/>
-
-        </TableRow>
-
-    </TableLayout>
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.insantani_nostra.arisyaag.insantani;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +44,7 @@ public class SearchResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
         //TextView textView3 = (TextView) findViewById(R.id.textView3);
+       // ListView searchResult = (ListView)findViewById(R.id.searchResult);
         ListView searchResult = (ListView)findViewById(R.id.searchResult);
         vegetableAdapter = new VegetableAdapter(this, R.layout.row_layout);
         searchResult.setAdapter(vegetableAdapter);
@@ -67,5 +70,31 @@ public class SearchResultActivity extends AppCompatActivity {
         }
     }
 
+    public void getConfirmation(View view){
+        //Intent intent = new Intent(this, SearchResultActivity.class);
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setTitle("You have to sign in first");
+        alertDialogue.setMessage("Are you sure you want to continue this order?");
+        alertDialogue.setCancelable(false);
 
+        alertDialogue.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                move();
+            }
+        });
+        alertDialogue.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
+    }
+
+    private void move() {
+        Intent intent = new Intent(this, SignInActivity.class);
+        startActivity(intent);
+    }
 }
