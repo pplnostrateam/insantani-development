@@ -139,13 +139,13 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
                 return false;
             }
         });
-
+//test
         TextView mRegisterTextView = (TextView) findViewById(R.id.register_text_view);
         assert mRegisterTextView != null;
         mRegisterTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(view.getContext(), SignUpActivity.class));
+                startActivity(new Intent(view.getContext(), MapsActivity.class));
             }
         });
 
