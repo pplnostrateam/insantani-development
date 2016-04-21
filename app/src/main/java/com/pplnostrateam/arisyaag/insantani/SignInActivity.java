@@ -145,7 +145,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         mRegisterTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(view.getContext(), MapsActivity.class));
+                startActivity(new Intent(view.getContext(), MainActivity.class));
             }
         });
 

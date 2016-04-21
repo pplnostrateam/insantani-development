@@ -24,8 +24,9 @@ public class MainActivity extends AppCompatActivity {
     }
     public void click(View v) {
 
-        Intent intent = new Intent(v.getContext(), MapsActivity.class);
-        startActivity(intent);
+        Intent i=new Intent(MainActivity.this,MapsActivity.class);
+        startActivity(i);
+
 
     }
 
