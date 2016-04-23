@@ -38,7 +38,8 @@
                 android:text="insantani"
                 android:id="@+id/textView3"
                 android:layout_below="@+id/imageView3"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:textColor="#4CAF50" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,20 +49,23 @@
                 android:id="@+id/title_location"
                 android:layout_below="@+id/textView3"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="24dp" />
+
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="70dp"
                 android:layout_below="@+id/title_location"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:id="@+id/linearLayout">
 
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/editText"
-                    android:layout_weight="0.78" />
+                    android:layout_weight="7.90" />
 
                 <ImageButton
                     android:layout_width="35dp"
@@ -70,6 +74,49 @@
                     android:src="@mipmap/location" />
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="ADD ADDITIONAL DETAILS"
+                android:id="@+id/textView4"
+                android:layout_below="@+id/linearLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText2"
+                android:layout_below="@+id/textView4"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText3"
+                android:layout_below="@+id/editText2"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="SIGN IN"
+                android:id="@+id/button3"
+                android:background="@color/buttonOrange"
+                android:textSize="@dimen/button_font_size"
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="32dp"
+                android:layout_below="@+id/editText3"
+                android:layout_alignRight="@+id/textView4"
+                android:layout_alignEnd="@+id/textView4" />
 
         </RelativeLayout>
     </FrameLayout>
