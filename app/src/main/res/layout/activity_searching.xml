@@ -35,6 +35,8 @@
             android:layout_height="60dp"
             android:id="@+id/search_vegetable"
             android:background="@color/colorWhite"
+            android:inputType="text"
+            android:singleLine="true"
             android:hint="Type the vegetable&apos;s name..."
             android:paddingLeft="10dp"
             android:layout_below="@+id/logoname"

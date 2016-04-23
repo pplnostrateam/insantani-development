@@ -39,7 +39,8 @@
             android:paddingLeft="10dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:textSize="50dp" />
+            android:textColor="@color/titleColor"
+            android:textSize="42dp" />
 
 
     <ListView

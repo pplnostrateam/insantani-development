@@ -42,17 +42,17 @@ public class VegetableAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row;
-
-//        row = convertView;
+        //View view = convertView;
+     row = convertView;
 //        VegetableHolder vegetableHolder;
-        LayoutInflater layoutInflater = (LayoutInflater)this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = layoutInflater.inflate(R.layout.row_layout,parent,false);
-            RadioButton radioButton = (RadioButton) row.findViewById(R.id.radiobutton);
+       // LayoutInflater layoutInflater = (LayoutInflater)this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+         //   row = layoutInflater.inflate(R.layout.row_layout,parent,false);
 
 //
-//        if(row == null){
-//            LayoutInflater layoutInflater = (LayoutInflater)this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            row = layoutInflater.inflate(R.layout.row_layout,parent,false);
+        if(row == null) {
+            LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            row = layoutInflater.inflate(R.layout.row_layout, parent, false);
+        }
 //            //RadioButton radioButton = (RadioButton) row.findViewById(R.id.radioButton);
 //            vegetableHolder = new VegetableHolder();
 //            //vegetableHolder.vName = (TextView) row.findViewById(R.id.vName);
@@ -65,6 +65,8 @@ public class VegetableAdapter extends ArrayAdapter {
 //        else{
 //            vegetableHolder = (VegetableHolder) row.getTag();
 //        }
+        RadioButton radioButton = (RadioButton) row.findViewById(R.id.radiobutton);
+
         Vegetable vegetable = (Vegetable) this.getItem(position);
        // vegetableHolder.vName.setText(vegetable.getName());
         radioButton.setText(vegetable.getName());
