@@ -3,6 +3,7 @@ package com.pplnostrateam.arisyaag.insantani;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -39,10 +40,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -54,6 +61,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -81,6 +90,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
+    private UserRegisterTask mFBTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -89,32 +99,15 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     private View mLoginFormView;
     private CallbackManager fbCallbackManager;
 
-    private static final int RC_SIGN_IN = 0;
-    // Logcat tag
-    private static final String TAG = "SignInActivity";
+    public String fbAuthToken, fbUserID, fbProfileName, fbEmail;
 
-    // Profile pic image size in pixels
-    private static final int PROFILE_PIC_SIZE = 400;
-
-    // Google client to interact with Google API
-    private GoogleApiClient mGoogleApiClient;
-
-    SignInButton signInButton;
-
-    /**
-     * A flag indicating that a PendingIntent is in progress and prevents us
-     * from starting further intents.
-     */
-    private boolean mIntentInProgress;
-
-    private boolean mSignInClicked;
-
-    private ConnectionResult mConnectionResult;
+    private String TAG = "SignInActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_sign_in);
@@ -133,20 +126,63 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         assert fbLoginButton != null;
         fbLoginButton.setReadPermissions(Collections.singletonList("public_profile, email, user_birthday"));
 
+        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(
+                    AccessToken oldAccessToken,
+                    AccessToken currentAccessToken) {
+                fbAuthToken = currentAccessToken.getToken();
+                fbUserID = currentAccessToken.getUserId();
+
+                Log.d(TAG, "User id: " + fbUserID);
+                Log.d(TAG, "Access token is: " + fbAuthToken);
+            }
+        };
+
+        ProfileTracker profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(
+                    Profile oldProfile,
+                    Profile currentProfile) {
+                fbProfileName = currentProfile.getName();
+
+                Log.d(TAG, "User name: " + fbProfileName );
+            }
+        };
+
         fbLoginButton.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+
                 startActivity(new Intent(SignInActivity.this, MainActivity.class));
 
-                finish();
+                GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object,GraphResponse response) {
 
-                Toast.makeText(getApplicationContext(),
-                        "User ID: "
-                                + loginResult.getAccessToken().getUserId()
-                                + "\n" +
-                                "Auth Token: "
-                                + loginResult.getAccessToken().getToken(),
-                        Toast.LENGTH_LONG).show();
+                        JSONObject json = response.getJSONObject();
+                        try {
+                            if(json != null){
+                                fbEmail = json.getString("email");
+                                Log.d(TAG, fbEmail);
+
+                                Toast.makeText(SignInActivity.this, fbProfileName + " " + fbEmail + " " + fbUserID, Toast.LENGTH_SHORT).show();
+
+                                mFBTask = new UserRegisterTask(fbEmail, fbProfileName, "");
+                                mFBTask.execute((Void) null);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,link,email,picture");
+                request.setParameters(parameters);
+                request.executeAsync();
+
+                finish();
             }
 
             @Override
@@ -156,7 +192,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             }
 
             @Override
-            public void onError(FacebookException e) {
+            public void onError(FacebookException exception) {
                 Toast.makeText(getApplicationContext(),
                         "Login attempt failed.", Toast.LENGTH_LONG).show();
             }
@@ -668,6 +704,91 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         try {
             String queryURL = url + "login?email=" + email + "&password=" + password;
             User theUser = rest.getForObject(queryURL, User.class);
+
+            Log.d("Output", theUser.getName());
+
+        } catch (Exception e) {
+            if(e instanceof ResourceAccessException){
+                throw new Exception("Connection to server failed");
+            } else {
+                throw new Exception(e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final String mEmail;
+        private final String mPassword;
+        private final String mName;
+
+        UserRegisterTask(String email, String name, String password) {
+            mEmail = email;
+            mPassword = password;
+            mName = name;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // attempt authentication against a network service.
+
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return false;
+            }
+
+
+            try {
+                registerUserRestServer(mEmail, mName, mPassword);
+            } catch (Exception e) {
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mAuthTask = null;
+            showProgress(false);
+
+            if (success) {
+                Toast.makeText(getApplicationContext(),
+                        "User has been successfully added.", Toast.LENGTH_LONG).show();
+
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "Sign up failed...", Toast.LENGTH_LONG).show();
+                // mPasswordView.setError(getString(R.string.error_sign_up_failed));
+                // mPasswordView.requestFocus();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mAuthTask = null;
+            showProgress(false);
+        }
+    }
+
+    public void registerUserRestServer(String email, String name, String password) throws Exception {
+        String url = "http://104.155.215.144:8080/api/user/";
+        RestTemplate rest = new RestTemplate();
+        rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+        try {
+            String queryURL = url + "create?email=" + email + "&name=" + name + "&password=" + password;
+            rest.postForLocation(queryURL, User.class, email, name, password);
+
+            String getterURL = url + "find?email={email}";
+            User theUser = rest.getForObject(getterURL, User.class, email);
 
             Log.d("Output", theUser.getName());
 
