@@ -1,28 +1,43 @@
 <resources>
-    <string name="app_name">Insantani</string>
+    <string name="google_api_key">AIzaSyDJDAw6MORjkCTV1zwv-DKsVxaxk20HhIM</string> <!--API Key for Google Places-->
 
+    <string name="app_name">Insantani</string>
     <string name="launcher_button">Enter</string>
     <string name="main_text">Insantani</string>
+
     <string name="title_activity_sign_in">Sign In</string>
+    <string name="title_activity_sign_up">Sign up</string>
 
     <string name="prompt_name">Name</string>
     <string name="prompt_phone">Phone</string>
     <string name="prompt_repeat_password">Password (repeat)</string>
-    <string name="action_register">Register</string>
-
-    <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
+
+    <string name="text_or">or</string>
+    <string name="text_email">email</string>
+    <string name="text_guidance_email_register">Don\'t have account yet? Sign up with</string>
+
+
+    <string name="action_sign_in_google">SIGN IN WITH GOOGLE</string>
+    <string name="action_register">Register</string>
     <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_sign_in_short">Sign In</string>
+    <string name="action_sign_up_short">Sign Up</string>
+    <string name="action_order_short">Order Location</string>
+
     <string name="error_invalid_phone">This phone number is invalid</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is invalid</string>
     <string name="error_password_not_matched">Password is not matched</string>
     <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_invalid_password_format">must contains numeric digit\nmust contains lowercase characters\nmust contains uppercase characters\nmust contains special symbols\nlength at least 6 characters and maximum of 20"</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-    <string name="title_activity_sign_up">Sign up</string>
+    <string name="error_sign_up_failed">"Sign up failed."</string>
+
+    <string name="facebook_app_id">1754864281408953</string>
+
+    <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
+
+
 </resources>

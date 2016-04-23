@@ -1,4 +1,4 @@
-package com.insantani_nostra.arisyaag.insantani;
+package com.pplnostrateam.arisyaag.insantani;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import com.pplnostrateam.arisyaag.insantani.R;
 
 import java.lang.Thread;
 
