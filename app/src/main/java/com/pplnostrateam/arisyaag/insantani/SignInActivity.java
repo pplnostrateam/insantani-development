@@ -86,7 +86,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-    private UserRegisterTask mFBTask = null;
+    private UserRegisterTask mFBTask, mGTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -176,7 +176,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object,GraphResponse response) {
-
                         JSONObject json = response.getJSONObject();
                         try {
                             if(json != null){
@@ -240,17 +239,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        /*
-        mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this ,
-                        this )
-                .addApi(Plus.)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .addScope(Plus.SCOPE_PLUS_LOGIN)
-                .addScope(Plus.SCOPE_PLUS_PROFILE)
-                .addScope(Scopes.PLUS_LOGIN)
-                .addScope(Scopes.PLUS_ME)
-                .build();
-        */
 
         // Customize sign-in button. The sign-in button can be displayed in
         // multiple sizes and color schemes. It can also be contextually
@@ -273,7 +261,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                        startActivityForResult(signInIntent, RC_SIGN_IN);
 
                        break;
-                   // ...
                }
 
            }
@@ -323,15 +310,19 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             GoogleSignInAccount acct = result.getSignInAccount();
             // mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
 
-            Toast.makeText(getApplicationContext(),
-                    acct.getEmail() + " " + acct.getDisplayName(), Toast.LENGTH_LONG).show();
             updateUI(true);
+
+            String gProfileName = acct.getDisplayName();
+            String gEmail = acct.getEmail();
 
             startActivity(new Intent(SignInActivity.this, MainActivity.class));
 
+            Toast.makeText(SignInActivity.this, gProfileName + " " + gEmail, Toast.LENGTH_SHORT).show();
+
+            mGTask = new UserRegisterTask(gEmail, gProfileName, "");
+            mGTask.execute((Void) null);
+
             finish();
-
-
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);
