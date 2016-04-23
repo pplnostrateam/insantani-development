@@ -3,6 +3,7 @@ package com.pplnostrateam.arisyaag.insantani;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -45,7 +46,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -77,6 +77,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
+    private UserRegisterTask mFBTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -85,16 +86,15 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
     private View mLoginFormView;
     private CallbackManager fbCallbackManager;
 
-    private AccessTokenTracker accessTokenTracker;
-    private ProfileTracker profileTracker;
-
     public String fbAuthToken, fbUserID, fbProfileName, fbEmail;
 
+    private String TAG = "SignInActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_sign_in);
@@ -113,7 +113,7 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         assert fbLoginButton != null;
         fbLoginButton.setReadPermissions(Collections.singletonList("public_profile, email, user_birthday"));
 
-        accessTokenTracker = new AccessTokenTracker() {
+        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(
                     AccessToken oldAccessToken,
@@ -121,23 +121,19 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
                 fbAuthToken = currentAccessToken.getToken();
                 fbUserID = currentAccessToken.getUserId();
 
-                Log.d("TAG", "User id: " + fbUserID);
-                Log.d("TAG", "Access token is: " + fbAuthToken);
-                Toast.makeText(SignInActivity.this, "User Id = " + fbUserID, Toast.LENGTH_SHORT).show();
-
+                Log.d(TAG, "User id: " + fbUserID);
+                Log.d(TAG, "Access token is: " + fbAuthToken);
             }
         };
 
-        profileTracker = new ProfileTracker() {
+        ProfileTracker profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(
                     Profile oldProfile,
                     Profile currentProfile) {
                 fbProfileName = currentProfile.getName();
 
-                Log.d("TAG", "User name: " + fbProfileName );
-                Toast.makeText(SignInActivity.this, "Username = " + fbProfileName, Toast.LENGTH_SHORT).show();
-
+                Log.d(TAG, "User name: " + fbProfileName );
             }
         };
 
@@ -155,8 +151,12 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
                         try {
                             if(json != null){
                                 fbEmail = json.getString("email");
-                                Log.d("email", fbEmail);
-                                Toast.makeText(SignInActivity.this, "email = " + fbEmail, Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, fbEmail);
+
+                                Toast.makeText(SignInActivity.this, fbProfileName + " " + fbEmail + " " + fbUserID, Toast.LENGTH_SHORT).show();
+
+                                mFBTask = new UserRegisterTask(fbEmail, fbProfileName, "");
+                                mFBTask.execute((Void) null);
                             }
 
                         } catch (JSONException e) {
@@ -184,38 +184,6 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
                         "Login attempt failed.", Toast.LENGTH_LONG).show();
             }
         });
-
-        /*
-        fbLoginButton.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-
-                GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject me, GraphResponse response) {
-                        if (response.getError() != null) {
-                            // handle error
-                        } else {
-                            String email = me.optString("email");
-                            String id = me.optString("id");
-                            // send email and id to your web server
-                        }
-                    }
-                }).executeAsync();
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException e) {
-
-            }
-        });
-
-        */
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -520,6 +488,91 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         try {
             String queryURL = url + "login?email=" + email + "&password=" + password;
             User theUser = rest.getForObject(queryURL, User.class);
+
+            Log.d("Output", theUser.getName());
+
+        } catch (Exception e) {
+            if(e instanceof ResourceAccessException){
+                throw new Exception("Connection to server failed");
+            } else {
+                throw new Exception(e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final String mEmail;
+        private final String mPassword;
+        private final String mName;
+
+        UserRegisterTask(String email, String name, String password) {
+            mEmail = email;
+            mPassword = password;
+            mName = name;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // attempt authentication against a network service.
+
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return false;
+            }
+
+
+            try {
+                registerUserRestServer(mEmail, mName, mPassword);
+            } catch (Exception e) {
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mAuthTask = null;
+            showProgress(false);
+
+            if (success) {
+                Toast.makeText(getApplicationContext(),
+                        "User has been successfully added.", Toast.LENGTH_LONG).show();
+
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "Sign up failed...", Toast.LENGTH_LONG).show();
+                // mPasswordView.setError(getString(R.string.error_sign_up_failed));
+                // mPasswordView.requestFocus();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mAuthTask = null;
+            showProgress(false);
+        }
+    }
+
+    public void registerUserRestServer(String email, String name, String password) throws Exception {
+        String url = "http://104.155.215.144:8080/api/user/";
+        RestTemplate rest = new RestTemplate();
+        rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+        try {
+            String queryURL = url + "create?email=" + email + "&name=" + name + "&password=" + password;
+            rest.postForLocation(queryURL, User.class, email, name, password);
+
+            String getterURL = url + "find?email={email}";
+            User theUser = rest.getForObject(getterURL, User.class, email);
 
             Log.d("Output", theUser.getName());
 
