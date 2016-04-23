@@ -64,11 +64,11 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editText"
+                    android:id="@+id/user_location"
                     android:layout_weight="7.90" />
 
                 <ImageButton
-                    android:layout_width="35dp"
+                    android:layout_width="32dp"
                     android:layout_height="43dp"
                     android:id="@+id/imageButton"
                     android:src="@mipmap/location" />
@@ -88,7 +88,7 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText2"
+                android:id="@+id/address_detail1"
                 android:layout_below="@+id/textView4"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -98,8 +98,8 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText3"
-                android:layout_below="@+id/editText2"
+                android:id="@+id/address_detail2"
+                android:layout_below="@+id/address_detail1"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentRight="true"
@@ -108,13 +108,13 @@
             <Button
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:text="SIGN IN"
-                android:id="@+id/button3"
+                android:text="ORDER"
+                android:id="@+id/order_button"
                 android:background="@color/buttonOrange"
-                android:textSize="@dimen/button_font_size"
+                android:textSize="24dp"
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="32dp"
-                android:layout_below="@+id/editText3"
+                android:layout_below="@+id/address_detail2"
                 android:layout_alignRight="@+id/textView4"
                 android:layout_alignEnd="@+id/textView4" />
 
