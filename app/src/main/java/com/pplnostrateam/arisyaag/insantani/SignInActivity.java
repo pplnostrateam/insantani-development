@@ -8,8 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
@@ -36,7 +34,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,13 +50,13 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,7 +64,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -102,6 +98,27 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     public String fbAuthToken, fbUserID, fbProfileName, fbEmail;
 
     private String TAG = "SignInActivity";
+    private static final int RC_SIGN_IN = 0;
+    // Logcat tag
+    // private static final String TAG = "SignInActivity";
+
+    // Profile pic image size in pixels
+    // private static final int PROFILE_PIC_SIZE = 400;
+
+    // Google client to interact with Google API
+    private GoogleApiClient mGoogleApiClient;
+
+    SignInButton signInButton;
+
+    /**
+     * A flag indicating that a PendingIntent is in progress and prevents us
+     * from starting further intents.
+     */
+    private boolean mIntentInProgress;
+
+    private boolean mSignInClicked;
+
+    private ConnectionResult mConnectionResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,6 +240,17 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+        /*
+        mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this ,
+                        this )
+                .addApi(Plus.)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addScope(Plus.SCOPE_PLUS_PROFILE)
+                .addScope(Scopes.PLUS_LOGIN)
+                .addScope(Scopes.PLUS_ME)
+                .build();
+        */
 
         // Customize sign-in button. The sign-in button can be displayed in
         // multiple sizes and color schemes. It can also be contextually
@@ -232,6 +260,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         // Scopes.PLUS_LOGIN scope to the GoogleSignInOptions to see the
         // difference.
         signInButton = (SignInButton) findViewById(R.id.sign_in_google);
+        assert signInButton != null;
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setScopes(gso.getScopeArray());
 
@@ -276,7 +305,37 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+
         fbCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d("TAG", "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+            // mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+
+            Toast.makeText(getApplicationContext(),
+                    acct.getEmail() + " " + acct.getDisplayName(), Toast.LENGTH_LONG).show();
+            updateUI(true);
+
+            startActivity(new Intent(SignInActivity.this, MainActivity.class));
+
+            finish();
+
+
+        } else {
+            // Signed out, show unauthenticated UI.
+            updateUI(false);
+        }
     }
 
     private void populateAutoComplete() {
@@ -556,6 +615,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     /**
      * Background Async task to load user profile picture from url
      * */
+    /*
     private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -580,10 +640,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             bmImage.setImageBitmap(result);
         }
     }
+    */
 
     /**
      * Sign-out from google
      * */
+    /*
     private void signOutFromGplus() {
         if (mGoogleApiClient.isConnected()) {
             // Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
@@ -592,6 +654,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             updateUI(false);
         }
     }
+    */
 
     /**
      * Method to resolve any signin errors
