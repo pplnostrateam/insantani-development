@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
@@ -35,7 +33,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,16 +46,13 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
 
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -91,10 +85,10 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     private static final int RC_SIGN_IN = 0;
     // Logcat tag
-    private static final String TAG = "SignInActivity";
+    // private static final String TAG = "SignInActivity";
 
     // Profile pic image size in pixels
-    private static final int PROFILE_PIC_SIZE = 400;
+    // private static final int PROFILE_PIC_SIZE = 400;
 
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
@@ -187,6 +181,17 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+        /*
+        mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this ,
+                        this )
+                .addApi(Plus.)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addScope(Plus.SCOPE_PLUS_PROFILE)
+                .addScope(Scopes.PLUS_LOGIN)
+                .addScope(Scopes.PLUS_ME)
+                .build();
+        */
 
         // Customize sign-in button. The sign-in button can be displayed in
         // multiple sizes and color schemes. It can also be contextually
@@ -196,6 +201,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         // Scopes.PLUS_LOGIN scope to the GoogleSignInOptions to see the
         // difference.
         signInButton = (SignInButton) findViewById(R.id.sign_in_google);
+        assert signInButton != null;
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setScopes(gso.getScopeArray());
 
@@ -520,6 +526,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     /**
      * Background Async task to load user profile picture from url
      * */
+    /*
     private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -544,10 +551,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             bmImage.setImageBitmap(result);
         }
     }
+    */
 
     /**
      * Sign-out from google
      * */
+    /*
     private void signOutFromGplus() {
         if (mGoogleApiClient.isConnected()) {
             // Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
@@ -556,6 +565,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             updateUI(false);
         }
     }
+    */
 
     /**
      * Method to resolve any signin errors

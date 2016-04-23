@@ -39,7 +39,7 @@ dependencies {
 
     compile 'com.facebook.android:facebook-android-sdk:4.0.0'
     compile 'com.google.android.gms:play-services-auth:8.3.0'
-
+    compile 'com.google.apis:google-api-services-plus:v1-rev376-1.21.0'
 
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.retrofit2:retrofit:2.0.1'
