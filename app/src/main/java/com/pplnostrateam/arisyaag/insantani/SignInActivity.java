@@ -270,6 +270,11 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                     acct.getEmail() + " " + acct.getDisplayName(), Toast.LENGTH_LONG).show();
             updateUI(true);
 
+            startActivity(new Intent(SignInActivity.this, MainActivity.class));
+
+            finish();
+
+
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);
