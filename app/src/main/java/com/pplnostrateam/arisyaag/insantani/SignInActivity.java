@@ -35,13 +35,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -76,6 +85,12 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
     private View mLoginFormView;
     private CallbackManager fbCallbackManager;
 
+    private AccessTokenTracker accessTokenTracker;
+    private ProfileTracker profileTracker;
+
+    public String fbAuthToken, fbUserID, fbProfileName, fbEmail;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -98,20 +113,63 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
         assert fbLoginButton != null;
         fbLoginButton.setReadPermissions(Collections.singletonList("public_profile, email, user_birthday"));
 
+        accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(
+                    AccessToken oldAccessToken,
+                    AccessToken currentAccessToken) {
+                fbAuthToken = currentAccessToken.getToken();
+                fbUserID = currentAccessToken.getUserId();
+
+                Log.d("TAG", "User id: " + fbUserID);
+                Log.d("TAG", "Access token is: " + fbAuthToken);
+                Toast.makeText(SignInActivity.this, "User Id = " + fbUserID, Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        profileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(
+                    Profile oldProfile,
+                    Profile currentProfile) {
+                fbProfileName = currentProfile.getName();
+
+                Log.d("TAG", "User name: " + fbProfileName );
+                Toast.makeText(SignInActivity.this, "Username = " + fbProfileName, Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
         fbLoginButton.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+
                 startActivity(new Intent(SignInActivity.this, MainActivity.class));
 
-                finish();
+                GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object,GraphResponse response) {
 
-                Toast.makeText(getApplicationContext(),
-                        "User ID: "
-                                + loginResult.getAccessToken().getUserId()
-                                + "\n" +
-                                "Auth Token: "
-                                + loginResult.getAccessToken().getToken(),
-                        Toast.LENGTH_LONG).show();
+                        JSONObject json = response.getJSONObject();
+                        try {
+                            if(json != null){
+                                fbEmail = json.getString("email");
+                                Log.d("email", fbEmail);
+                                Toast.makeText(SignInActivity.this, "email = " + fbEmail, Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,link,email,picture");
+                request.setParameters(parameters);
+                request.executeAsync();
+
+                finish();
             }
 
             @Override
@@ -121,11 +179,43 @@ public class SignInActivity extends AppCompatActivity implements LoaderCallbacks
             }
 
             @Override
-            public void onError(FacebookException e) {
+            public void onError(FacebookException exception) {
                 Toast.makeText(getApplicationContext(),
                         "Login attempt failed.", Toast.LENGTH_LONG).show();
             }
         });
+
+        /*
+        fbLoginButton.registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject me, GraphResponse response) {
+                        if (response.getError() != null) {
+                            // handle error
+                        } else {
+                            String email = me.optString("email");
+                            String id = me.optString("id");
+                            // send email and id to your web server
+                        }
+                    }
+                }).executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+
+            }
+        });
+
+        */
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
