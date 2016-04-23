@@ -9,7 +9,7 @@
         android:layout_width="320dp"
         android:layout_height="60dp"
         android:id="@+id/search_vegetable"
-        android:background="@color/colorWhite"
+        android:background="#DCDCDC"
         android:paddingLeft="10dp"
         android:layout_below="@+id/logoname"
         android:layout_marginTop="5dp"
@@ -49,6 +49,7 @@
         android:id="@+id/searchResult"
         android:layout_below="@+id/textView4"
         android:layout_above="@+id/bottom"
+        android:padding="16dp"
         />
 
         <RelativeLayout
@@ -57,6 +58,8 @@
             android:id="@+id/bottom"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:background="@color/titleColor"
+
             >
 
             <Button
@@ -64,24 +67,44 @@
                 android:layout_height="wrap_content"
                 android:background="@color/buttonOrange"
                 android:text="continue"
+                android:layout_margin="8dp"
+                android:padding="8dp"
                 android:id="@+id/button2"
                 android:onClick="getConfirmation"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="44dp"
-                android:layout_marginEnd="44dp" />
+                android:layout_marginEnd="44dp"
+                android:textSize="20dp"
+                />
+
+            <EditText
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/editText"
+                android:background="#DCDCDC"
+                android:singleLine="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="33dp"
+                android:layout_marginStart="33dp" />
+
+            <Spinner
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner"
+                android:background="#DCDCDC"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/editText"
+                android:layout_toEndOf="@+id/editText"
+                android:layout_alignTop="@+id/editText" />
+
 
         </RelativeLayout>
-
-    <EditText
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
 
