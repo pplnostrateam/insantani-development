@@ -43,7 +43,9 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
@@ -246,7 +248,32 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+
         fbCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d("TAG", "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+            // mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
+
+            Toast.makeText(getApplicationContext(),
+                    acct.getEmail() + " " + acct.getDisplayName(), Toast.LENGTH_LONG).show();
+            updateUI(true);
+
+        } else {
+            // Signed out, show unauthenticated UI.
+            updateUI(false);
+        }
     }
 
     private void populateAutoComplete() {
