@@ -87,21 +87,24 @@
             android:id="@+id/editText"
             android:background="#DCDCDC"
             android:singleLine="true"
+            android:layout_marginLeft="53dp"
+            android:layout_marginStart="53dp"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="33dp"
-            android:layout_marginStart="33dp" />
+            android:layout_alignParentStart="true" />
 
-        <Spinner
-            android:layout_width="100dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/spinner"
-            android:background="#DCDCDC"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/editText"
-            android:layout_toEndOf="@+id/editText"
-            android:layout_alignTop="@+id/editText" />
+            android:text="Kg:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/weight"
+            android:paddingLeft="8dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignRight="@+id/editText"
+            android:layout_alignEnd="@+id/editText"
+            android:layout_alignBottom="@+id/editText" />
 
 
     </RelativeLayout>
