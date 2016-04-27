@@ -17,10 +17,12 @@ import java.util.List;
 public class VegetableAdapter extends ArrayAdapter {
     List list = new ArrayList();
     RadioButton lastChecked;
+    int post;
 
     public VegetableAdapter(Context context, int resource) {
         super(context, resource);
-        lastChecked = new RadioButton(context);
+        //lastChecked = new RadioButton(context);
+        post = 0;
     }
 
 
@@ -40,7 +42,7 @@ public class VegetableAdapter extends ArrayAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View row;
         //View view = convertView;
         row = convertView;
@@ -72,13 +74,16 @@ public class VegetableAdapter extends ArrayAdapter {
         radioButton.setText(vegetable.getName());
         //vegetableHolder.vPrice.setText(vegetable.getPrice());
         //vegetableHolder.vStock.setText(vegetable.getStock());
+        radioButton.setChecked(post == position);
 
         radioButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                lastChecked.setChecked(false);
-                lastChecked = (RadioButton) v;
+                //lastChecked.setChecked(false);
+                //lastChecked = (RadioButton) v;
+                post = position;
+                notifyDataSetChanged();
             }
         });
         return row;
