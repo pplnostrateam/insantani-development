@@ -171,7 +171,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                startActivity(new Intent(SignInActivity.this, SearchingActivity.class));
 
                 GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
@@ -315,7 +315,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             String gProfileName = acct.getDisplayName();
             String gEmail = acct.getEmail();
 
-            startActivity(new Intent(SignInActivity.this, MainActivity.class));
+            startActivity(new Intent(SignInActivity.this, SearchingActivity.class));
 
             Toast.makeText(SignInActivity.this, gProfileName + " " + gEmail, Toast.LENGTH_SHORT).show();
 
@@ -729,7 +729,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             showProgress(false);
 
             if (success) {
-                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                startActivity(new Intent(SignInActivity.this, SearchingActivity.class));
 
                 Toast.makeText(getApplicationContext(),
                         "Login attempt success.", Toast.LENGTH_LONG).show();
