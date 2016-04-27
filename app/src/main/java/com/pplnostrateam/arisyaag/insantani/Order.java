@@ -14,9 +14,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 public class Order extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ImageButton btPlacesAPI;
+    private TextView tvPlaceAPI;
+    // konstanta untuk mendeteksi hasil balikan dari place picker
+    private int PLACE_PICKER_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +38,25 @@ public class Order extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        tvPlaceAPI = (TextView) findViewById(R.id.tv_place_id);
+        btPlacesAPI = (ImageButton)findViewById(R.id.bt_ppicker);
+/*
+        btPlacesAPI.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                // membuat Intent untuk Place Picker
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    //menjalankan place picker
+                    startActivityForResult(builder.build(Order.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+*/
 /*        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +107,46 @@ public class Order extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    // membuat Intent untuk Place Picker jika ingin mengubah lokasi yang telah dipilih menggunakan tombol atau editText
+    public void viewMap (View view) {
+
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            //menjalankan place picker
+            startActivityForResult(builder.build(Order.this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+    }
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    // menangkap hasil balikan dari Place Picker, dan menampilkannya pada TextView
+    if (requestCode == PLACE_PICKER_REQUEST) {
+        if (resultCode == RESULT_OK) {
+            Place place = PlacePicker.getPlace(data, this);
+            String toastMsg = String.format(
+                    "Place: %s \n", place.getName());
+            tvPlaceAPI.setText(toastMsg);
+        }
+    }
+}
+
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        // menangkap hasil balikan dari Place Picker, dan menampilkannya pada TextView
+//        if (requestCode == PLACE_PICKER_REQUEST) {
+//            if (resultCode == RESULT_OK) {
+//                Place place = PlacePicker.getPlace(data, this);
+//                String toastMsg = String.format(
+//                        "Place: %s \n" +
+//                                "Alamat: %s \n" +
+//                                "Latlng %s \n", place.getName(), place.getAddress(), place.getLatLng().latitude+" "+place.getLatLng().longitude);
+//                tvPlaceAPI.setText(toastMsg);
+//            }
+//        }
+//    }
 
     public void moveToOrdermade(View view) {
         Intent intent = new Intent(Order.this, Ordermade.class);

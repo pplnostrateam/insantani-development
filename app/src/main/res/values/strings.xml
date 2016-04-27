@@ -33,6 +33,7 @@
     <string name="error_sign_up_failed">"Sign up failed."</string>
 
     <string name="facebook_app_id">1754864281408953</string>
+    <string name="google_api_key">AIzaSyDJDAw6MORjkCTV1zwv-DKsVxaxk20HhIM</string> <!--API Key for Google Places-->
 
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."</string>
     <string name="title_activity_navigation_order">Order</string>
