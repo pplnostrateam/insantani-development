@@ -53,6 +53,7 @@
             android:label="@string/title_activity_sign_up" />
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".SearchingActivity"></activity>
+        <activity android:name=".SearchResultActivity"></activity>
     </application>
 
 </manifest>
