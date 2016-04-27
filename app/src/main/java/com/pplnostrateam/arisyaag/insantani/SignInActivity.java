@@ -173,6 +173,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
                 startActivity(new Intent(SignInActivity.this, SearchingActivity.class));
 
+
                 GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object,GraphResponse response) {
@@ -316,7 +317,6 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             String gEmail = acct.getEmail();
 
             startActivity(new Intent(SignInActivity.this, SearchingActivity.class));
-
             Toast.makeText(SignInActivity.this, gProfileName + " " + gEmail, Toast.LENGTH_SHORT).show();
 
             mGTask = new UserRegisterTask(gEmail, gProfileName, "");

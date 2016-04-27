@@ -105,7 +105,7 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     private void move() {
-        Intent intent = new Intent(this, SignInActivity.class);
+        Intent intent = new Intent(this, Order.class);
         startActivity(intent);
     }
     public void getData(View view){
