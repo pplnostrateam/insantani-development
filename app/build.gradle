@@ -30,6 +30,16 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
     }
+
+    // This is important, it will run lint checks but won't abort build
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+        // use this line to check all rules except those listed
+        // disable 'RuleToDisable', 'SecondRuleToDisable'
+        // use this line to check just listed rules
+        // enable 'FirstRuleToCheck', 'LastRuleToCheck'
+    }
 }
 
 dependencies {
