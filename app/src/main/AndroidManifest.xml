@@ -8,10 +8,15 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- To access accounts configured on device -->
     <!-- To use account credentials -->
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+
+    <permission
+        android:name="com.example.mapexample.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
     <!--
     The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
     Google Maps Android API v2, but you must specify either coarse or fine
@@ -23,8 +28,10 @@
     The following two permissions are not required to use
     Google Maps Android API v2, but are recommended.
     -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -80,13 +87,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_api_key" />
-        <permission
-            android:name="com.example.mapexample.permission.MAPS_RECEIVE"
-            android:protectionLevel="signature" />
-        <uses-feature
-            android:glEsVersion="0x00020000"
-            android:required="true" />
-
 
         <activity
             android:name=".Order"
