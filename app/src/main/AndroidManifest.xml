@@ -94,6 +94,9 @@
 
         <activity android:name=".Ordermade"></activity>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d8a1d28e150cb989c017da4405533d307b95d725" />
     </application>
 
 
