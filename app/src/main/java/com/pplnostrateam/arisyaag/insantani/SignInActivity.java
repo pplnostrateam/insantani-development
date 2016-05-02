@@ -750,7 +750,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void loginUserRestServer(String email, String password) throws Exception {
-        String url = "http://104.155.215.144:8080/api/user/";
+        String url = "http://104.155.214.94:8080/api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         Log.d("#Debug", "Start");
@@ -833,7 +833,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void registerUserRestServer(String email, String name, String password) throws Exception {
-        String url = "http://104.155.215.144:8080/api/user/";
+        String url = "http://104.155.214.94:8080/api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
