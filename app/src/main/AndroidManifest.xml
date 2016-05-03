@@ -38,7 +38,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name="android.support.multidex.MultiDexApplication">
+
+
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -72,8 +76,11 @@
             android:label="@string/title_activity_sign_up" />
 
         <activity android:name=".MainActivity"></activity>
+        <activity android:name=".SetApp"></activity>
         <activity android:name=".SearchingActivity"></activity>
         <activity android:name=".SearchResultActivity"></activity>
+
+
 
     <!--
         <activity
