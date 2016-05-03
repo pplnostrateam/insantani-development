@@ -7,10 +7,15 @@ android {
 
     defaultConfig {
         applicationId "com.pplnostrateam.arisyaag.insantani"
-        minSdkVersion 15
-        targetSdkVersion 23
+       // minSdkVersion 15
+        //targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        // Enabling multidex support.
+        //multiDexEnabled true
+        minSdkVersion 14 //lower than 14 doesn't support multidex
+        targetSdkVersion 22
+
         // Enabling multidex support.
         multiDexEnabled true
     }
@@ -64,4 +69,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:8.3.0'
     compile 'com.google.android.gms:play-services-identity:8.3.0'
     compile 'com.google.android.gms:play-services-gcm:8.3.0'
+    compile 'com.android.support:multidex:1.0.1'
 }
