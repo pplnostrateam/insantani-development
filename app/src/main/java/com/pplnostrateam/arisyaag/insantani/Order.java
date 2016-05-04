@@ -92,7 +92,7 @@ public class Order extends AppCompatActivity
         getMenuInflater().inflate(R.menu.order, menu);
         return true;
     }
-
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -107,7 +107,7 @@ public class Order extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
     // membuat Intent untuk Place Picker jika ingin mengubah lokasi yang telah dipilih menggunakan tombol atau editText
     public void viewMap (View view) {
 
@@ -128,7 +128,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             Place place = PlacePicker.getPlace(data, this);
             String toastMsg = String.format(
-                    "Place: %s \n", place.getName());
+                    "%s \n", place.getName());
             tvPlaceAPI.setText(toastMsg);
         }
     }
