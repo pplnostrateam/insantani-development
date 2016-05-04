@@ -763,7 +763,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         Log.d("#Debug", "Start");
 
         try {
-            String queryURL = url + "login?email=" + email + "&password=" + password;
+            String queryURL = url + "login?email=" + email + "&password=" + computeSHAHash(password);
             User theUser = rest.getForObject(queryURL, User.class);
 
             Log.d("Output", theUser.getName());
