@@ -58,7 +58,7 @@
         android:id="@+id/bottom"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:background="@color/titleColor"
+        android:background="@color/#333333"
 
         >
 
