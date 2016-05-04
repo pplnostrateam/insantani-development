@@ -8,8 +8,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.crashlytics.android.Crashlytics;
 import com.pplnostrateam.arisyaag.insantani.R;
 
+import io.fabric.sdk.android.Fabric;
 import java.lang.Thread;
 
 /**
@@ -24,6 +26,7 @@ public class SplashScreenActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         //splash screen view
         setContentView(R.layout.activity_splash_screen);
         final SplashScreenActivity sPlashScreen = this;
