@@ -36,7 +36,7 @@ public class SearchingActivity extends AppCompatActivity {
     private TextView textView2;
     private Activity activity;
     String json_string;
-    String vName;
+   // String vName;
     // private EditText editText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +45,12 @@ public class SearchingActivity extends AppCompatActivity {
         //    textView = (TextView) findViewById(R.id.textView);
         search_vegetable = (EditText) findViewById(R.id.search_vegetable);
         //editText = (EditText) findViewById(R.id.editText);
-        vName = search_vegetable.getText().toString();
 
-        search_vegetable.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+        search_vegetable.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction (TextView v,int actionId, KeyEvent event){
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    getData();
+                    new BackgroundTask().execute();
                     return true;
                 }
                 return false;
@@ -60,7 +59,7 @@ public class SearchingActivity extends AppCompatActivity {
     }
 
 
-    public void getData(){
+    public void getData(View view){
         new BackgroundTask().execute();
 
     }
@@ -68,6 +67,7 @@ public class SearchingActivity extends AppCompatActivity {
     class BackgroundTask extends AsyncTask<Void, Void, String> {
         String JSON_STRING;
         String data_url;
+        String vName = search_vegetable.getText().toString();
         private Activity activity;
 
         @Override
