@@ -5,15 +5,28 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/header"
+        android:elevation="2dp"
+        android:weightSum="1">
     <EditText
         android:layout_width="320dp"
         android:layout_height="60dp"
         android:id="@+id/search_vegetable"
-        android:background="#DCDCDC"
+        android:background="@color/colorWhite"
         android:paddingLeft="10dp"
         android:layout_below="@+id/logoname"
+        android:elevation="2dp"
+        android:hint="@string/search_box"
         android:layout_marginTop="5dp"
-        android:textColor="@color/colorInput" />
+        android:textColor="@color/colorInput"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/button"
+        android:layout_toStartOf="@+id/button" />
     <Button
         android:layout_width="50dp"
         android:layout_height="60dp"
@@ -27,13 +40,15 @@
         android:layout_alignTop="@+id/search_vegetable"
         android:layout_alignParentRight="true"
         />
+        </RelativeLayout>>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Cart"
         android:id="@+id/textView4"
-        android:layout_below="@+id/search_vegetable"
+        android:layout_below="@+id/header"
+
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:paddingLeft="10dp"
@@ -50,6 +65,10 @@
         android:layout_below="@+id/textView4"
         android:layout_above="@+id/bottom"
         android:padding="16dp"
+        android:background="@color/colorWhite"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:elevation="1dp"
         />
 
     <RelativeLayout
@@ -58,7 +77,8 @@
         android:id="@+id/bottom"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:background="@color/titleColor"
+        android:background="@color/grey200"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
 
         >
 
@@ -85,7 +105,7 @@
             android:inputType="number"
             android:ems="10"
             android:id="@+id/editText"
-            android:background="#DCDCDC"
+            android:background="@color/colorWhite"
             android:singleLine="true"
             android:layout_marginLeft="53dp"
             android:layout_marginStart="53dp"
