@@ -8,12 +8,19 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +52,7 @@ public class SearchResultActivity extends AppCompatActivity {
     JSONArray jsonArray;
     VegetableAdapter vegetableAdapter;
     EditText search_vegetable;
+    EditText weight;
 
 
     //    ArrayList<Vegetable> arrayOfData = new ArrayList<Vegetable>();
@@ -58,6 +66,20 @@ public class SearchResultActivity extends AppCompatActivity {
         vegetableAdapter = new VegetableAdapter(this, R.layout.row_layout);
         searchResult.setAdapter(vegetableAdapter);
         search_vegetable = (EditText) findViewById(R.id.search_vegetable);
+        weight = (EditText) findViewById(R.id.weight);
+
+        weight.setFilters(new InputFilter[]{ new InputFilterMinMax("1", "100")});
+
+        search_vegetable.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    new BackgroundTask().execute();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         json_string = getIntent().getExtras().getString("json_data");
         try {
@@ -80,6 +102,7 @@ public class SearchResultActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 
     public void getConfirmation(View view){
         //Intent intent = new Intent(this, SearchResultActivity.class);
