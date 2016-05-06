@@ -12,10 +12,24 @@
     tools:context=".Order"
     tools:showIn="@layout/app_bar_order">
 
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:id="@+id/order_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -69,7 +83,7 @@
                     android:id="@+id/tv_place_id"
                     android:layout_weight="7.90"
                     android:onClick="viewMap"
-                    />
+                   />
 
             </LinearLayout>
 
@@ -133,6 +147,8 @@
                 android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
-    </FrameLayout>
 
+    </FrameLayout>
+    </ScrollView>
 </RelativeLayout>
+

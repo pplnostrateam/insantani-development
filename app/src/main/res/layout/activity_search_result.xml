@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/header"
         android:elevation="2dp"
+        android:padding="1dp"
         android:weightSum="1">
     <EditText
         android:layout_width="320dp"
@@ -19,7 +20,6 @@
         android:background="@color/colorWhite"
         android:paddingLeft="10dp"
         android:layout_below="@+id/logoname"
-        android:elevation="2dp"
         android:hint="@string/search_box"
         android:layout_marginTop="5dp"
         android:textColor="@color/colorInput"
