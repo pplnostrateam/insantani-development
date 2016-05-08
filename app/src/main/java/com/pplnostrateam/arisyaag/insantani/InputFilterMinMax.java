@@ -10,16 +10,16 @@ import android.widget.Toast;
 
 public class InputFilterMinMax implements InputFilter {
 
-    private int min, max;
+    private double min, max;
 
-    public InputFilterMinMax(int min, int max) {
+    public InputFilterMinMax(double min, double max) {
         this.min = min;
         this.max = max;
     }
 
     public InputFilterMinMax(String min, String max) {
-        this.min = Integer.parseInt(min);
-        this.max = Integer.parseInt(max);
+        this.min = Double.parseDouble(min);
+        this.max = Double.parseDouble(max);
     }
 
     @Override
@@ -33,7 +33,8 @@ public class InputFilterMinMax implements InputFilter {
 
     }
 
-    private boolean isInRange(int a, int b, int c) {
+    private boolean isInRange(double a, double b, double c) {
         return b > a ? c >= a && c <= b : c >= b && c <= a;
     }
+
 }

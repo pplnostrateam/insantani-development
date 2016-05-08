@@ -60,7 +60,15 @@ public class SearchingActivity extends AppCompatActivity {
 
 
     public void getData(View view){
-        new BackgroundTask().execute();
+        String vName = search_vegetable.getText().toString();
+        System.out.println("Masuk method getdata, vName =" + vName);
+        if(vName.equals("")){
+            System.out.println("ceeek masuk vname kosong nggak?");
+            searchFirst();
+        }
+        else{
+            new BackgroundTask().execute();
+        }
 
     }
 
@@ -72,7 +80,13 @@ public class SearchingActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            data_url = "http://104.155.214.94:8080/api/vegetable/sugesstion?name=" + vName;
+            if(vName == ""){
+                System.out.println("ceeek masuk vname kosong nggak?");
+                searchFirst();
+            }
+            else {
+                data_url = "http://104.155.214.94:8080/api/vegetable/sugesstion?name=" + vName;
+            }
         }
 
         @Override
@@ -113,27 +127,44 @@ public class SearchingActivity extends AppCompatActivity {
             move();
         }
     }
+
+    public void searchFirst(){
+        System.out.println("INIIIII masuk nggaaak?");
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setMessage("masukkan sayur yang ingin dicari");
+        alertDialogue.setCancelable(false);
+
+        alertDialogue.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
+    }
     public void move(){
-//        if(vName == ""){
-//            AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
-//            alertDialogue.setMessage("masukkan sayur yang ingin dicari");
-//            alertDialogue.setCancelable(false);
-//
-//            alertDialogue.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                }
-//            });
-//            AlertDialog dialog = alertDialogue.create();
-//            dialog.show();
-//        }
-//        else {
-//            Intent intent = new Intent(this, SearchResultActivity.class);
-//            intent.putExtra("json_data", json_string);
-//            startActivity(intent);
-//        }
-        Intent intent = new Intent(this, SearchResultActivity.class);
-        intent.putExtra("json_data", json_string);
-        startActivity(intent);
+        if(json_string == "[]"){
+            System.out.println("INIIIII kosong nggaaak: " + json_string);
+            AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+            alertDialogue.setMessage("sayur yang anda cari tidak dapat ditemukan");
+            alertDialogue.setCancelable(false);
+
+            alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            AlertDialog dialog = alertDialogue.create();
+            dialog.show();
+        }
+        else {
+            System.out.println("LOOOH kosong nggaaak: " + json_string);
+            Intent intent = new Intent(this, SearchResultActivity.class);
+            intent.putExtra("json_data", json_string);
+            startActivity(intent);
+        }
+//        Intent intent = new Intent(this, SearchResultActivity.class);
+//        intent.putExtra("json_data", json_string);
+//        startActivity(intent);
     }
 }
