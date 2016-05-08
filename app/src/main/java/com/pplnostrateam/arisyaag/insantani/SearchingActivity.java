@@ -143,7 +143,7 @@ public class SearchingActivity extends AppCompatActivity {
         dialog.show();
     }
     public void move(){
-        if(json_string == "[]"){
+        if(json_string.equals("[]")){
             System.out.println("INIIIII kosong nggaaak: " + json_string);
             AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
             alertDialogue.setMessage("sayur yang anda cari tidak dapat ditemukan");
