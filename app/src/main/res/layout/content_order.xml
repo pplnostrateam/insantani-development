@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="ADD ADDITIONAL DETAILS"
+                android:text="ADDITIONAL DETAILS"
                 android:id="@+id/textView4"
                 android:textSize="20sp"
                 android:onClick="viewMap"
