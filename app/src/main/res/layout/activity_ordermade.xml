@@ -52,7 +52,7 @@
         android:layout_alignLeft="@+id/textView6"
         android:layout_alignStart="@+id/textView6"
         android:text="CREATE ORDER"
-        android:paddingRight="5dp" />
+        android:paddingRight="8dp" />
 
     <Button
         android:layout_width="wrap_content"
