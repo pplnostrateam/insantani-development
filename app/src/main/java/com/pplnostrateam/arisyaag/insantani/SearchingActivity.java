@@ -49,9 +49,16 @@ public class SearchingActivity extends AppCompatActivity {
         search_vegetable.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                String vName = search_vegetable.getText().toString();
+
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    new BackgroundTask().execute();
-                    return true;
+                    if(vName.equals("")){
+                        searchFirst();
+                    }
+                    else {
+                        new BackgroundTask().execute();
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -61,9 +68,7 @@ public class SearchingActivity extends AppCompatActivity {
 
     public void getData(View view){
         String vName = search_vegetable.getText().toString();
-        System.out.println("Masuk method getdata, vName =" + vName);
         if(vName.equals("")){
-            System.out.println("ceeek masuk vname kosong nggak?");
             searchFirst();
         }
         else{
@@ -80,13 +85,7 @@ public class SearchingActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            if(vName == ""){
-                System.out.println("ceeek masuk vname kosong nggak?");
-                searchFirst();
-            }
-            else {
                 data_url = "http://104.155.214.94:8080/api/vegetable/sugesstion?name=" + vName;
-            }
         }
 
         @Override
@@ -129,12 +128,11 @@ public class SearchingActivity extends AppCompatActivity {
     }
 
     public void searchFirst(){
-        System.out.println("INIIIII masuk nggaaak?");
         AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
-        alertDialogue.setMessage("masukkan sayur yang ingin dicari");
+        alertDialogue.setMessage("insert vegetable's name first");
         alertDialogue.setCancelable(false);
 
-        alertDialogue.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             }
@@ -144,9 +142,8 @@ public class SearchingActivity extends AppCompatActivity {
     }
     public void move(){
         if(json_string.equals("[]")){
-            System.out.println("INIIIII kosong nggaaak: " + json_string);
             AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
-            alertDialogue.setMessage("sayur yang anda cari tidak dapat ditemukan");
+            alertDialogue.setMessage("vegetable not found");
             alertDialogue.setCancelable(false);
 
             alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -157,9 +154,7 @@ public class SearchingActivity extends AppCompatActivity {
             AlertDialog dialog = alertDialogue.create();
             dialog.show();
         }
-        else {
-            System.out.println("LOOOH kosong nggaaak: " + json_string);
-            Intent intent = new Intent(this, SearchResultActivity.class);
+        else {Intent intent = new Intent(this, SearchResultActivity.class);
             intent.putExtra("json_data", json_string);
             startActivity(intent);
         }

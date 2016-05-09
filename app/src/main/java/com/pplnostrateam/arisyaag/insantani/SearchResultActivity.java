@@ -73,9 +73,16 @@ public class SearchResultActivity extends AppCompatActivity {
         search_vegetable.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                String vName = search_vegetable.getText().toString();
+
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    new BackgroundTask().execute();
-                    return true;
+                    if(vName.equals("")){
+                        searchFirst();
+                    }
+                    else {
+                        new BackgroundTask().execute();
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -132,7 +139,13 @@ public class SearchResultActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void getData(View view){
-        new BackgroundTask().execute();
+        String vName = search_vegetable.getText().toString();
+        if(vName.equals("")){
+            searchFirst();
+        }
+        else{
+            new BackgroundTask().execute();
+        }
 
     }
 
@@ -185,11 +198,36 @@ public class SearchResultActivity extends AppCompatActivity {
             move2();
         }
     }
+    public void searchFirst(){
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setMessage("insert vegetable's name first");
+        alertDialogue.setCancelable(false);
 
-    public void move2(){
-        Intent intent = new Intent(this, SearchResultActivity.class);
-        intent.putExtra("json_data", json_string);
-        startActivity(intent);
+        alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
     }
+    public void move2() {
+        if (json_string.equals("[]")) {
+            AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+            alertDialogue.setMessage("vegetable not found");
+            alertDialogue.setCancelable(false);
 
+            alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            AlertDialog dialog = alertDialogue.create();
+            dialog.show();
+        } else {
+            Intent intent = new Intent(this, SearchResultActivity.class);
+            intent.putExtra("json_data", json_string);
+            startActivity(intent);
+        }
+    }
 }
