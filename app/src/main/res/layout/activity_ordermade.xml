@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/neworder"
-        android:src="@mipmap/leftarrow"
+        android:src="@drawable/ic_ordermade_left"
         android:layout_alignTop="@+id/checkstatus"
         android:layout_alignLeft="@+id/textView6"
         android:layout_alignStart="@+id/textView6" />
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/checkstatus"
-        android:src="@mipmap/rightarrow"
+        android:src="@drawable/ic_ordermade_right"
         android:layout_below="@+id/textView6"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

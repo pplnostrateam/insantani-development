@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal|top"
+            android:background="@color/colorPrimary">
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="464dp"
+            android:layout_gravity="center_horizontal|bottom"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="ABC FARM"
+                android:textAlignment="center"
+                android:textColor="@color/colorInput"
+                android:textSize="32dp"
+                android:id="@+id/farm_name"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="080989999"
+                android:id="@+id/farm_phone_number"
+                android:layout_below="@+id/farm_name"
+                android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+</RelativeLayout>
