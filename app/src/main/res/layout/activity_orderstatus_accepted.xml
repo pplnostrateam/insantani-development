@@ -48,6 +48,43 @@
                 android:layout_below="@+id/farm_name"
                 android:layout_centerHorizontal="true" />
 
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/farm_phone_number"
+                android:layout_centerHorizontal="true">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="186dp"
+                    android:layout_height="match_parent"
+                    android:layout_row="0"
+                    android:layout_column="3" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="ORDER ID"
+                        android:id="@+id/textView7" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="186dp"
+                    android:layout_height="match_parent"
+                    android:layout_row="0"
+                    android:layout_column="4">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="1234567890"
+                        android:id="@+id/textView8" />
+                </LinearLayout>
+            </GridLayout>
+
         </RelativeLayout>
 
     </FrameLayout>

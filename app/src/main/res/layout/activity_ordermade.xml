@@ -3,6 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/imageView4"
+        android:src="@drawable/ic_ordermade_success"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,15 +41,6 @@
         android:layout_marginRight="32dp"
         android:textColor="#4CAF50" />
 
-    <ImageView
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:id="@+id/imageView4"
-        android:src="@mipmap/success"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,7 +52,9 @@
         android:layout_alignLeft="@+id/textView6"
         android:layout_alignStart="@+id/textView6"
         android:text="CREATE ORDER"
-        android:paddingRight="8dp" />
+        android:paddingRight="8dp"
+        android:paddingLeft="3dp"
+        android:textColor="#FFFFFF" />
 
     <Button
         android:layout_width="wrap_content"
@@ -66,7 +68,11 @@
         android:layout_marginRight="32dp"
         android:layout_marginTop="40dp"
         android:text="STATUS ORDER"
-        android:paddingLeft="5dp" />
+        android:paddingLeft="8dp"
+        android:paddingRight="3dp"
+        android:textColor="#FFFFFF" />
+
+
 
     <!--Copy bagian ini untuk manggil navigation drawer ke halaman ini -->
 <!--    <android.support.v4.widget.DrawerLayout
