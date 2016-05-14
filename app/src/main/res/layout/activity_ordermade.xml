@@ -48,7 +48,7 @@
         android:background="@color/buttonOrange"
         android:drawableLeft="@drawable/ic_ordermade_leftarrow"
         android:src="@drawable/ic_ordermade_left"
-        android:layout_alignTop="@+id/checkstatus"
+        android:layout_alignTop="@+id/view_all_order"
         android:layout_alignLeft="@+id/textView6"
         android:layout_alignStart="@+id/textView6"
         android:text="CREATE ORDER"
@@ -59,7 +59,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/checkstatus"
+        android:id="@+id/view_all_order"
         android:background="@color/buttonOrange"
         android:drawableRight="@drawable/ic_ordermade_rightarrow"
         android:layout_below="@+id/textView6"
