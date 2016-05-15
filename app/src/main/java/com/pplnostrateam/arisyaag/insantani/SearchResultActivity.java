@@ -121,7 +121,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            data_url = "http://104.155.214.94:8080/api/vegetable/sugesstion?name=" + vName;
+            data_url = "http://104.196.48.112:8080/api/vegetable/sugesstion?name=" + vName;
         }
 
         @Override
