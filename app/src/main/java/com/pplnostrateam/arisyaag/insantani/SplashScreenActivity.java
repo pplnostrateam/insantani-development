@@ -71,7 +71,7 @@ public class SplashScreenActivity extends Activity {
                 } catch(InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-                    Intent openStartingPoint = new Intent(SplashScreenActivity.this, SignInActivity.class);
+                    Intent openStartingPoint = new Intent(SplashScreenActivity.this, SearchingActivity.class);
                     startActivity(openStartingPoint);
 
                 }
