@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:background="@color/colorWhite">
 
     <FrameLayout
         android:id="@+id/content_frame"
@@ -13,7 +13,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="78dp"
             android:layout_gravity="center_horizontal|top"
             android:background="@color/colorPrimary">
 
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="206dp"
             android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="85dp"
+            android:layout_marginTop="75dp"
             android:id="@+id/data_section">
 
             <TextView
@@ -162,7 +162,8 @@
             android:layout_width="match_parent"
             android:layout_height="273dp"
             android:layout_gravity="center_horizontal|bottom"
-            android:id="@+id/status_section">
+            android:id="@+id/status_section"
+            android:layout_marginBottom="20dp">
 
             <ScrollView
                 android:layout_width="wrap_content"
@@ -172,39 +173,102 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
 
-            <Button
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/return_home"
-                android:background="@color/buttonOrange"
-                android:drawableLeft="@drawable/ic_ordermade_leftarrow"
-                android:src="@drawable/ic_ordermade_left"
-                android:text="RETURN HOME"
-                android:paddingRight="8dp"
-                android:paddingLeft="3dp"
-                android:textColor="#FFFFFF"
-                android:layout_alignParentBottom="true"
+                android:id="@+id/status_indicator"
+                android:src="@drawable/status_orderaccepted"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@+id/textView8"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="38dp"
-                android:layout_marginLeft="35dp" />
+                android:layout_alignParentStart="true" />
 
-            <Button
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/view_all_order"
-                android:background="@color/buttonOrange"
-                android:drawableRight="@drawable/ic_ordermade_rightarrow"
-                android:text="SEE MY ORDER"
-                android:paddingLeft="8dp"
-                android:paddingRight="3dp"
-                android:textColor="#FFFFFF"
-                android:layout_alignTop="@+id/return_home"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="32dp" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Order accepted"
+                android:id="@+id/status1"
+                android:textSize="24dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentTop="true"
+                android:layout_alignLeft="@+id/textView8"
+                android:layout_alignStart="@+id/textView8"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Preparing packet"
+                android:id="@+id/status2"
+                android:textSize="24dp"
+                android:layout_below="@+id/status1"
+                android:layout_alignLeft="@+id/status1"
+                android:layout_alignStart="@+id/status1"
+                android:layout_marginBottom="24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="On delivery"
+                android:id="@+id/status3"
+                android:textSize="24dp"
+                android:layout_below="@+id/status2"
+                android:layout_alignLeft="@+id/status2"
+                android:layout_alignStart="@+id/status2"
+                android:layout_marginBottom="24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Order delivered"
+                android:id="@+id/textView8"
+                android:textSize="24dp"
+                android:layout_below="@+id/status3"
+                android:layout_toRightOf="@+id/status_indicator"
+                android:layout_toEndOf="@+id/status_indicator" />
 
         </RelativeLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/view_all_order"
+            android:background="@color/buttonOrange"
+            android:drawableRight="@drawable/ic_ordermade_rightarrow"
+            android:text="SEE MY ORDER"
+            android:paddingLeft="8dp"
+            android:paddingRight="3dp"
+            android:textColor="#FFFFFF"
+            android:layout_alignTop="@+id/return_home"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="32dp"
+            android:layout_gravity="right|bottom"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/return_home"
+            android:background="@color/buttonOrange"
+            android:drawableLeft="@drawable/ic_ordermade_leftarrow"
+            android:src="@drawable/ic_ordermade_left"
+            android:text="RETURN HOME"
+            android:paddingRight="8dp"
+            android:paddingLeft="3dp"
+            android:textColor="#FFFFFF"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="left|bottom" />
 
     </FrameLayout>
 
