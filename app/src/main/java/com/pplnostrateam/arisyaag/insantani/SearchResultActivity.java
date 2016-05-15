@@ -74,7 +74,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 if (!session.isLoggedIn())
                     getConfirmation(view);
                 else
-                    move2();
+                    moveByPassLogin();
             }
         });
 
@@ -183,6 +183,12 @@ public class SearchResultActivity extends AppCompatActivity {
 
     public void move2(){
         Intent intent = new Intent(this, SearchingActivity.class);
+        intent.putExtra("json_data", json_string);
+        startActivity(intent);
+    }
+
+    public void moveByPassLogin(){
+        Intent intent = new Intent(this, Order.class);
         intent.putExtra("json_data", json_string);
         startActivity(intent);
     }
