@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -46,6 +47,8 @@ public class SearchResultActivity extends AppCompatActivity {
     VegetableAdapter vegetableAdapter;
     EditText search_vegetable;
 
+    SessionManager session;
+
 
     //    ArrayList<Vegetable> arrayOfData = new ArrayList<Vegetable>();
 //    FancyAdapter aa = null;
@@ -60,6 +63,19 @@ public class SearchResultActivity extends AppCompatActivity {
         search_vegetable = (EditText) findViewById(R.id.search_vegetable);
 
         json_string = getIntent().getExtras().getString("json_data");
+
+        session = new SessionManager(getApplicationContext());
+
+        Button mContinueButton = (Button) findViewById(R.id.button2);
+        assert mContinueButton != null;
+        mContinueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!session.isLoggedIn())
+                    getConfirmation(view);
+            }
+        });
+
         try {
             // jsonObject = new JSONObject(json_string);
             jsonArray = new JSONArray(json_string);
@@ -105,7 +121,7 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     private void move() {
-        Intent intent = new Intent(this, Order.class);
+        Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
     }
     public void getData(View view){
@@ -164,7 +180,7 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     public void move2(){
-        Intent intent = new Intent(this, SearchResultActivity.class);
+        Intent intent = new Intent(this, SearchingActivity.class);
         intent.putExtra("json_data", json_string);
         startActivity(intent);
     }
