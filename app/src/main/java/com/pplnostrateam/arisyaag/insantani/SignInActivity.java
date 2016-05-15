@@ -106,6 +106,13 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     private String TAG = "SignInActivity";
 
+
+    // Alert Dialog Manager
+    // AlertDialogManager alert = new AlertDialogManager();
+
+    // Session Manager Class
+    SessionManager session;
+
     // Logcat tag
     // private static final String TAG = "SignInActivity";
 
@@ -135,6 +142,9 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_sign_in);
+
+
+        session = new SessionManager(getApplicationContext());
 
         // check for internet connection
         connectivityStatus();
@@ -205,6 +215,9 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 parameters.putString("fields", "id,name,link,email,picture");
                 request.setParameters(parameters);
                 request.executeAsync();
+
+
+                session.createLoginSession(fbProfileName, fbEmail);
 
                 finish();
             }
@@ -328,6 +341,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
             mGTask = new UserRegisterTask(gEmail, gProfileName, "");
             mGTask.execute((Void) null);
+
+            session.createLoginSession(gProfileName, gEmail);
 
             finish();
         } else {
@@ -736,10 +751,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             showProgress(false);
 
             if (success) {
-                startActivity(new Intent(SignInActivity.this, SearchingActivity.class));
+                startActivity(new Intent(SignInActivity.this, Order.class));
 
                 Toast.makeText(getApplicationContext(),
                         "Login attempt success.", Toast.LENGTH_LONG).show();
+
+                session.createLoginSession(mEmail, mPassword);
 
                 finish();
             } else {
@@ -757,7 +774,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void loginUserRestServer(String email, String password) throws Exception {
-        String url = "http://104.155.214.94:8080/api/user/";
+        String url = "http://104.196.48.112:8080/api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         Log.d("#Debug", "Start");
@@ -840,7 +857,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void registerUserRestServer(String email, String name, String password) throws Exception {
-        String url = "http://104.155.214.94:8080/api/user/";
+        String url = "http://104.196.48.112:8080/api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
