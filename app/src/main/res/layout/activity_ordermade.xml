@@ -72,10 +72,8 @@
         android:paddingRight="3dp"
         android:textColor="#FFFFFF" />
 
-
-
     <!--Copy bagian ini untuk manggil navigation drawer ke halaman ini -->
-<!--    <android.support.v4.widget.DrawerLayout
+    <android.support.v4.widget.DrawerLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -93,8 +91,6 @@
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_order"
             app:menu="@menu/activity_order_drawer" />
-    </android.support.v4.widget.DrawerLayout>-->
-
-
+    </android.support.v4.widget.DrawerLayout>
 
 </RelativeLayout>
