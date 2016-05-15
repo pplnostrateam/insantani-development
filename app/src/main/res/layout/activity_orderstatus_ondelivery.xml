@@ -207,7 +207,8 @@
                 android:layout_below="@+id/status1"
                 android:layout_alignLeft="@+id/status1"
                 android:layout_alignStart="@+id/status1"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="24dp"
+                android:textColor="@color/colorPrimary" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -219,7 +220,8 @@
                 android:layout_below="@+id/status2"
                 android:layout_alignLeft="@+id/status2"
                 android:layout_alignStart="@+id/status2"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="24dp"
+                android:textColor="@color/colorPrimary" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -240,11 +242,11 @@
             android:id="@+id/view_all_order"
             android:background="@color/buttonOrange"
             android:drawableRight="@drawable/ic_ordermade_rightarrow"
-            android:text="SEE MY ORDER"
+            android:text="SEE MY ORDERS"
             android:paddingLeft="8dp"
             android:paddingRight="3dp"
             android:textColor="#FFFFFF"
-            android:layout_alignTop="@+id/return_home"
+            android:layout_alignTop="@+id/return_search"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="32dp"
@@ -254,11 +256,11 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/return_home"
+            android:id="@+id/return_search"
             android:background="@color/buttonOrange"
             android:drawableLeft="@drawable/ic_ordermade_leftarrow"
             android:src="@drawable/ic_ordermade_left"
-            android:text="RETURN HOME"
+            android:text="RETURN SEARCH"
             android:paddingRight="8dp"
             android:paddingLeft="3dp"
             android:textColor="#FFFFFF"
