@@ -106,6 +106,13 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     private String TAG = "SignInActivity";
 
+
+    // Alert Dialog Manager
+    // AlertDialogManager alert = new AlertDialogManager();
+
+    // Session Manager Class
+    SessionManager session;
+
     // Logcat tag
     // private static final String TAG = "SignInActivity";
 
@@ -135,6 +142,9 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_sign_in);
+
+
+        session = new SessionManager(getApplicationContext());
 
         // check for internet connection
         connectivityStatus();
@@ -740,6 +750,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
                 Toast.makeText(getApplicationContext(),
                         "Login attempt success.", Toast.LENGTH_LONG).show();
+
+                session.createLoginSession(mEmail, mPassword);
 
                 finish();
             } else {
