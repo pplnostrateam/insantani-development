@@ -73,6 +73,8 @@ public class SearchResultActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (!session.isLoggedIn())
                     getConfirmation(view);
+                else
+                    move2();
             }
         });
 

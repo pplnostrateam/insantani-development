@@ -751,7 +751,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             showProgress(false);
 
             if (success) {
-                startActivity(new Intent(SignInActivity.this, SearchingActivity.class));
+                startActivity(new Intent(SignInActivity.this, Order.class));
 
                 Toast.makeText(getApplicationContext(),
                         "Login attempt success.", Toast.LENGTH_LONG).show();
