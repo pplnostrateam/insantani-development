@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Wishlist"
+        android:text="My Profile"
         android:id="@+id/textView2"
         android:layout_gravity="center_horizontal"
         android:layout_alignParentTop="true"
