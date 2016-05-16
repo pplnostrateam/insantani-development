@@ -7,15 +7,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin">
 
-        <ScrollView
-            android:id="@+id/search_page"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+    <ScrollView
+        android:id="@+id/search_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <ImageView
                 android:layout_marginTop="50dp"
                 android:layout_width="match_parent"
@@ -44,6 +42,7 @@
                 android:background="@color/colorWhite"
                 android:inputType="text"
                 android:singleLine="true"
+                android:imeOptions="actionSearch"
                 android:paddingLeft="10dp"
                 android:hint="@string/search_box"
                 android:textColor="@color/colorInput"

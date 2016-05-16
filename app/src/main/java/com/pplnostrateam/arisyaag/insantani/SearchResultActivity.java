@@ -8,13 +8,20 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +53,7 @@ public class SearchResultActivity extends AppCompatActivity {
     JSONArray jsonArray;
     VegetableAdapter vegetableAdapter;
     EditText search_vegetable;
+    EditText weight;
 
     SessionManager session;
 
@@ -61,6 +69,27 @@ public class SearchResultActivity extends AppCompatActivity {
         vegetableAdapter = new VegetableAdapter(this, R.layout.row_layout);
         searchResult.setAdapter(vegetableAdapter);
         search_vegetable = (EditText) findViewById(R.id.search_vegetable);
+        weight = (EditText) findViewById(R.id.weight);
+
+        weight.setFilters(new InputFilter[]{new InputFilterMinMax("1", "100")});
+
+        search_vegetable.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                String vName = search_vegetable.getText().toString();
+
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if(vName.equals("")){
+                        searchFirst();
+                    }
+                    else {
+                        new BackgroundTask().execute();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
 
         json_string = getIntent().getExtras().getString("json_data");
 
@@ -99,6 +128,7 @@ public class SearchResultActivity extends AppCompatActivity {
         }
     }
 
+
     public void getConfirmation(View view){
         //Intent intent = new Intent(this, SearchResultActivity.class);
         AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
@@ -127,7 +157,13 @@ public class SearchResultActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void getData(View view){
-        new BackgroundTask().execute();
+        String vName = search_vegetable.getText().toString();
+        if(vName.equals("")){
+            searchFirst();
+        }
+        else{
+            new BackgroundTask().execute();
+        }
 
     }
 
@@ -180,17 +216,41 @@ public class SearchResultActivity extends AppCompatActivity {
             move2();
         }
     }
+    public void searchFirst(){
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setMessage("insert vegetable's name first");
+        alertDialogue.setCancelable(false);
 
-    public void move2(){
-        Intent intent = new Intent(this, SearchingActivity.class);
-        intent.putExtra("json_data", json_string);
-        startActivity(intent);
+        alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
     }
+    public void move2() {
+        if (json_string.equals("[]")) {
+            AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+            alertDialogue.setMessage("vegetable not found");
+            alertDialogue.setCancelable(false);
 
+            alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            AlertDialog dialog = alertDialogue.create();
+            dialog.show();
+        } else {
+            Intent intent = new Intent(this, SearchResultActivity.class);
+            intent.putExtra("json_data", json_string);
+            startActivity(intent);
+        }
+    }
     public void moveByPassLogin(){
         Intent intent = new Intent(this, Order.class);
         intent.putExtra("json_data", json_string);
         startActivity(intent);
     }
-
 }

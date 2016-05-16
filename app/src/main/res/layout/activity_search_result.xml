@@ -17,6 +17,9 @@
         android:layout_width="320dp"
         android:layout_height="60dp"
         android:id="@+id/search_vegetable"
+        android:inputType="text"
+        android:singleLine="true"
+        android:imeOptions="actionSearch"
         android:background="@color/colorWhite"
         android:paddingLeft="10dp"
         android:layout_below="@+id/logoname"
@@ -101,9 +104,10 @@
         <EditText
             android:layout_width="50dp"
             android:layout_height="40dp"
-            android:inputType="number"
+            android:inputType="numberDecimal"
+            android:digits="0123456789.,"
             android:ems="10"
-            android:id="@+id/editText"
+            android:id="@+id/weight"
             android:background="@color/colorWhite"
             android:singleLine="true"
             android:layout_marginLeft="53dp"
@@ -117,13 +121,14 @@
             android:layout_height="wrap_content"
             android:text="Kg:"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/weight"
+            android:id="@+id/textKg"
             android:paddingLeft="8dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignRight="@+id/editText"
-            android:layout_alignEnd="@+id/editText"
-            android:layout_alignBottom="@+id/editText" />
+            android:layout_alignRight="@+id/weight"
+            android:layout_alignEnd="@+id/weight"
+            android:layout_alignBottom="@+id/weight" />
+
     </RelativeLayout>
 
 </RelativeLayout>
