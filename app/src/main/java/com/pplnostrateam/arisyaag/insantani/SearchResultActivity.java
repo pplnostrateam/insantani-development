@@ -63,8 +63,8 @@ public class SearchResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
-        /*
-        Button backButton = (Button) findViewById(R.id.backButton);
+
+        Button backButton = (Button) findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(SearchResultActivity.this, SearchingActivity.class);
@@ -72,7 +72,7 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         });
 
-*/
+
         //TextView textView3 = (TextView) findViewById(R.id.textView3);
         // ListView searchResult = (ListView)findViewById(R.id.searchResult);
         ListView searchResult = (ListView)findViewById(R.id.searchResult);
