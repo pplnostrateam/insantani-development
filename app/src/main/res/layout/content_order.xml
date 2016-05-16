@@ -12,8 +12,6 @@
     tools:context=".Order"
     tools:showIn="@layout/app_bar_order">
 
-
-
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"

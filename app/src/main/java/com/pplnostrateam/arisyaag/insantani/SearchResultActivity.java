@@ -63,6 +63,16 @@ public class SearchResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
+        /*
+        Button backButton = (Button) findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(SearchResultActivity.this, SearchingActivity.class);
+                SearchResultActivity.this.startActivity(intent);
+            }
+        });
+
+*/
         //TextView textView3 = (TextView) findViewById(R.id.textView3);
         // ListView searchResult = (ListView)findViewById(R.id.searchResult);
         ListView searchResult = (ListView)findViewById(R.id.searchResult);
@@ -72,17 +82,15 @@ public class SearchResultActivity extends AppCompatActivity {
         weight = (EditText) findViewById(R.id.weight);
 
         weight.setFilters(new InputFilter[]{new InputFilterMinMax("1", "100")});
-
         search_vegetable.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 String vName = search_vegetable.getText().toString();
 
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if(vName.equals("")){
+                    if (vName.equals("")) {
                         searchFirst();
-                    }
-                    else {
+                    } else {
                         new BackgroundTask().execute();
                         return true;
                     }
