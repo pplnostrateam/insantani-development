@@ -3,6 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/imageView4"
+        android:src="@drawable/ic_ordermade_success"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,57 +41,39 @@
         android:layout_marginRight="32dp"
         android:textColor="#4CAF50" />
 
-    <ImageView
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:id="@+id/imageView4"
-        android:src="@mipmap/success"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp" />
-
-    <ImageButton
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/neworder"
-        android:src="@mipmap/leftarrow"
-        android:layout_alignTop="@+id/checkstatus"
+        android:id="@+id/createorder"
+        android:background="@color/buttonOrange"
+        android:drawableLeft="@drawable/ic_ordermade_leftarrow"
+        android:src="@drawable/ic_ordermade_left"
+        android:layout_alignTop="@+id/view_all_order"
         android:layout_alignLeft="@+id/textView6"
-        android:layout_alignStart="@+id/textView6" />
+        android:layout_alignStart="@+id/textView6"
+        android:text="CREATE ORDER"
+        android:paddingRight="8dp"
+        android:paddingLeft="3dp"
+        android:textColor="#FFFFFF" />
 
-    <ImageButton
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/checkstatus"
-        android:src="@mipmap/rightarrow"
+        android:id="@+id/view_all_order"
+        android:background="@color/buttonOrange"
+        android:drawableRight="@drawable/ic_ordermade_rightarrow"
         android:layout_below="@+id/textView6"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="32dp"
-        android:layout_marginTop="24dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="NEW ORDER"
-        android:id="@+id/textView7"
-        android:layout_below="@+id/neworder"
-        android:layout_alignLeft="@+id/neworder"
-        android:layout_alignStart="@+id/neworder" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="40dp"
         android:text="STATUS ORDER"
-        android:id="@+id/textView8"
-        android:layout_below="@+id/checkstatus"
-        android:layout_alignRight="@+id/checkstatus"
-        android:layout_alignEnd="@+id/checkstatus" />
+        android:paddingLeft="8dp"
+        android:paddingRight="3dp"
+        android:textColor="#FFFFFF" />
 
     <!--Copy bagian ini untuk manggil navigation drawer ke halaman ini -->
-<!--    <android.support.v4.widget.DrawerLayout
+    <android.support.v4.widget.DrawerLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -100,8 +91,6 @@
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_order"
             app:menu="@menu/activity_order_drawer" />
-    </android.support.v4.widget.DrawerLayout>-->
-
-
+    </android.support.v4.widget.DrawerLayout>
 
 </RelativeLayout>

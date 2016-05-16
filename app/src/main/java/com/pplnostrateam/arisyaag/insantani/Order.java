@@ -17,6 +17,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Button;
+import android.view.View.OnClickListener;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -74,6 +76,17 @@ public class Order extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        Button order_button = (Button) findViewById(R.id.order_button);
+        order_button.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+
+                Intent intent = new Intent(v.getContext(), Ordermade.class);
+                startActivityForResult(intent, 0);
+            }
+        });
     }
 
     @Override
