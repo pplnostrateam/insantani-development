@@ -51,8 +51,8 @@ public class Ordermade extends AppCompatActivity
 
             public void onClick(View v) {
 
-                Intent intent = new Intent(v.getContext(), Order.class);
-                startActivityForResult(intent, 0);
+                Intent intent = new Intent(Ordermade.this, Order.class);
+                Ordermade.this.startActivity(intent);
             }
         });
 
