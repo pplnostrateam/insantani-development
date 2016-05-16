@@ -12,6 +12,8 @@
     tools:context=".Order"
     tools:showIn="@layout/app_bar_order">
 
+
+
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -128,7 +130,6 @@
                 android:layout_height="wrap_content"
                 android:text="ORDER"
                 android:id="@+id/order_button"
-                android:onClick="moveToOrdermade"
                 android:background="@color/buttonOrange"
                 android:textSize="24dp"
                 android:textColor="@color/colorWhite"

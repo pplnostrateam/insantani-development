@@ -21,7 +21,7 @@
     The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
     Google Maps Android API v2, but you must specify either coarse or fine
     location permissions for the 'MyLocation' functionality.
-  -->
+    -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <!--
@@ -34,15 +34,12 @@
         android:required="true" />
 
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name="android.support.multidex.MultiDexApplication">
-
-
-
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -53,48 +50,42 @@
         <activity
             android:name=".SignInActivity"
             android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".SetApp" />
+        <activity android:name=".SearchingActivity" />
+        <activity android:name=".SearchResultActivity" />
 
-        <activity android:name=".MainActivity"></activity>
-
-        <activity android:name=".SetApp"></activity>
-
-        <activity
-            android:name=".SearchingActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".SearchResultActivity"></activity>
-
-
-
-    <!--
+        <!--
         <activity
             android:name=".Order"
             android:label="@string/title_activity_navigation_order"
 
         <activity android:name=".Ordermade"></activity>
-    -->
+        -->
 
-        <!--Google Places API Integration Manifest-->
+
+        <!-- Google Places API Integration Manifest -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_api_key" />
@@ -102,13 +93,13 @@
         <activity
             android:name=".Order"
             android:label="@string/title_activity_navigation_order" />
-
-        <activity android:name=".Ordermade"></activity>
+        <activity android:name=".Ordermade" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="d8a1d28e150cb989c017da4405533d307b95d725" />
-    </application>
 
+        <activity android:name=".Orderstatus_accepted"></activity>
+    </application>
 
 </manifest>
