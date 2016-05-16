@@ -93,7 +93,6 @@
             android:layout_margin="8dp"
             android:padding="8dp"
             android:id="@+id/button2"
-            android:onClick="getConfirmation"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -129,7 +128,6 @@
             android:layout_alignRight="@+id/weight"
             android:layout_alignEnd="@+id/weight"
             android:layout_alignBottom="@+id/weight" />
-
 
     </RelativeLayout>
 

@@ -13,6 +13,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
@@ -54,6 +55,8 @@ public class SearchResultActivity extends AppCompatActivity {
     EditText search_vegetable;
     EditText weight;
 
+    SessionManager session;
+
 
     //    ArrayList<Vegetable> arrayOfData = new ArrayList<Vegetable>();
 //    FancyAdapter aa = null;
@@ -68,7 +71,7 @@ public class SearchResultActivity extends AppCompatActivity {
         search_vegetable = (EditText) findViewById(R.id.search_vegetable);
         weight = (EditText) findViewById(R.id.weight);
 
-        weight.setFilters(new InputFilter[]{ new InputFilterMinMax("1", "100")});
+        weight.setFilters(new InputFilter[]{new InputFilterMinMax("1", "100")});
 
         search_vegetable.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -89,6 +92,21 @@ public class SearchResultActivity extends AppCompatActivity {
         });
 
         json_string = getIntent().getExtras().getString("json_data");
+
+        session = new SessionManager(getApplicationContext());
+
+        Button mContinueButton = (Button) findViewById(R.id.button2);
+        assert mContinueButton != null;
+        mContinueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!session.isLoggedIn())
+                    getConfirmation(view);
+                else
+                    moveByPassLogin();
+            }
+        });
+
         try {
             // jsonObject = new JSONObject(json_string);
             jsonArray = new JSONArray(json_string);
@@ -135,7 +153,7 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     private void move() {
-        Intent intent = new Intent(this, Order.class);
+        Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
     }
     public void getData(View view){
@@ -157,7 +175,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            data_url = "http://104.155.214.94:8080/api/vegetable/sugesstion?name=" + vName;
+            data_url = "http://104.196.48.112:8080/api/vegetable/sugesstion?name=" + vName;
         }
 
         @Override
@@ -229,5 +247,10 @@ public class SearchResultActivity extends AppCompatActivity {
             intent.putExtra("json_data", json_string);
             startActivity(intent);
         }
+    }
+    public void moveByPassLogin(){
+        Intent intent = new Intent(this, Order.class);
+        intent.putExtra("json_data", json_string);
+        startActivity(intent);
     }
 }

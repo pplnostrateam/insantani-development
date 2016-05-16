@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -35,6 +36,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -51,6 +56,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    public static final int NO_OPTIONS=0;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -438,12 +444,12 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     }
 
     public void registerUserRestServer(String email, String name, String password) throws Exception {
-        String url = "http://104.155.214.94:8080/api/user/";
+        String url = "http://104.196.48.112:8080/api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
         try {
-            String queryURL = url + "create?email=" + email + "&name=" + name + "&password=" + password;
+            String queryURL = url + "create?email=" + email + "&name=" + name + "&password=" + computeSHAHash(password);
             rest.postForLocation(queryURL, User.class, email, name, password);
 
             String getterURL = url + "find?email={email}";
@@ -458,6 +464,68 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
                 throw new Exception(e.getMessage());
             }
         }
+    }
+
+    private static String convertToHex(byte[] data) throws java.io.IOException {
+        StringBuffer sb = new StringBuffer();
+        String hex=null;
+
+        hex= Base64.encodeToString(data, 0, data.length, NO_OPTIONS);
+
+        sb.append(hex);
+
+        return sb.toString();
+    }
+
+
+    public String computeSHAHash(String password) {
+        MessageDigest mdSha1 = null;
+        String SHAHash = null;
+
+        try {
+            mdSha1 = MessageDigest.getInstance("SHA-1");
+        } catch (NoSuchAlgorithmException e1) {
+            Log.e("myapp", "Error initializing SHA1 message digest");
+        }
+
+        try {
+            mdSha1.update(password.getBytes("ASCII"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        byte[] data = mdSha1.digest();
+
+        try {
+            SHAHash=convertToHex(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return SHAHash;
+    }
+
+
+    public String computeMD5Hash(String password) {
+        StringBuffer MD5Hash = new StringBuffer();
+
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(password.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            for (int i = 0; i < messageDigest.length; i++) {
+                String h = Integer.toHexString(0xFF & messageDigest[i]);
+                while (h.length() < 2)
+                    h = "0" + h;
+                MD5Hash.append(h);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return MD5Hash.toString();
     }
 }
 

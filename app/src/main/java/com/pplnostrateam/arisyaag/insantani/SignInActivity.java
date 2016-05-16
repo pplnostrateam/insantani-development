@@ -25,6 +25,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -64,6 +65,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -81,6 +86,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    public static final int NO_OPTIONS=0;
+    private static final int RC_SIGN_IN = 0;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -98,7 +105,14 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     public String fbAuthToken, fbUserID, fbProfileName, fbEmail;
 
     private String TAG = "SignInActivity";
-    private static final int RC_SIGN_IN = 0;
+
+
+    // Alert Dialog Manager
+    // AlertDialogManager alert = new AlertDialogManager();
+
+    // Session Manager Class
+    SessionManager session;
+
     // Logcat tag
     // private static final String TAG = "SignInActivity";
 
@@ -128,6 +142,9 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_sign_in);
+
+
+        session = new SessionManager(getApplicationContext());
 
         // check for internet connection
         connectivityStatus();
@@ -198,6 +215,9 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 parameters.putString("fields", "id,name,link,email,picture");
                 request.setParameters(parameters);
                 request.executeAsync();
+
+
+                session.createLoginSession(fbProfileName, fbEmail);
 
                 finish();
             }
@@ -321,6 +341,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
             mGTask = new UserRegisterTask(gEmail, gProfileName, "");
             mGTask.execute((Void) null);
+
+            session.createLoginSession(gProfileName, gEmail);
 
             finish();
         } else {
@@ -729,10 +751,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             showProgress(false);
 
             if (success) {
-                startActivity(new Intent(SignInActivity.this, SearchingActivity.class));
+                startActivity(new Intent(SignInActivity.this, Order.class));
 
                 Toast.makeText(getApplicationContext(),
                         "Login attempt success.", Toast.LENGTH_LONG).show();
+
+                session.createLoginSession(mEmail, mPassword);
 
                 finish();
             } else {
@@ -750,13 +774,13 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void loginUserRestServer(String email, String password) throws Exception {
-        String url = "http://104.155.214.94:8080/api/user/";
+        String url = "http://104.196.48.112:8080/api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         Log.d("#Debug", "Start");
 
         try {
-            String queryURL = url + "login?email=" + email + "&password=" + password;
+            String queryURL = url + "login?email=" + email + "&password=" + computeSHAHash(password);
             User theUser = rest.getForObject(queryURL, User.class);
 
             Log.d("Output", theUser.getName());
@@ -833,12 +857,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void registerUserRestServer(String email, String name, String password) throws Exception {
-        String url = "http://104.155.214.94:8080/api/user/";
+        String url = "http://104.196.48.112:8080/api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
         try {
-            String queryURL = url + "create?email=" + email + "&name=" + name + "&password=" + password;
+            String queryURL = url + "create?email=" + email + "&name=" + name + "&password=" + computeSHAHash(password);
             rest.postForLocation(queryURL, User.class, email, name, password);
 
             String getterURL = url + "find?email={email}";
@@ -859,6 +883,68 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    private static String convertToHex(byte[] data) throws java.io.IOException {
+        StringBuffer sb = new StringBuffer();
+        String hex=null;
+
+        hex= Base64.encodeToString(data, 0, data.length, NO_OPTIONS);
+
+        sb.append(hex);
+
+        return sb.toString();
+    }
+
+
+    public String computeSHAHash(String password) {
+        MessageDigest mdSha1 = null;
+        String SHAHash = null;
+
+        try {
+            mdSha1 = MessageDigest.getInstance("SHA-1");
+        } catch (NoSuchAlgorithmException e1) {
+            Log.e("myapp", "Error initializing SHA1 message digest");
+        }
+
+        try {
+            mdSha1.update(password.getBytes("ASCII"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        byte[] data = mdSha1.digest();
+
+        try {
+            SHAHash=convertToHex(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return SHAHash;
+    }
+
+
+    public String computeMD5Hash(String password) {
+        StringBuffer MD5Hash = new StringBuffer();
+
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
+            digest.update(password.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            for (int i = 0; i < messageDigest.length; i++) {
+                String h = Integer.toHexString(0xFF & messageDigest[i]);
+                while (h.length() < 2)
+                    h = "0" + h;
+                MD5Hash.append(h);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return MD5Hash.toString();
     }
 }
 
