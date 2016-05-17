@@ -36,7 +36,7 @@ public class SearchingActivity extends AppCompatActivity {
     private TextView textView2;
     private Activity activity;
     String json_string;
-   // String vName;
+    // String vName;
     // private EditText editText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ public class SearchingActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            data_url = "http://104.196.48.112:8080/api/vegetable/sugesstion?name=" + vName;
+            data_url = "http://104.196.8.145:8080/api/vegetable/sugesstion?name=" + vName;
         }
 
         @Override
@@ -141,6 +141,7 @@ public class SearchingActivity extends AppCompatActivity {
         dialog.show();
     }
     public void move(){
+        /*
         if(json_string.equals("[]")){
             AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
             alertDialogue.setMessage("vegetable not found");
@@ -154,10 +155,14 @@ public class SearchingActivity extends AppCompatActivity {
             AlertDialog dialog = alertDialogue.create();
             dialog.show();
         }
-        else {Intent intent = new Intent(this, SearchResultActivity.class);
-            intent.putExtra("json_data", json_string);
-            startActivity(intent);
-        }
+
+        else { */
+        Intent intent = new Intent(this, SearchResultActivity.class);
+        intent.putExtra("json_data", json_string);
+        startActivity(intent);
+        /*
+        }*/
+
 //        Intent intent = new Intent(this, SearchResultActivity.class);
 //        intent.putExtra("json_data", json_string);
 //        startActivity(intent);

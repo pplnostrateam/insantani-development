@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey100"
+    android:background="@color/grey200"
     android:weightSum="1">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,6 +26,7 @@
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
         android:layout_below="@+id/logoname"
+        android:elevation="2dp"
         android:hint="@string/search_box"
         android:layout_marginTop="5dp"
         android:textColor="@color/colorInput"
@@ -49,8 +50,8 @@
         android:layout_width="40dp"
         android:layout_height="50dp"
         android:id="@+id/back_button"
-        android:background="@color/colorWhite"
         android:drawableLeft="@drawable/left_arrow"
+        android:background="@android:color/transparent"
         android:padding="5dp"
         android:textSize="18sp"
         android:layout_alignBaseline="@+id/search_vegetable"
@@ -67,8 +68,8 @@
         android:text="Cart"
         android:id="@+id/textView4"
         android:layout_below="@+id/header"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:paddingLeft="10dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -83,7 +84,7 @@
         android:layout_below="@+id/textView4"
         android:layout_above="@+id/bottom"
         android:padding="8dp"
-        android:background="@color/grey100"
+        android:background="@color/grey200"
         android:elevation="1dp"
         android:divider="@null"
 
@@ -96,8 +97,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@color/grey300"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
+
 
         >
 
@@ -105,6 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/round_button"
+            android:elevation="2dp"
             android:text="continue"
             android:layout_margin="8dp"
             android:padding="8dp"
@@ -112,9 +113,10 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
+            android:layout_marginRight="44dp"
             android:layout_marginEnd="44dp"
-            android:textSize="20dp"
-            android:textColor="#FFFFFF" />
+            android:textSize="20sp"
+            android:textColor="@color/colorWhite" />
 
         <EditText
             android:layout_width="50dp"
@@ -138,6 +140,7 @@
             android:text="Kg:"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textKg"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignRight="@+id/weight"
