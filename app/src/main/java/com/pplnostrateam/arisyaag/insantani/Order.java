@@ -2,6 +2,7 @@ package com.pplnostrateam.arisyaag.insantani;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +27,16 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class Order extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -32,6 +44,11 @@ public class Order extends AppCompatActivity
     private TextView tvPlaceAPI;
     // konstanta untuk mendeteksi hasil balikan dari place picker
     private int PLACE_PICKER_REQUEST = 1;
+
+    private final MediaType JSON
+            = MediaType.parse("application/json; charset=utf-8");
+
+    private OrderTask mOrderTask = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +94,19 @@ public class Order extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        Button order_button = (Button) findViewById(R.id.order_button);
+        assert  order_button != null;
+        order_button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptCreateOrder();
 
+                Intent intent = new Intent(view.getContext(), Ordermade.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        /*
         Button order_button = (Button) findViewById(R.id.order_button);
         order_button.setOnClickListener(new OnClickListener() {
 
@@ -86,7 +115,108 @@ public class Order extends AppCompatActivity
                 Intent intent = new Intent(v.getContext(), Ordermade.class);
                 startActivityForResult(intent, 0);
             }
-        });
+        });*/
+    }
+
+    private void attemptCreateOrder() {
+        if (mOrderTask != null) {
+            return;
+        }
+
+        //showProgress(true);
+        mOrderTask = new OrderTask(1, "far away", "no note");
+        mOrderTask.execute((Void) null);
+    }
+
+
+    public class OrderTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final int user;
+        private final String location;
+        private final String note;
+
+        OrderTask(int user, String location, String note) {
+            this.user = user;
+            this.location = location;
+            this.note = note;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // attempt authentication against a network service.
+
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return false;
+            }
+
+
+            try {
+                callServerResponse(user, location, note);
+            } catch (Exception e) {
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mOrderTask = null;
+            //showProgress(false);
+
+            if (success) {
+                startActivity(new Intent(Order.this, Ordermade.class));
+
+                //Toast.makeText(getApplicationContext(), "Order has been successfully added.", Toast.LENGTH_LONG).show();
+
+                finish();
+            } else {
+                // Toast.makeText(getApplicationContext(), "Register order failed...", Toast.LENGTH_LONG).show();
+
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mOrderTask = null;
+            //showProgress(false);
+        }
+    }
+
+    public void callServerResponse(int user, String location, String note) throws JSONException {
+
+        String json = String.format("{\"user\":%d,\"vegetable\":1,\"longitude\":108.100,\"latitude\":-6.100,\"location\":\"%s\",\"note\":\"%s\",\"quantity\":2,\"price\":4000}", user, location, note);
+
+        String response = null;
+
+        Log.d("JSON", json);
+
+        try {
+            response = post("http://104.196.8.145:8080/api/order/", json);
+            Log.d("Inside CallResponse:", "success");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("Inside CallResponse:", "failed");
+
+        }
+        System.out.println(response);
+    }
+
+    public String post (String url, String json)throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        Response response = client.newCall(request).execute();
+
+        Log.d("TAG", response.body().string());
+        return response.body().string();
     }
 
     @Override
