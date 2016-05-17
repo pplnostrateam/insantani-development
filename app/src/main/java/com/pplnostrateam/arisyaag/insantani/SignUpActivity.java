@@ -50,7 +50,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A sign up screen that offers sign up via email.
  */
-public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class SignUpActivity extends AppCompatActivity implements GlobalConfig, LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -444,7 +444,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     }
 
     public void registerUserRestServer(String email, String name, String password) throws Exception {
-        String url = "http://104.196.48.112:8080/api/user/";
+        String url = APP_SERVER_IP + "api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 

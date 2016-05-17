@@ -38,7 +38,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Order extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements GlobalConfig, NavigationView.OnNavigationItemSelectedListener {
 
     private ImageButton btPlacesAPI;
     private TextView tvPlaceAPI;
@@ -195,7 +195,7 @@ public class Order extends AppCompatActivity
         Log.d("JSON", json);
 
         try {
-            response = post("http://104.196.8.145:8080/api/order/", json);
+            response = post(APP_SERVER_IP + "api/order/", json);
             Log.d("Inside CallResponse:", "success");
         } catch (IOException e) {
             e.printStackTrace();
