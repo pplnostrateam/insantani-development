@@ -47,7 +47,7 @@ import okhttp3.Response;
  */
 
 
-public class SearchResultActivity extends AppCompatActivity {
+public class SearchResultActivity extends AppCompatActivity implements GlobalConfig {
     String json_string;
     JSONObject jsonObject;
     JSONArray jsonArray;
@@ -175,7 +175,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            data_url = "http://104.196.48.112:8080/api/vegetable/sugesstion?name=" + vName;
+            data_url = APP_SERVER_IP + "api/vegetable/sugesstion?name=" + vName;
         }
 
         @Override

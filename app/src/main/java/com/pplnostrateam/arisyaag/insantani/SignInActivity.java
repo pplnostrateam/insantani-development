@@ -80,7 +80,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password, facebook, or google+.
  */
-public class SignInActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LoaderCallbacks<Cursor> {
+public class SignInActivity extends AppCompatActivity implements GlobalConfig, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -774,7 +774,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void loginUserRestServer(String email, String password) throws Exception {
-        String url = "http://104.196.48.112:8080/api/user/";
+        String url = APP_SERVER_IP + "api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         Log.d("#Debug", "Start");
@@ -857,7 +857,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void registerUserRestServer(String email, String name, String password) throws Exception {
-        String url = "http://104.196.48.112:8080/api/user/";
+        String url = APP_SERVER_IP + "api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
