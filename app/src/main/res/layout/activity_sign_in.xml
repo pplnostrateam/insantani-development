@@ -101,7 +101,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/action_sign_in_short"
                 android:id="@+id/email_sign_in_button"
-                android:background="@color/buttonOrange"
+                android:background="@drawable/round_button"
+                android:elevation="2dp"
                 android:textSize="@dimen/button_font_size"
                 android:layout_marginTop="30dp"
                 android:textColor="@color/colorWhite"
@@ -121,7 +122,8 @@
                 android:id="@+id/sign_in_google"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10sp" />
+                android:paddingTop="10sp"
+                />
 
             <!--
             <Button

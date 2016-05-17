@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey100"
     android:weightSum="1">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,32 +12,34 @@
         android:layout_height="wrap_content"
         android:id="@+id/header"
         android:elevation="2dp"
-        android:padding="1dp"
+        android:padding="3dp"
         android:layout_margin="8dp"
         android:weightSum="1">
     <EditText
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:id="@+id/search_vegetable"
         android:inputType="text"
         android:singleLine="true"
         android:imeOptions="actionSearch"
-        android:background="@color/colorWhite"
-        android:paddingLeft="10dp"
+        android:background="@drawable/round_edittext"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
         android:layout_below="@+id/logoname"
         android:hint="@string/search_box"
         android:layout_marginTop="5dp"
         android:textColor="@color/colorInput"
-        android:layout_toEndOf="@+id/back_button"
-        android:layout_toRightOf="@+id/back_button" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
     <Button
         android:layout_width="50dp"
         android:layout_height="60dp"
-        android:text="SEARCH"
         android:id="@+id/button"
         android:onClick="getData"
-        android:background="@color/buttonOrange"
-        android:drawableLeft="@drawable/ic_search_dark_48dp"
+        android:background="@drawable/round_button"
+        android:drawableLeft="@drawable/ic_search_white_48dp"
         android:padding="5dp"
         android:textSize="18sp"
         android:layout_alignTop="@+id/search_vegetable"
@@ -44,18 +47,19 @@
         />
     <Button
         android:layout_width="40dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:id="@+id/back_button"
         android:background="@color/colorWhite"
         android:drawableLeft="@drawable/left_arrow"
         android:padding="5dp"
         android:textSize="18sp"
+        android:layout_alignBaseline="@+id/search_vegetable"
+        android:layout_alignBottom="@+id/search_vegetable"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/search_vegetable" />
+        android:layout_alignParentStart="true" />
 
+    </RelativeLayout>
 
-    </RelativeLayout>>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,7 +67,6 @@
         android:text="Cart"
         android:id="@+id/textView4"
         android:layout_below="@+id/header"
-
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
@@ -79,9 +82,11 @@
         android:id="@+id/searchResult"
         android:layout_below="@+id/textView4"
         android:layout_above="@+id/bottom"
-        android:padding="16dp"
-        android:background="@color/colorWhite"
+        android:padding="8dp"
+        android:background="@color/grey100"
         android:elevation="1dp"
+        android:divider="@null"
+
         />
 
     <RelativeLayout
@@ -90,15 +95,16 @@
         android:id="@+id/bottom"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:background="@color/grey200"
+        android:background="@color/grey300"
         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
 
         >
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/buttonOrange"
+            android:background="@drawable/round_button"
             android:text="continue"
             android:layout_margin="8dp"
             android:padding="8dp"
@@ -106,7 +112,6 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="44dp"
             android:layout_marginEnd="44dp"
             android:textSize="20dp"
             android:textColor="#FFFFFF" />
@@ -118,7 +123,7 @@
             android:digits="0123456789.,"
             android:ems="10"
             android:id="@+id/weight"
-            android:background="@color/colorWhite"
+            android:background="@drawable/round_edittext"
             android:singleLine="true"
             android:textAlignment="center"
             android:layout_marginLeft="53dp"
@@ -133,7 +138,6 @@
             android:text="Kg:"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textKg"
-            android:paddingLeft="8dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignRight="@+id/weight"

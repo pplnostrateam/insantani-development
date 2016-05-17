@@ -161,7 +161,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/action_sign_up_short"
                 android:id="@+id/login"
-                android:background="@color/buttonOrange"
+                android:background="@drawable/round_button"
+                android:elevation="2dp"
                 android:textSize="@dimen/button_font_size"
                 android:layout_marginTop="25dp"
                 android:textColor="@color/colorWhite" />
