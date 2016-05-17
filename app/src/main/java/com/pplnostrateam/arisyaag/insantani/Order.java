@@ -39,7 +39,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class Order extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Order extends AppCompatActivity
+        implements GlobalConfig, NavigationView.OnNavigationItemSelectedListener {
 
     // konstanta untuk mendeteksi hasil balikan dari place picker
     private int PLACE_PICKER_REQUEST = 1;
@@ -222,7 +223,7 @@ public class Order extends AppCompatActivity implements NavigationView.OnNavigat
         Log.d("JSON", json);
 
         try {
-            response = post("http://104.196.8.145:8080/api/order/", json);
+            response = post(APP_SERVER_IP + "api/order/", json);
             Log.d("Inside CallResponse:", "success");
         } catch (IOException e) {
             e.printStackTrace();
