@@ -138,7 +138,7 @@ public class Order extends AppCompatActivity
         }
 
         //showProgress(true);
-        mOrderTask = new OrderTask(1, 1, -10.1, 34.4, place.getAddress().toString(),
+        mOrderTask = new OrderTask(session.getUserId(), 1, -10.1, 34.4, "error: place.getAddress().toString()",
                 mLocation1.getText() + " " + mLocation2.getText(), 5, 4000);
         mOrderTask.execute((Void) null);
     }

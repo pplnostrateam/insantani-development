@@ -756,7 +756,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
                 Toast.makeText(getApplicationContext(),
                         "Login attempt success.", Toast.LENGTH_LONG).show();
 
-                session.createLoginSession(mEmail, mPassword);
+                //session.createLoginSession(mEmail, mPassword);
 
                 finish();
             } else {
@@ -784,6 +784,8 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             User theUser = rest.getForObject(queryURL, User.class);
 
             Log.d("Output", theUser.getName());
+
+            session.createLoginSession(theUser.getId(), theUser.getName(), theUser.getEmail());
 
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){
@@ -869,6 +871,8 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             User theUser = rest.getForObject(getterURL, User.class, email);
 
             Log.d("Output", theUser.getName());
+
+            session.createLoginSession(theUser.getId(), theUser.getName(), theUser.getEmail());
 
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){
