@@ -285,6 +285,8 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
     }
 
     public void moveByPassLogin(){
+        session.setVegetableWeight(Integer.parseInt(weight.getText().toString()));
+
         Intent intent = new Intent(this, Order.class);
         intent.putExtra("json_data", json_string);
         startActivity(intent);

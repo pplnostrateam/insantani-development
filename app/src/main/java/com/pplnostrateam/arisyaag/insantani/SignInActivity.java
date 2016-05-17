@@ -783,9 +783,14 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             String queryURL = url + "login?email=" + email + "&password=" + computeSHAHash(password);
             User theUser = rest.getForObject(queryURL, User.class);
 
-            Log.d("Output", theUser.getName());
+            long userId = theUser.getId();
 
-            session.createLoginSession(theUser.getId(), theUser.getName(), theUser.getEmail());
+            Log.d("Return ID", Long.toString(theUser.getId()));
+            Log.d("Return Name", theUser.getName());
+            Log.d("Return Email", theUser.getEmail());
+
+            session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+
 
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){
@@ -870,9 +875,13 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             String getterURL = url + "find?email={email}";
             User theUser = rest.getForObject(getterURL, User.class, email);
 
-            Log.d("Output", theUser.getName());
+            long userId = theUser.getId();
 
-            session.createLoginSession(theUser.getId(), theUser.getName(), theUser.getEmail());
+            Log.d("Return ID", Long.toString(theUser.getId()));
+            Log.d("Return Name", theUser.getName());
+            Log.d("Return Email", theUser.getEmail());
+
+            session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
 
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){

@@ -37,6 +37,9 @@ public class SessionManager {
     // Email address (make variable public to access from outside)
     public static final String KEY_EMAIL = "email";
 
+
+    public static final String KEY_WEIGHT = "weight";
+
     // Constructor
     public SessionManager(Context context){
         this._context = context;
@@ -73,6 +76,14 @@ public class SessionManager {
 
         // commit changes
         editor.commit();
+    }
+
+    public void setVegetableWeight(int weight) {
+        editor.putInt(KEY_WEIGHT, weight);
+    }
+
+    public int getVegetableWeight() {
+        return pref.getInt(KEY_WEIGHT, 1);
     }
 
     public HashMap<String, String> getUserDetails(){
