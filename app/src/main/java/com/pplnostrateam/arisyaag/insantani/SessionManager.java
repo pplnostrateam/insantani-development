@@ -95,7 +95,7 @@ public class SessionManager {
     }
 
     public long getUserId() {
-        return pref.getLong(KEY_ID, -1);
+        return pref.getLong(KEY_ID, 1);
     }
 
     public void checkLogin(){
