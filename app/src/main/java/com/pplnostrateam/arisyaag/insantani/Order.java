@@ -126,14 +126,13 @@ public class Order extends AppCompatActivity
         mLocation2 = (EditText) findViewById(R.id.address_detail2);
 
         Button orderButton = (Button) findViewById(R.id.order_button);
-        if (orderButton != null) {
-            orderButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    attemptCreateOrder();
-                }
-            });
-        }
+        assert orderButton != null;
+        orderButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptCreateOrder();
+            }
+        });
 
         mOrderFormView = findViewById(R.id.order_form);
         mProgressView = findViewById(R.id.order_progress);
