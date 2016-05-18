@@ -72,12 +72,14 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
         });
         //TextView textView3 = (TextView) findViewById(R.id.textView3);
         // ListView searchResult = (ListView)findViewById(R.id.searchResult);
+
         ListView searchResult = (ListView)findViewById(R.id.searchResult);
         vegetableAdapter = new VegetableAdapter(this, R.layout.row_layout);
         searchResult.setAdapter(vegetableAdapter);
         search_vegetable = (EditText) findViewById(R.id.search_vegetable);
-        weight = (EditText) findViewById(R.id.weight);
 
+
+        weight = (EditText) findViewById(R.id.weight);
         weight.setFilters(new InputFilter[]{new InputFilterMinMax("1", "100")});
 
         search_vegetable.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -107,7 +109,7 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
         mContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (weight.getText() == null)
+                if (weight.getText().toString().equals(""))
                     weightNullNotAllowed();
                 else if (Integer.parseInt(weight.getText().toString()) < 1)
                     weightLessThanOneNotAllowed();
