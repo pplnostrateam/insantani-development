@@ -107,7 +107,7 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
         mContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (weight.getText() == null)
+                if (weight.getText().toString().equals(""))
                     weightNullNotAllowed();
                 else if (Integer.parseInt(weight.getText().toString()) < 1)
                     weightLessThanOneNotAllowed();
