@@ -39,29 +39,34 @@
                 android:layout_width="350dp"
                 android:layout_height="60dp"
                 android:id="@+id/search_vegetable"
-                android:background="@color/colorWhite"
+                android:background="@drawable/round_edittext"
+                android:elevation="2dp"
                 android:inputType="text"
                 android:singleLine="true"
                 android:imeOptions="actionSearch"
-                android:paddingLeft="10dp"
+                android:paddingLeft="16dp"
                 android:hint="@string/search_box"
                 android:textColor="@color/colorInput"
                 android:layout_below="@+id/logoname"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                />
 
             <Button
                 android:layout_width="150dp"
                 android:layout_height="60dp"
                 android:text="SEARCH"
+                android:textColor="@color/colorWhite"
                 android:id="@+id/button"
                 android:onClick="getData"
                 android:layout_marginTop="20dp"
-                android:background="@color/buttonOrange"
-                android:drawableLeft="@drawable/ic_search_dark_48dp"
+                android:background="@drawable/round_button"
+                android:elevation="2dp"
+                android:drawableLeft="@drawable/ic_search_white_48dp"
                 android:padding="5dp"
                 android:textSize="18sp"
                 android:layout_below="@+id/search_vegetable"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+               />
 
         </RelativeLayout>
     </ScrollView>

@@ -273,19 +273,19 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setScopes(gso.getScopeArray());
 
-       signInButton.setOnClickListener(new OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               switch (view.getId()) {
-                   case R.id.sign_in_google:
-                       Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                       startActivityForResult(signInIntent, RC_SIGN_IN);
+        signInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.sign_in_google:
+                        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                        startActivityForResult(signInIntent, RC_SIGN_IN);
 
-                       break;
-               }
+                        break;
+                }
 
-           }
-       });
+            }
+        });
 
 
         TextView mRegisterTextView = (TextView) findViewById(R.id.register_text_view);
@@ -773,7 +773,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         }
     }
 
-    public void loginUserRestServer(String email, String password) throws Exception {
+    public void loginUserRestServer(String email, String password) throws Exception {i
         String url = APP_SERVER_IP + "api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
