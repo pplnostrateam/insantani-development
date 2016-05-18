@@ -10,7 +10,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".SignInActivity"
-    android:background="@color/colorWhite">
+    android:background="@color/colorPrimary"
+    android:contextClickable="false">
 
 
     <ImageView
@@ -31,8 +32,9 @@
         android:id="@+id/logoname"
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
-        android:textColor="#388E3C"
+        android:textColor="@color/cantik"
         android:textSize="60sp"
-        android:paddingTop="0dp" />
+        android:paddingTop="0dp"
+        android:layout_marginTop="18dp" />
 
 </RelativeLayout>
