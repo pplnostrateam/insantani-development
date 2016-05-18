@@ -100,7 +100,11 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
         mContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!session.isLoggedIn())
+                if (weight.getText() == null)
+                    weightNullNotAllowed();
+                else if (Integer.parseInt(weight.getText().toString()) < 1)
+                    weightLessThanOneNotAllowed();
+                else if (!session.isLoggedIn())
                     getConfirmation(view);
                 else
                     moveByPassLogin();
@@ -213,7 +217,7 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
             //textView2 = (TextView) findViewById(R.id.textView2);
             //textView2.setText(result);
             json_string = result;
-            move2();
+            vegetableQueryResultChecking();
         }
     }
     public void searchFirst(){
@@ -229,7 +233,38 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
         AlertDialog dialog = alertDialogue.create();
         dialog.show();
     }
-    public void move2() {
+
+    public void weightNullNotAllowed(){
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setMessage("please fill weight to order");
+        alertDialogue.setCancelable(false);
+
+        alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
+    }
+
+    public void weightLessThanOneNotAllowed(){
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setMessage("weight must be integer greater than 0");
+        alertDialogue.setCancelable(false);
+
+        alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
+    }
+
+
+
+    public void vegetableQueryResultChecking() {
         if (json_string.equals("[]")) {
             AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
             alertDialogue.setMessage("vegetable not found");
@@ -248,7 +283,10 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
             startActivity(intent);
         }
     }
+
     public void moveByPassLogin(){
+        session.setVegetableWeight(Integer.parseInt(weight.getText().toString()));
+
         Intent intent = new Intent(this, Order.class);
         intent.putExtra("json_data", json_string);
         startActivity(intent);
