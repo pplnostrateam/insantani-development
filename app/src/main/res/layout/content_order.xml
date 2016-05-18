@@ -14,7 +14,7 @@
     tools:showIn="@layout/app_bar_order">
 
     <ProgressBar
-        android:id="@+id/login_progress"
+        android:id="@+id/order_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         android:visibility="gone" />
 
     <ScrollView
-        android:id="@+id/order_page"
+        android:id="@+id/order_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

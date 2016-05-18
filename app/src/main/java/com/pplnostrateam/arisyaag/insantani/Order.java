@@ -1,8 +1,12 @@
 package com.pplnostrateam.arisyaag.insantani;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -47,6 +51,9 @@ public class Order extends AppCompatActivity
 
     private ImageButton btPlacesAPI;
     private TextView tvPlaceAPI;
+
+    private View mProgressView;
+    private View mOrderFormView;
 
     private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -121,6 +128,9 @@ public class Order extends AppCompatActivity
             }
         });
 
+        mOrderFormView = findViewById(R.id.order_form);
+        mProgressView = findViewById(R.id.order_progress);
+
         /*
         Button order_button = (Button) findViewById(R.id.order_button);
         order_button.setOnClickListener(new OnClickListener() {
@@ -192,7 +202,7 @@ public class Order extends AppCompatActivity
         @Override
         protected void onPostExecute(final Boolean success) {
             mOrderTask = null;
-            //showProgress(false);
+            showProgress(false);
 
             startActivity(new Intent(Order.this, Ordermade.class));
 
@@ -207,7 +217,7 @@ public class Order extends AppCompatActivity
         @Override
         protected void onCancelled() {
             mOrderTask = null;
-            //showProgress(false);
+            showProgress(false);
         }
     }
 
@@ -325,6 +335,43 @@ public class Order extends AppCompatActivity
         Intent intent = new Intent(Order.this, Ordermade.class);
         startActivity(intent);
     }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            mOrderFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mOrderFormView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mOrderFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mOrderFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
