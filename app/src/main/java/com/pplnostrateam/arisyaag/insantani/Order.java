@@ -17,11 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Button;
 import android.view.View.OnClickListener;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -112,9 +112,9 @@ public class Order extends AppCompatActivity
         mLocation1 = (EditText) findViewById(R.id.address_detail1);
         mLocation2 = (EditText) findViewById(R.id.address_detail2);
 
-        Button order_button = (Button) findViewById(R.id.order_button);
-        assert  order_button != null;
-        order_button.setOnClickListener(new OnClickListener() {
+        Button orderButton = (Button) findViewById(R.id.order_button);
+        assert orderButton != null;
+        orderButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptCreateOrder();
