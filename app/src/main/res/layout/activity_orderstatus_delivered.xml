@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="ABC FARM"
+                android:text="ADRI FARM"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
                 android:textSize="32dp"
