@@ -8,7 +8,7 @@
 
     <string name="prompt_name">Name</string>
     <string name="prompt_phone">Phone</string>
-    <string name="prompt_repeat_password">Password (repeat)</string>
+    <string name="prompt_repeat_password">Confirm password</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
 
