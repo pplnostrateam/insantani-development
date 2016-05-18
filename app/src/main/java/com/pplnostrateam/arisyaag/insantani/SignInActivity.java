@@ -80,7 +80,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password, facebook, or google+.
  */
-public class SignInActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LoaderCallbacks<Cursor> {
+public class SignInActivity extends AppCompatActivity implements GlobalConfig, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -756,7 +756,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                 Toast.makeText(getApplicationContext(),
                         "Login attempt success.", Toast.LENGTH_LONG).show();
 
-                session.createLoginSession(mEmail, mPassword);
+                //session.createLoginSession(mEmail, mPassword);
 
                 finish();
             } else {
@@ -773,8 +773,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         }
     }
 
-    public void loginUserRestServer(String email, String password) throws Exception {
-        String url = "http://104.196.8.145:8080/api/user/";
+    public void loginUserRestServer(String email, String password) throws Exception {i
+        String url = APP_SERVER_IP + "api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         Log.d("#Debug", "Start");
@@ -783,7 +783,14 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             String queryURL = url + "login?email=" + email + "&password=" + computeSHAHash(password);
             User theUser = rest.getForObject(queryURL, User.class);
 
-            Log.d("Output", theUser.getName());
+            long userId = theUser.getId();
+
+            Log.d("Return ID", Long.toString(theUser.getId()));
+            Log.d("Return Name", theUser.getName());
+            Log.d("Return Email", theUser.getEmail());
+
+            session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+
 
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){
@@ -857,7 +864,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void registerUserRestServer(String email, String name, String password) throws Exception {
-        String url = "http://104.196.8.145:8080/api/user/";
+        String url = APP_SERVER_IP + "api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
@@ -868,7 +875,13 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             String getterURL = url + "find?email={email}";
             User theUser = rest.getForObject(getterURL, User.class, email);
 
-            Log.d("Output", theUser.getName());
+            long userId = theUser.getId();
+
+            Log.d("Return ID", Long.toString(theUser.getId()));
+            Log.d("Return Name", theUser.getName());
+            Log.d("Return Email", theUser.getEmail());
+
+            session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
 
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){

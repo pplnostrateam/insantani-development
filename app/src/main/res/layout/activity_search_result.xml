@@ -15,6 +15,7 @@
         android:padding="3dp"
         android:layout_margin="8dp"
         android:weightSum="1">
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -72,12 +73,12 @@
         android:layout_below="@+id/header"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
+
         android:paddingLeft="10dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textColor="@color/titleColor"
         android:textSize="42dp" />
-
 
     <ListView
         android:layout_width="match_parent"
@@ -87,6 +88,7 @@
         android:layout_above="@+id/bottom"
         android:padding="8dp"
         android:background="@color/grey200"
+
         android:elevation="1dp"
         android:divider="@null"
 
@@ -125,6 +127,7 @@
             android:inputType="numberDecimal"
             android:digits="0123456789.,"
             android:ems="10"
+            android:textAlignment="center"
             android:id="@+id/weight"
             android:background="@drawable/round_edittext"
             android:singleLine="true"
