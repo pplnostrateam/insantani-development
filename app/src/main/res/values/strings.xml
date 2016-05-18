@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Insantani</string>
+    <string name="app_name">insantani</string>
     <string name="launcher_button">Enter</string>
-    <string name="main_text">Insantani</string>
+    <string name="main_text">insantani</string>
 
     <string name="title_activity_sign_in">Sign In</string>
     <string name="title_activity_sign_up">Sign up</string>

@@ -127,7 +127,6 @@
             android:inputType="numberDecimal"
             android:digits="0123456789.,"
             android:ems="10"
-            android:textAlignment="center"
             android:id="@+id/weight"
             android:background="@drawable/round_edittext"
             android:singleLine="true"
