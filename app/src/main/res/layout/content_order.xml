@@ -146,6 +146,7 @@
                     android:id="@+id/order_button"
                     android:background="@drawable/round_button"
                     android:textSize="24sp"
+                    android:layout_below="@+id/address_detail2"
                     android:textColor="@color/colorWhite"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="43dp" />
