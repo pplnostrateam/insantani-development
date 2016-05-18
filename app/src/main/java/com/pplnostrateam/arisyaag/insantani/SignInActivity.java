@@ -773,7 +773,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         }
     }
 
-    public void loginUserRestServer(String email, String password) throws Exception {i
+    public void loginUserRestServer(String email, String password) throws Exception {
         String url = APP_SERVER_IP + "api/user/";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
