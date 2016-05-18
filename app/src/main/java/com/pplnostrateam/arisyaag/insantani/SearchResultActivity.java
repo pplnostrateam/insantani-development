@@ -8,12 +8,20 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,12 +47,15 @@ import okhttp3.Response;
  */
 
 
-public class SearchResultActivity extends AppCompatActivity {
+public class SearchResultActivity extends AppCompatActivity implements GlobalConfig {
     String json_string;
     JSONObject jsonObject;
     JSONArray jsonArray;
     VegetableAdapter vegetableAdapter;
     EditText search_vegetable;
+    EditText weight;
+
+    SessionManager session;
 
 
     //    ArrayList<Vegetable> arrayOfData = new ArrayList<Vegetable>();
@@ -52,14 +63,63 @@ public class SearchResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
+        Button backButton = (Button) findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(SearchResultActivity.this, SearchingActivity.class);
+                SearchResultActivity.this.startActivity(intent);
+            }
+        });
         //TextView textView3 = (TextView) findViewById(R.id.textView3);
         // ListView searchResult = (ListView)findViewById(R.id.searchResult);
+
         ListView searchResult = (ListView)findViewById(R.id.searchResult);
         vegetableAdapter = new VegetableAdapter(this, R.layout.row_layout);
         searchResult.setAdapter(vegetableAdapter);
         search_vegetable = (EditText) findViewById(R.id.search_vegetable);
 
+
+        weight = (EditText) findViewById(R.id.weight);
+        weight.setFilters(new InputFilter[]{new InputFilterMinMax("1", "100")});
+
+        search_vegetable.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                String vName = search_vegetable.getText().toString();
+
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if(vName.equals("")){
+                        searchFirst();
+                    }
+                    else {
+                        new BackgroundTask().execute();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
         json_string = getIntent().getExtras().getString("json_data");
+
+        session = new SessionManager(getApplicationContext());
+
+        Button mContinueButton = (Button) findViewById(R.id.button2);
+        assert mContinueButton != null;
+        mContinueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (weight.getText().toString().equals(""))
+                    weightNullNotAllowed();
+                else if (Integer.parseInt(weight.getText().toString()) < 1)
+                    weightLessThanOneNotAllowed();
+                else if (!session.isLoggedIn())
+                    getConfirmation(view);
+                else
+                    moveByPassLogin();
+            }
+        });
+
         try {
             // jsonObject = new JSONObject(json_string);
             jsonArray = new JSONArray(json_string);
@@ -80,6 +140,7 @@ public class SearchResultActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 
     public void getConfirmation(View view){
         //Intent intent = new Intent(this, SearchResultActivity.class);
@@ -105,11 +166,17 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     private void move() {
-        Intent intent = new Intent(this, Order.class);
+        Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
     }
     public void getData(View view){
-        new BackgroundTask().execute();
+        String vName = search_vegetable.getText().toString();
+        if(vName.equals("")){
+            searchFirst();
+        }
+        else{
+            new BackgroundTask().execute();
+        }
 
     }
 
@@ -121,7 +188,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            data_url = "http://104.155.215.144:8080/api/vegetable/sugesstion?name=" + vName;
+            data_url = APP_SERVER_IP + "api/vegetable/sugesstion?name=" + vName;
         }
 
         @Override
@@ -159,14 +226,78 @@ public class SearchResultActivity extends AppCompatActivity {
             //textView2 = (TextView) findViewById(R.id.textView2);
             //textView2.setText(result);
             json_string = result;
-            move2();
+            vegetableQueryResultChecking();
+        }
+    }
+    public void searchFirst(){
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setMessage("insert vegetable's name first");
+        alertDialogue.setCancelable(false);
+
+        alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
+    }
+
+    public void weightNullNotAllowed(){
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setMessage("please fill weight to order");
+        alertDialogue.setCancelable(false);
+
+        alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
+    }
+
+    public void weightLessThanOneNotAllowed(){
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setMessage("weight must be integer greater than 0");
+        alertDialogue.setCancelable(false);
+
+        alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
+    }
+
+
+
+    public void vegetableQueryResultChecking() {
+        if (json_string.equals("[]")) {
+            AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+            alertDialogue.setMessage("vegetable not found");
+            alertDialogue.setCancelable(false);
+
+            alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            AlertDialog dialog = alertDialogue.create();
+            dialog.show();
+        } else {
+            Intent intent = new Intent(this, SearchResultActivity.class);
+            intent.putExtra("json_data", json_string);
+            startActivity(intent);
         }
     }
 
-    public void move2(){
-        Intent intent = new Intent(this, SearchResultActivity.class);
+    public void moveByPassLogin(){
+        session.setVegetableWeight(Integer.parseInt(weight.getText().toString()));
+
+        Intent intent = new Intent(this, Order.class);
         intent.putExtra("json_data", json_string);
         startActivity(intent);
     }
-
 }

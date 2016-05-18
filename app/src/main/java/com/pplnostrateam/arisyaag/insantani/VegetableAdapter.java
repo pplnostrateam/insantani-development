@@ -68,10 +68,11 @@ public class VegetableAdapter extends ArrayAdapter {
 //            vegetableHolder = (VegetableHolder) row.getTag();
 //        }
         RadioButton radioButton = (RadioButton) row.findViewById(R.id.radiobutton);
-
+        TextView textView = (TextView) row.findViewById(R.id.vPrice);
         Vegetable vegetable = (Vegetable) this.getItem(position);
         // vegetableHolder.vName.setText(vegetable.getName());
         radioButton.setText(vegetable.getName());
+        textView.setText("Price: " + vegetable.getPrice());
         //vegetableHolder.vPrice.setText(vegetable.getPrice());
         //vegetableHolder.vStock.setText(vegetable.getStock());
         radioButton.setChecked(post == position);

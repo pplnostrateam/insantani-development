@@ -13,6 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.view.View.OnClickListener;
+import android.view.View;
 
 public class Ordermade extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +45,29 @@ public class Ordermade extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //on createorder button
+        Button createorder = (Button) findViewById(R.id.createorder);
+        createorder.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Ordermade.this, Order.class);
+                Ordermade.this.startActivity(intent);
+            }
+        });
+
+        //on statusorder button
+        //intentnya masih dummy (ke halaman status) harusnya ke list of order
+        Button view_all_order = (Button) findViewById(R.id.view_all_order);
+        view_all_order.setOnClickListener(new OnClickListener() {
+
+            public void onClick(View v) {
+
+                Intent intent = new Intent(v.getContext(), Orderstatus_accepted.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
 /*        Intent myIntent = new Intent(Ordermade.this, Order.class);
         Ordermade.this.startActivity(myIntent);*/
     }
@@ -62,7 +88,7 @@ public class Ordermade extends AppCompatActivity
         getMenuInflater().inflate(R.menu.order, menu);
         return true;
     }
-
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -77,7 +103,7 @@ public class Ordermade extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

@@ -1,11 +1,15 @@
 package com.pplnostrateam.arisyaag.insantani;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,13 +28,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class SearchingActivity extends AppCompatActivity {
+public class SearchingActivity extends AppCompatActivity implements GlobalConfig {
     //private EditText editTextName;
     private EditText search_vegetable;
+    //private EditText editText;
     private Button button;
     private TextView textView2;
     private Activity activity;
     String json_string;
+    // String vName;
     // private EditText editText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +44,36 @@ public class SearchingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_searching);
         //    textView = (TextView) findViewById(R.id.textView);
         search_vegetable = (EditText) findViewById(R.id.search_vegetable);
+        //editText = (EditText) findViewById(R.id.editText);
 
+        search_vegetable.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                String vName = search_vegetable.getText().toString();
+
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if(vName.equals("")){
+                        searchFirst();
+                    }
+                    else {
+                        new BackgroundTask().execute();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
+
     public void getData(View view){
-        new BackgroundTask().execute();
+        String vName = search_vegetable.getText().toString();
+        if(vName.equals("")){
+            searchFirst();
+        }
+        else{
+            new BackgroundTask().execute();
+        }
 
     }
 
@@ -54,7 +85,7 @@ public class SearchingActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            data_url = "http://104.155.215.144:8080/api/vegetable/sugesstion?name=" + vName;
+            data_url = APP_SERVER_IP + "api/vegetable/sugesstion?name=" + vName;
         }
 
         @Override
@@ -95,11 +126,44 @@ public class SearchingActivity extends AppCompatActivity {
             move();
         }
     }
-    public void move(){
-        Intent intent = new Intent(this, SearchResultActivity.class);
-        intent.putExtra("json_data", json_string);
-        startActivity(intent);
+
+    public void searchFirst(){
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setMessage("insert vegetable's name first");
+        alertDialogue.setCancelable(false);
+
+        alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
     }
+    public void move(){
 
+        if(json_string.equals("[]")){
+            AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+            alertDialogue.setMessage("vegetable not found");
+            alertDialogue.setCancelable(false);
 
+            alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            AlertDialog dialog = alertDialogue.create();
+            dialog.show();
+        }
+
+        else {
+            Intent intent = new Intent(this, SearchResultActivity.class);
+            intent.putExtra("json_data", json_string);
+            startActivity(intent);
+        }
+
+//        Intent intent = new Intent(this, SearchResultActivity.class);
+//        intent.putExtra("json_data", json_string);
+//        startActivity(intent);
+    }
 }

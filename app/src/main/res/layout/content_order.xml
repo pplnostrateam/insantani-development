@@ -8,126 +8,153 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorWhite"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Order"
     tools:showIn="@layout/app_bar_order">
 
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <ProgressBar
+        android:id="@+id/order_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:id="@+id/order_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal|top">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView3"
-                android:cropToPadding="false"
-                android:src="@drawable/ic_logo"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="insantani"
-                android:id="@+id/textView3"
-                android:layout_below="@+id/imageView3"
-                android:layout_centerHorizontal="true"
-                android:textColor="#4CAF50" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="YOUR LOCATION"
-                android:id="@+id/title_location"
-                android:layout_below="@+id/textView3"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="24dp" />
-
-
-            <LinearLayout
-                android:orientation="horizontal"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_below="@+id/title_location"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/linearLayout">
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal|top"
+                tools:ignore="UselessParent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView3"
+                    android:cropToPadding="false"
+                    android:src="@drawable/ic_logo"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:contentDescription="@string/insantani_logo" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:textSize="24sp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tv_place_id"
-                    android:layout_weight="7.90"
-                    android:onClick="viewMap"
-                    />
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/insantani"
+                    android:id="@+id/textView3"
+                    android:layout_below="@+id/imageView3"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="#4CAF50" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/your_location"
+                    android:id="@+id/title_location"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/textView3"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="24dp" />
 
                 <ImageButton
                     android:layout_width="32dp"
                     android:layout_height="43dp"
                     android:id="@+id/bt_ppicker"
                     android:src="@mipmap/location"
+                    android:background="@null"
                     android:onClick="viewMap"
-                    />
+                    android:layout_above="@+id/linearLayout"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:contentDescription="@string/map_button_image" />
 
-            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="ADD ADDITIONAL DETAILS"
-                android:id="@+id/textView4"
-                android:layout_below="@+id/linearLayout"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:onClick="viewMap" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/title_location"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/linearLayout">
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/address_detail1"
-                android:layout_below="@+id/textView4"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                 />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:textSize="20sp"
+                        android:singleLine="true"
+                        android:layout_marginTop="8dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_place_id"
+                        android:layout_weight="7.90"
+                        android:onClick="viewMap"
+                        android:background="@drawable/underline_textview" />
+                </LinearLayout>
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/address_detail2"
-                android:layout_below="@+id/address_detail1"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:onClick="viewMap" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/additional_details"
+                    android:id="@+id/textView4"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:onClick="viewMap"
+                    android:layout_below="@+id/linearLayout"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
 
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="ORDER"
-                android:id="@+id/order_button"
-                android:onClick="moveToOrdermade"
-                android:background="@color/buttonOrange"
-                android:textSize="24dp"
-                android:textColor="@color/colorWhite"
-                android:layout_marginTop="32dp"
-                android:layout_below="@+id/address_detail2"
-                android:layout_alignRight="@+id/textView4"
-                android:layout_alignEnd="@+id/textView4" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/address_detail1"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/textView4"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:inputType="text" />
 
-        </RelativeLayout>
-    </FrameLayout>
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/address_detail2"
+                    android:onClick="viewMap"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/address_detail1"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:inputType="text" />
+
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order"
+                    android:id="@+id/order_button"
+                    android:background="@drawable/round_button"
+                    android:textSize="24sp"
+                    android:layout_below="@+id/address_detail2"
+                    android:textColor="@color/colorWhite"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="43dp" />
+            </RelativeLayout>
+        </FrameLayout>
+    </ScrollView>
+
+
 
 </RelativeLayout>
+
