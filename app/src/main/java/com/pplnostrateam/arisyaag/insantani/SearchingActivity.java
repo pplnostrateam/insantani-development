@@ -141,7 +141,7 @@ public class SearchingActivity extends AppCompatActivity implements GlobalConfig
         dialog.show();
     }
     public void move(){
-        /*
+
         if(json_string.equals("[]")){
             AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
             alertDialogue.setMessage("vegetable not found");
@@ -156,12 +156,11 @@ public class SearchingActivity extends AppCompatActivity implements GlobalConfig
             dialog.show();
         }
 
-        else { */
-        Intent intent = new Intent(this, SearchResultActivity.class);
-        intent.putExtra("json_data", json_string);
-        startActivity(intent);
-        /*
-        }*/
+        else {
+            Intent intent = new Intent(this, SearchResultActivity.class);
+            intent.putExtra("json_data", json_string);
+            startActivity(intent);
+        }
 
 //        Intent intent = new Intent(this, SearchResultActivity.class);
 //        intent.putExtra("json_data", json_string);

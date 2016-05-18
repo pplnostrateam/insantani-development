@@ -1,6 +1,7 @@
 package com.pplnostrateam.arisyaag.insantani;
 
 /**
+ *
  * Created by desiratnamukti on 4/27/16.
  */
 import android.app.Fragment;
