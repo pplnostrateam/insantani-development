@@ -18,7 +18,7 @@ public class FirstFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(com.pplnostrateam.arisyaag.insantani.R.layout.first_layout_history, container, false);
+        myView = inflater.inflate(R.layout.first_layout_history, container, false);
         return myView;
     }
 

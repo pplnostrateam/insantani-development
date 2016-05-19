@@ -433,7 +433,10 @@ public class Order extends AppCompatActivity
         int id = item.getItemId();
         FragmentManager fragmentManager = getFragmentManager();
 
-        if (id == R.id.nav_history) {
+        if (id == R.id.nav_profile) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new FourthFragment()).commit();
+
+        } else if (id == R.id.nav_history) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
 
         } else if (id == R.id.nav_order) {

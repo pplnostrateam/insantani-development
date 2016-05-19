@@ -29,10 +29,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="Price"
         android:id="@+id/vPrice"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp"
         android:layout_centerVertical="true"
         android:layout_alignLeft="@+id/cardView"
         android:layout_alignStart="@+id/cardView" />
