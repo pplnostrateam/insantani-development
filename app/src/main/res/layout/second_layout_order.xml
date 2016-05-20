@@ -33,11 +33,10 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/searchResult"
+        android:id="@+id/orderList"
         android:padding="8dp"
         android:background="@color/colorWhite"
         android:elevation="1dp"
-        android:divider="@null"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/linearLayout2" />
