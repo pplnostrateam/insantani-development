@@ -7,10 +7,6 @@
             android:icon="@drawable/ic_menu_profile"
             android:title="My Profile" />
         <item
-            android:id="@+id/nav_history"
-            android:icon="@drawable/ic_menu_history"
-            android:title="My History" />
-        <item
             android:id="@+id/nav_order"
             android:icon="@drawable/ic_menu_order"
             android:title="My Order" />
