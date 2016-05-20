@@ -10,6 +10,7 @@ package com.pplnostrateam.arisyaag.insantani;
         private String email;
         private String name;
         private String password;
+        private String phone;
 
 
         public User() { }
@@ -17,6 +18,13 @@ package com.pplnostrateam.arisyaag.insantani;
             this.email = email;
             this.name = name;
             this.password = password;
+        }
+
+        public User(String email, String name, String password, String phone) {
+            this.email = email;
+            this.name = name;
+            this.password = password;
+            this.phone = phone;
         }
 
         public long getId() {
