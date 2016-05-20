@@ -153,18 +153,11 @@ public class Order extends AppCompatActivity
         mOrderFormView = findViewById(R.id.order_form);
         mProgressView = findViewById(R.id.order_progress);
 
+        userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_name_nav);
+        userName.setText(session.getUserDetails().get("name"));
 
-        userName = (TextView) findViewById(R.id.user_name_nav);
-        if (userName == null)
-            Log.d("Debug:", "user_name_nave not found");
-        else
-            userName.setText(session.getUserDetails().get("name"));
-
-        userEmail = (TextView) findViewById(R.id.userEmail);
-        if (userEmail == null)
-            Log.d("Debug:", "userEmail not found");
-        else
-            userEmail.setText(session.getUserDetails().get("email"));
+        userEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userEmail);
+        userEmail.setText(session.getUserDetails().get("email"));
 
         /*
         Button order_button = (Button) findViewById(R.id.order_button);
