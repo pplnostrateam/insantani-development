@@ -1,6 +1,8 @@
 package com.pplnostrateam.arisyaag.insantani;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -46,17 +48,6 @@ public class CompleteProfile extends AppCompatActivity {
         mNameView.setText(sessionManager.getUserDetails().get("name"));
 
         mPhoneView = (EditText) findViewById(R.id.password);
-        mPhoneView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    //attemptSubmitProfile();
-                    return true;
-                }
-
-                return false;
-            }
-        });
 
         Button mCompleteProfileButton = (Button) findViewById(R.id.button);
         assert mCompleteProfileButton != null;
@@ -64,10 +55,26 @@ public class CompleteProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //attemptSubmitProfile();
-                startActivity(new Intent(CompleteProfile.this, Order.class));
+                if (mPhoneView == null)
+                    emptyPhone();
+                else
+                    startActivity(new Intent(CompleteProfile.this, Order.class));
             }
         });
     }
 
+    public void emptyPhone (){
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setMessage("Phone number cannot be empty");
+        alertDialogue.setCancelable(false);
+
+        alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
+    }
 
 }
