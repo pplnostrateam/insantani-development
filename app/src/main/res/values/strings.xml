@@ -54,6 +54,7 @@
     <string name="map_button_image">map_button_image</string>
     <string name="additional_details">ADDITIONAL DETAILS</string>
     <string name="order">ORDER</string>
+    <string name="title_activity_complete_profile">Complete Profile</string>
 
 
 </resources>

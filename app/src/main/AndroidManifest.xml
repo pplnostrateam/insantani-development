@@ -99,7 +99,11 @@
             android:name="io.fabric.ApiKey"
             android:value="d8a1d28e150cb989c017da4405533d307b95d725" />
 
-        <activity android:name=".Orderstatus_accepted"></activity>
+        <activity android:name=".Orderstatus_accepted" />
+        <activity
+            android:name=".CompleteProfile"
+            android:label="@string/title_activity_complete_profile"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

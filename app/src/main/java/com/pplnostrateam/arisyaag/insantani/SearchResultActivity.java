@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.text.TextUtils;
 import android.view.View;
@@ -125,13 +126,14 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
             jsonArray = new JSONArray(json_string);
             int count = 0;
             String name;
-            int price, stock;
+            int price, stock, id;
             while(count<jsonArray.length()){
                 JSONObject JO = jsonArray.getJSONObject(count);
                 name = JO.getString("name");
                 price = JO.getInt("price");
                 stock = JO.getInt("stock");
-                Vegetable vegetable = new Vegetable(name, price, stock);
+                id = JO.getInt("id");
+                Vegetable vegetable = new Vegetable(id, name, price, stock);
                 vegetableAdapter.add(vegetable);
                 count++;
             }
@@ -294,7 +296,11 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
     }
 
     public void moveByPassLogin(){
-        session.setVegetableWeight(Integer.parseInt(weight.getText().toString()));
+        session.updateVegetableDetails(session.getVegetableDetails().get("vegetableId"),
+                Integer.parseInt(weight.getText().toString()),
+                session.getVegetableDetails().get("price"));
+
+        Log.d("Debug Quantity:", session.getVegetableDetails().get("quantity").toString());
 
         Intent intent = new Intent(this, Order.class);
         intent.putExtra("json_data", json_string);

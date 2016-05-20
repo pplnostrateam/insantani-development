@@ -188,7 +188,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-                startActivity(new Intent(SignInActivity.this, SearchingActivity.class));
+                startActivity(new Intent(SignInActivity.this, CompleteProfile.class));
 
 
                 GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
@@ -215,9 +215,6 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
                 parameters.putString("fields", "id,name,link,email,picture");
                 request.setParameters(parameters);
                 request.executeAsync();
-
-
-                session.createLoginSession(fbProfileName, fbEmail);
 
                 finish();
             }
@@ -336,13 +333,11 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             String gProfileName = acct.getDisplayName();
             String gEmail = acct.getEmail();
 
-            startActivity(new Intent(SignInActivity.this, SearchingActivity.class));
+            startActivity(new Intent(SignInActivity.this, CompleteProfile.class));
             Toast.makeText(SignInActivity.this, gProfileName + " " + gEmail, Toast.LENGTH_SHORT).show();
 
             mGTask = new UserRegisterTask(gEmail, gProfileName, "");
             mGTask.execute((Void) null);
-
-            session.createLoginSession(gProfileName, gEmail);
 
             finish();
         } else {
@@ -872,6 +867,32 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             String queryURL = url + "create?email=" + email + "&name=" + name + "&password=" + computeSHAHash(password);
             rest.postForLocation(queryURL, User.class, email, name, password);
 
+            String getterURL = url + "find?email={email}";
+            User theUser = rest.getForObject(getterURL, User.class, email);
+
+            long userId = theUser.getId();
+
+            Log.d("Return ID", Long.toString(theUser.getId()));
+            Log.d("Return Name", theUser.getName());
+            Log.d("Return Email", theUser.getEmail());
+
+            session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+
+        } catch (Exception e) {
+            if(e instanceof ResourceAccessException){
+                throw new Exception("Connection to server failed");
+            } else {
+                throw new Exception(e.getMessage());
+            }
+        }
+    }
+
+    public void checkUserDatabase(String email) throws Exception {
+        String url = APP_SERVER_IP + "api/user/";
+        RestTemplate rest = new RestTemplate();
+        rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+        try {
             String getterURL = url + "find?email={email}";
             User theUser = rest.getForObject(getterURL, User.class, email);
 

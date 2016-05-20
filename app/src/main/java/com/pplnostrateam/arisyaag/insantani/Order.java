@@ -3,7 +3,9 @@ package com.pplnostrateam.arisyaag.insantani;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -15,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +37,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.json.JSONException;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -62,8 +66,17 @@ public class Order extends AppCompatActivity
 
     Place place;
 
+    private double longitude = 0;
+    private double latitude = 0;
+    private String address = null;
+
     private EditText mLocation1;
     private EditText mLocation2;
+
+    private TextView userName;
+    private TextView userEmail;
+
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -130,12 +143,28 @@ public class Order extends AppCompatActivity
         orderButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptCreateOrder();
+                if (!mLocation1.getText().toString().equals("") || !mLocation2.getText().toString().equals(""))
+                    attemptCreateOrder();
+                else
+                    emptyDetailNotAllowed();
             }
         });
 
         mOrderFormView = findViewById(R.id.order_form);
         mProgressView = findViewById(R.id.order_progress);
+
+
+        userName = (TextView) findViewById(R.id.user_name_nav);
+        if (userName == null)
+            Log.d("Debug:", "user_name_nave not found");
+        else
+            userName.setText(session.getUserDetails().get("name"));
+
+        userEmail = (TextView) findViewById(R.id.userEmail);
+        if (userEmail == null)
+            Log.d("Debug:", "userEmail not found");
+        else
+            userEmail.setText(session.getUserDetails().get("email"));
 
         /*
         Button order_button = (Button) findViewById(R.id.order_button);
@@ -156,9 +185,25 @@ public class Order extends AppCompatActivity
             return;
         }
 
+        long userId = Long.parseLong(session.getUserDetails().get("userId"));
+        int vegetableId = session.getVegetableDetails().get("vegetableId");
+
+        if (place == null) {
+            longitude = 0;
+            latitude = 0;
+            address = null;
+        } else {
+            longitude = place.getLatLng().longitude;
+            latitude = place.getLatLng().latitude;
+            address = place.getAddress().toString();
+        }
+        Editable location1 = mLocation1.getText();
+        Editable location2 = mLocation2.getText();
+        int weight = session.getVegetableDetails().get("quantity");
+        int price = session.getVegetableDetails().get("price");
+
         //showProgress(true);
-        mOrderTask = new OrderTask(session.getUserId(), 1, -10.1, 34.4, "error: place.getAddress().toString()",
-                mLocation1.getText() + " " + mLocation2.getText(), session.getVegetableWeight(), 4000);
+        mOrderTask = new OrderTask(userId, vegetableId,latitude, longitude, address, location1 + " " + location2, weight, price);
         mOrderTask.execute((Void) null);
     }
 
@@ -447,5 +492,19 @@ public class Order extends AppCompatActivity
         assert drawer != null;
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void emptyDetailNotAllowed(){
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setMessage("please fill order detail");
+        alertDialogue.setCancelable(false);
+
+        alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
     }
 }

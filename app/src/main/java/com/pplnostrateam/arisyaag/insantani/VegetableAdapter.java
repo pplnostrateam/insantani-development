@@ -1,6 +1,7 @@
 package com.pplnostrateam.arisyaag.insantani;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,13 @@ public class VegetableAdapter extends ArrayAdapter {
     RadioButton lastChecked;
     int post;
 
+    SessionManager session;
+
     public VegetableAdapter(Context context, int resource) {
         super(context, resource);
         //lastChecked = new RadioButton(context);
         post = 0;
+        session = new SessionManager(context);
     }
 
 
@@ -69,7 +73,7 @@ public class VegetableAdapter extends ArrayAdapter {
 //        }
         RadioButton radioButton = (RadioButton) row.findViewById(R.id.radiobutton);
         TextView textView = (TextView) row.findViewById(R.id.vPrice);
-        Vegetable vegetable = (Vegetable) this.getItem(position);
+        final Vegetable vegetable = (Vegetable) this.getItem(position);
         // vegetableHolder.vName.setText(vegetable.getName());
         radioButton.setText(vegetable.getName());
         textView.setText("Price: " + vegetable.getPrice());
@@ -85,6 +89,10 @@ public class VegetableAdapter extends ArrayAdapter {
                 //lastChecked = (RadioButton) v;
                 post = position;
                 notifyDataSetChanged();
+
+                session.createVegetableDetails(vegetable.getId(), vegetable.getPrice());
+                Log.d("VegetableAdapter:", session.getVegetableDetails().get("vegetableId").toString());
+                Log.d("VegetableAdapter:", session.getVegetableDetails().get("price").toString());
             }
         });
         return row;
