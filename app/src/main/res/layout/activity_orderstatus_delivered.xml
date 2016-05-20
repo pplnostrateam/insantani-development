@@ -6,12 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite">
 
-    <FrameLayout
-        android:id="@+id/content_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
+          <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="78dp"
             android:layout_gravity="center_horizontal|top"
@@ -158,12 +153,14 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="273dp"
-            android:layout_gravity="center_horizontal|bottom"
-            android:id="@+id/status_section"
-            android:layout_marginBottom="20dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:id="@+id/status_section"
+        android:layout_above="@+id/return_search"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
             <ScrollView
                 android:layout_width="wrap_content"
@@ -272,7 +269,5 @@
             android:layout_marginLeft="35dp"
             android:layout_marginTop="8dp"
             android:layout_gravity="left|bottom" />
-
-    </FrameLayout>
 
 </RelativeLayout>
