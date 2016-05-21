@@ -247,7 +247,7 @@
             android:layout_alignTop="@+id/return_search"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="32dp"
+            android:layout_marginRight="24dp"
             android:layout_gravity="right|bottom"
             android:layout_marginBottom="20dp" />
 
@@ -266,7 +266,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="20dp"
-            android:layout_marginLeft="35dp"
+            android:layout_marginLeft="24dp"
             android:layout_marginTop="8dp"
             android:layout_gravity="left|bottom" />
 
