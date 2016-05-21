@@ -1,20 +1,19 @@
 package com.pplnostrateam.arisyaag.insantani;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
-import android.view.View.OnClickListener;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 
-
-public class Orderstatus_accepted extends AppCompatActivity {
+public class OrderStatusDeliveredActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_orderstatus_accepted);
+        setContentView(R.layout.activity_orderstatus_delivered);
 
         Button return_search = (Button) findViewById(R.id.return_search);
         return_search.setOnClickListener(new OnClickListener() {
@@ -32,7 +31,7 @@ public class Orderstatus_accepted extends AppCompatActivity {
 
             public void onClick(View v) {
 
-                Intent intent = new Intent(v.getContext(), Order.class);
+                Intent intent = new Intent(v.getContext(), OrderActivity.class);
                 startActivityForResult(intent, 0);
             }
         });

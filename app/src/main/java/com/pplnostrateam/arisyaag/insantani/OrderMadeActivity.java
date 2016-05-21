@@ -1,10 +1,10 @@
 package com.pplnostrateam.arisyaag.insantani;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,9 +16,16 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.view.View;
+import android.widget.TextView;
 
-public class Ordermade extends AppCompatActivity
+public class OrderMadeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    SessionManager session;
+
+    private TextView userName;
+    private TextView userEmail;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +43,8 @@ public class Ordermade extends AppCompatActivity
             }
         });*/
 
+        session = new SessionManager(getApplicationContext());
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -45,14 +54,21 @@ public class Ordermade extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_name_nav);
+        userName.setText(session.getUserDetails().get("name"));
+
+        userEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userEmail);
+        userEmail.setText(session.getUserDetails().get("email"));
+
         //on createorder button
         Button createorder = (Button) findViewById(R.id.createorder);
         createorder.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
 
-                Intent intent = new Intent(Ordermade.this, Order.class);
-                Ordermade.this.startActivity(intent);
+                Intent intent = new Intent(OrderMadeActivity.this, OrderActivity.class);
+                OrderMadeActivity.this.startActivity(intent);
             }
         });
 
@@ -63,13 +79,13 @@ public class Ordermade extends AppCompatActivity
 
             public void onClick(View v) {
 
-                Intent intent = new Intent(v.getContext(), Orderstatus_accepted.class);
+                Intent intent = new Intent(v.getContext(), OrderStatusAcceptedActivity.class);
                 startActivityForResult(intent, 0);
             }
         });
 
-/*        Intent myIntent = new Intent(Ordermade.this, Order.class);
-        Ordermade.this.startActivity(myIntent);*/
+/*        Intent myIntent = new Intent(OrderMadeActivity.this, OrderActivity.class);
+        OrderMadeActivity.this.startActivity(myIntent);*/
     }
 
     @Override
@@ -111,25 +127,37 @@ public class Ordermade extends AppCompatActivity
         int id = item.getItemId();
         FragmentManager fragmentManager = getFragmentManager();
 
-        if (id == R.id.nav_profile) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new FourthFragment()).commit();
-
-        } else if (id == R.id.nav_history) {
-
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
-
-        } else if (id == R.id.nav_order) {
-
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
+        if (id == R.id.nav_order) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new MyOrderFragment()).commit();
 
         } else if (id == R.id.nav_wishlist) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new MyWishlistFragment()).commit();
 
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new ThirdFragment()).commit();
+        } else if (id == R.id.nav_profile) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new MyProfileFragment()).commit();
+
+        } else if (id == R.id.nav_logout) {
+            logoutNotification();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void logoutNotification(){
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setMessage("Your login session will be deleted. Are you sure?");
+        alertDialogue.setCancelable(true);
+
+        alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                session.logoutUser();
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
     }
 }
 

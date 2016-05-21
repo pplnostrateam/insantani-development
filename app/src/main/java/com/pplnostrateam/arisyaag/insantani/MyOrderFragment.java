@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.content.Intent;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,20 +32,18 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-
-public class SecondFragment extends Fragment implements GlobalConfig  {
-
-    SessionManager session;
-    String json_string;
+    
+public class MyOrderFragment extends Fragment implements GlobalConfig {
 
     View myView;
     OrderAdapter orderAdapter;
 
+    SessionManager session;
+    String json_string;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.second_layout_order, container, false);
-
-
 
         session = new SessionManager(getContext());
         

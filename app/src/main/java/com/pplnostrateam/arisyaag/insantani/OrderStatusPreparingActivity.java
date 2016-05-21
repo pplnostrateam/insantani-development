@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 
-public class Orderstatus_preparing extends AppCompatActivity {
+public class OrderStatusPreparingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class Orderstatus_preparing extends AppCompatActivity {
 
             public void onClick(View v) {
 
-                Intent intent = new Intent(v.getContext(), Order.class);
+                Intent intent = new Intent(v.getContext(), OrderActivity.class);
                 startActivityForResult(intent, 0);
             }
         });
