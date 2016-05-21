@@ -3,7 +3,6 @@ package com.pplnostrateam.arisyaag.insantani;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -124,6 +123,10 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
     SignInButton signInButton;
 
+
+    AccessTokenTracker accessTokenTracker;
+    ProfileTracker profileTracker;
+
     /**
      * A flag indicating that a PendingIntent is in progress and prevents us
      * from starting further intents.
@@ -160,7 +163,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         assert fbLoginButton != null;
         fbLoginButton.setReadPermissions(Collections.singletonList("public_profile, email, user_birthday"));
 
-        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
+        accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(
                     AccessToken oldAccessToken,
@@ -173,7 +176,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             }
         };
 
-        ProfileTracker profileTracker = new ProfileTracker() {
+        profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(
                     Profile oldProfile,
@@ -188,7 +191,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-                startActivity(new Intent(SignInActivity.this, CompleteProfile.class));
+                startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
 
 
                 GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
@@ -203,6 +206,10 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
                                 Toast.makeText(SignInActivity.this, fbProfileName + " " + fbEmail + " " + fbUserID, Toast.LENGTH_SHORT).show();
 
                                 mFBTask = new UserRegisterTask(fbEmail, fbProfileName, "");
+
+                                //Log.d("Sign In Check", session.getUserDetails().get("name"));
+                                //Log.d("Sign In Check", session.getUserDetails().get("email"));
+
                                 mFBTask.execute((Void) null);
                             }
 
@@ -230,6 +237,8 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
                 Toast.makeText(getApplicationContext(),
                         "Login attempt failed.", Toast.LENGTH_LONG).show();
             }
+
+
         });
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -321,6 +330,12 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         fbCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        accessTokenTracker.stopTracking();
+    }
+
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d("TAG", "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
@@ -333,7 +348,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             String gProfileName = acct.getDisplayName();
             String gEmail = acct.getEmail();
 
-            startActivity(new Intent(SignInActivity.this, CompleteProfile.class));
+            startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
             Toast.makeText(SignInActivity.this, gProfileName + " " + gEmail, Toast.LENGTH_SHORT).show();
 
             mGTask = new UserRegisterTask(gEmail, gProfileName, "");
@@ -746,7 +761,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             showProgress(false);
 
             if (success) {
-                startActivity(new Intent(SignInActivity.this, Order.class));
+                startActivity(new Intent(SignInActivity.this, OrderActivity.class));
 
                 Toast.makeText(getApplicationContext(),
                         "Login attempt success.", Toast.LENGTH_LONG).show();
@@ -877,6 +892,10 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             Log.d("Return Email", theUser.getEmail());
 
             session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+
+            Log.d("Session ID", session.getUserDetails().get("userId"));
+            Log.d("Session Name", session.getUserDetails().get("name"));
+            Log.d("Session Email", session.getUserDetails().get("email"));
 
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){

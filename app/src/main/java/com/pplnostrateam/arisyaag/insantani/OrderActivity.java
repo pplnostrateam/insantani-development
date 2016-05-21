@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
@@ -37,7 +36,6 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -47,7 +45,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class Order extends AppCompatActivity
+public class OrderActivity extends AppCompatActivity
         implements GlobalConfig, NavigationView.OnNavigationItemSelectedListener {
 
     // konstanta untuk mendeteksi hasil balikan dari place picker
@@ -103,7 +101,7 @@ public class Order extends AppCompatActivity
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
                 try {
                     //menjalankan place picker
-                    startActivityForResult(builder.build(Order.this), PLACE_PICKER_REQUEST);
+                    startActivityForResult(builder.build(OrderActivity.this), PLACE_PICKER_REQUEST);
                 } catch (GooglePlayServicesRepairableException e) {
                     e.printStackTrace();
                 } catch (GooglePlayServicesNotAvailableException e) {
@@ -163,7 +161,7 @@ public class Order extends AppCompatActivity
         Button order_button = (Button) findViewById(R.id.order_button);
         order_button.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), Ordermade.class);
+                Intent intent = new Intent(v.getContext(), OrderMadeActivity.class);
                 startActivityForResult(intent, 0);
             }
         });
@@ -209,7 +207,7 @@ public class Order extends AppCompatActivity
         client2.connect();
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
-                "Order Page", // TODO: Define a title for the content shown.
+                "OrderActivity Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
@@ -228,7 +226,7 @@ public class Order extends AppCompatActivity
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
-                "Order Page", // TODO: Define a title for the content shown.
+                "OrderActivity Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
@@ -291,10 +289,10 @@ public class Order extends AppCompatActivity
             mOrderTask = null;
             showProgress(false);
 
-            startActivity(new Intent(Order.this, Ordermade.class));
+            startActivity(new Intent(OrderActivity.this, OrderMadeActivity.class));
 
             if (success) {
-                //Toast.makeText(getApplicationContext(), "Order has been successfully added.", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "OrderActivity has been successfully added.", Toast.LENGTH_LONG).show();
                 finish();
             }
             /*
@@ -387,7 +385,7 @@ public class Order extends AppCompatActivity
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         try {
             //menjalankan place picker
-            startActivityForResult(builder.build(Order.this), PLACE_PICKER_REQUEST);
+            startActivityForResult(builder.build(OrderActivity.this), PLACE_PICKER_REQUEST);
         } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
             e.printStackTrace();
         }
@@ -422,7 +420,7 @@ public class Order extends AppCompatActivity
 
     /*
     public void moveToOrdermade(View view) {
-        Intent intent = new Intent(Order.this, Ordermade.class);
+        Intent intent = new Intent(OrderActivity.this, OrderMadeActivity.class);
         startActivity(intent);
     }
     */
@@ -472,13 +470,19 @@ public class Order extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
 
         if (id == R.id.nav_history) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new MyHistoryFragment()).commit();
 
         } else if (id == R.id.nav_order) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new MyOrderFragment()).commit();
 
         } else if (id == R.id.nav_wishlist) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new ThirdFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new MyWishlistFragment()).commit();
+
+        } else if (id == R.id.nav_profile) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new MyProfileFragment()).commit();
+
+        } else if (id == R.id.nav_logout) {
+            logoutNotification();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -495,6 +499,21 @@ public class Order extends AppCompatActivity
         alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog dialog = alertDialogue.create();
+        dialog.show();
+    }
+
+    public void logoutNotification(){
+        AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
+        alertDialogue.setMessage("Your login session will be deleted. Are you sure?");
+        alertDialogue.setCancelable(true);
+
+        alertDialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                session.logoutUser();
             }
         });
         AlertDialog dialog = alertDialogue.create();

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+
 import java.util.HashMap;
 
 import javax.annotation.Nullable;
@@ -41,6 +44,8 @@ public class SessionManager {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+
+        FacebookSdk.sdkInitialize(context);
     }
 
     public void createLoginSession(long id, String name, String email){
@@ -121,7 +126,7 @@ public class SessionManager {
 
     public void checkLogin(){
         if(!this.isLoggedIn()){
-            Intent i = new Intent(_context, SignInActivity.class);
+            Intent i = new Intent(_context, SearchingActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -133,9 +138,11 @@ public class SessionManager {
         editor.clear();
         editor.commit();
 
-        Intent i = new Intent(_context, SignInActivity.class);
+        Intent i = new Intent(_context, SearchingActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        LoginManager.getInstance().logOut();
 
         _context.startActivity(i);
     }

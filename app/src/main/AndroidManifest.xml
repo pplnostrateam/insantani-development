@@ -78,10 +78,10 @@
 
         <!--
         <activity
-            android:name=".Order"
+            android:name=".OrderActivity"
             android:label="@string/title_activity_navigation_order"
 
-        <activity android:name=".Ordermade"></activity>
+        <activity android:name=".OrderMadeActivity"></activity>
         -->
 
 
@@ -91,19 +91,19 @@
             android:value="@string/google_api_key" />
 
         <activity
-            android:name=".Order"
+            android:name=".OrderActivity"
             android:label="@string/title_activity_navigation_order" />
-        <activity android:name=".Ordermade" />
+        <activity android:name=".OrderMadeActivity" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="d8a1d28e150cb989c017da4405533d307b95d725" />
 
-        <activity android:name=".Orderstatus_accepted" />
+        <activity android:name=".OrderStatusAcceptedActivity" />
         <activity
-            android:name=".CompleteProfile"
+            android:name=".CompleteProfileActivity"
             android:label="@string/title_activity_complete_profile"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

@@ -55,6 +55,7 @@
     <string name="additional_details">ADDITIONAL DETAILS</string>
     <string name="order">ORDER</string>
     <string name="title_activity_complete_profile">Complete Profile</string>
+    <string name="title_activity_complete_profile2">CompleteProfile2</string>
 
 
 </resources>

@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 
-public class Orderstatus_ondelivery extends AppCompatActivity {
+public class OrderStatusOnDeliveryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,7 @@ public class Orderstatus_ondelivery extends AppCompatActivity {
 
             public void onClick(View v) {
 
-                Intent intent = new Intent(v.getContext(), Orderstatus_delivered.class);
+                Intent intent = new Intent(v.getContext(), OrderStatusDeliveredActivity.class);
                 startActivityForResult(intent, 0);
             }
         });
