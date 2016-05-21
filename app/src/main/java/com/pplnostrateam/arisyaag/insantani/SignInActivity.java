@@ -165,11 +165,15 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
         accessTokenTracker = new AccessTokenTracker() {
             @Override
-            protected void onCurrentAccessTokenChanged(
-                    AccessToken oldAccessToken,
-                    AccessToken currentAccessToken) {
-                fbAuthToken = currentAccessToken.getToken();
-                fbUserID = currentAccessToken.getUserId();
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+
+                if (currentAccessToken == null) {
+                    Log.d("FB", "User Logged Out.");
+                    onDestroy();
+                } else {
+                    fbAuthToken = currentAccessToken.getToken();
+                    fbUserID = currentAccessToken.getUserId();
+                }
 
                 Log.d(TAG, "User id: " + fbUserID);
                 Log.d(TAG, "Access token is: " + fbAuthToken);
@@ -178,10 +182,13 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
         profileTracker = new ProfileTracker() {
             @Override
-            protected void onCurrentProfileChanged(
-                    Profile oldProfile,
-                    Profile currentProfile) {
-                fbProfileName = currentProfile.getName();
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+
+                if (currentProfile == null) {
+                    Log.d("FB", "User Logged Out.");
+                } else {
+                    fbProfileName = currentProfile.getName();
+                }
 
                 Log.d(TAG, "User name: " + fbProfileName );
             }
