@@ -885,12 +885,22 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
+        Log.d("SignInActivity", "registerUserRestServer");
+
         try {
+            Log.d("SignInActivity", "Inside Try");
+
             String queryURL = url + "create?email=" + email + "&name=" + name + "&password=" + computeSHAHash(password);
             rest.postForLocation(queryURL, User.class, email, name, password);
 
+            Log.d("SignInActivity", "After post query");
+
+
             String getterURL = url + "find?email={email}";
             User theUser = rest.getForObject(getterURL, User.class, email);
+
+            Log.d("SignInActivity", "After check query");
+
 
             long userId = theUser.getId();
 

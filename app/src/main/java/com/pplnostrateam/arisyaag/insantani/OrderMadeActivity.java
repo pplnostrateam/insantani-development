@@ -16,11 +16,16 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.view.View;
+import android.widget.TextView;
 
 public class OrderMadeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     SessionManager session;
+
+    private TextView userName;
+    private TextView userEmail;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,13 @@ public class OrderMadeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_name_nav);
+        userName.setText(session.getUserDetails().get("name"));
+
+        userEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.userEmail);
+        userEmail.setText(session.getUserDetails().get("email"));
 
         //on createorder button
         Button createorder = (Button) findViewById(R.id.createorder);
