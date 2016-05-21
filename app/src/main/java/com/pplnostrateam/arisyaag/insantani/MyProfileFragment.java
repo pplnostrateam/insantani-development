@@ -33,7 +33,12 @@ public class MyProfileFragment extends Fragment {
 
         Log.d("ProfileFragment:", session.getUserDetails().get("name"));
         Log.d("ProfileFragment:", session.getUserDetails().get("email"));
-        Log.d("ProfileFragment:", session.getUserDetails().get("phone"));
+        //Log.d("ProfileFragment:", session.getUserDetails().get("phone"));
+
+        userName = (TextView) myView.findViewById(R.id.my_profile_name);
+        userName.setText(session.getUserDetails().get("name"));
+        userEmail = (TextView) myView.findViewById(R.id.my_profile_email);
+        userEmail.setText(session.getUserDetails().get("email"));
 
         return myView;
     }
