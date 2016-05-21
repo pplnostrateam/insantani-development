@@ -45,10 +45,10 @@ public class MyOrderFragment extends Fragment implements GlobalConfig {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.second_layout_order, container, false);
 
-        session = new SessionManager(getContext());
+        session = new SessionManager(getActivity());
         
         ListView orderList = (ListView)myView.findViewById(R.id.orderList);
-        orderAdapter = new OrderAdapter(this.getContext(), R.layout.row_layout_order);
+        orderAdapter = new OrderAdapter(this.getActivity(), R.layout.row_layout_order);
         orderList.setAdapter(orderAdapter);
 
        /*Manggil dari api trus masukin ke adapter*/
@@ -66,7 +66,7 @@ public class MyOrderFragment extends Fragment implements GlobalConfig {
 
         @Override
         protected void onPreExecute() {
-            data_url = APP_SERVER_IP + "api/order?userid=" + session.getUserId();
+            data_url = APP_SERVER_IP + "api/order?userid=" + session.getUserDetails().get("userId");
         }
 
         @Override
