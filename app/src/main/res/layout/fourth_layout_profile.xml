@@ -1,77 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="#FFFFFF">
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    >
+<!--
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="96dp">
-
-    <TextView
-        android:layout_width="wrap_content"
+        android:layout_alignParentStart="true">
+-->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="My Profile"
-        android:id="@+id/my_profile_title"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:background="@color/colorWhite"
+        android:id="@+id/header"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="My Profile"
+            android:id="@+id/my_profile_title"
+            android:textSize="42sp"
+            android:textColor="@color/titleColor"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView3"
+            android:cropToPadding="false"
+            android:src="@drawable/ic_logo"
+            android:contentDescription="@string/insantani_logo"
+            android:layout_below="@+id/my_profile_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/insantani"
+            android:id="@+id/textView3"
+            android:textColor="#4CAF50"
+            android:layout_below="@+id/imageView3"
+            android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="24dp"
-        android:layout_marginLeft="24dp"
-        android:textSize="42dp"
-        android:textColor="@color/titleColor" />
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/header">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Adrian Septiandry"
+            android:id="@+id/my_profile_name"
+            android:textSize="32sp"
+            android:textColor="@color/colorWhite"
+            android:layout_marginTop="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@+id/my_profile_email"
+            android:layout_alignStart="@+id/my_profile_email" />
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/my_profile_name"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="24dp"
-        android:layout_marginLeft="24dp"
-        android:textSize="42dp"
-        android:textColor="@color/titleColor" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="  adrianseptiandry@gmail.com"
+            android:drawableLeft="@drawable/ic_mail_white"
+            android:id="@+id/my_profile_email"
+            android:textSize="24sp"
+            android:textColor="@color/colorWhite"
+            android:layout_above="@+id/my_profile_phone"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  085719679263"
+            android:drawableLeft="@drawable/ic_phone_white"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/my_profile_phone"
+            android:textSize="24sp"
+            android:textColor="@color/colorWhite"
+            android:layout_centerVertical="true"
+            android:layout_alignLeft="@+id/my_profile_email"
+            android:layout_alignStart="@+id/my_profile_email" />
+
+    </RelativeLayout>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/my_profile_email"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="24dp"
-        android:layout_marginLeft="24dp"
-        android:textSize="42dp"
-        android:textColor="@color/titleColor" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/my_profile_phone"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="24dp"
-        android:layout_marginLeft="24dp"
-        android:textSize="42dp"
-        android:textColor="@color/titleColor" />
-
-    </LinearLayout>
-
+    <!--    </LinearLayout> -->
 
 </RelativeLayout>
