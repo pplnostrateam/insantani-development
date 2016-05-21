@@ -80,9 +80,14 @@ public class VegetableAdapter extends ArrayAdapter {
         //vegetableHolder.vPrice.setText(vegetable.getPrice());
         //vegetableHolder.vStock.setText(vegetable.getStock());
         radioButton.setChecked(post == position);
-        session.createVegetableDetails(vegetable.getId(), vegetable.getPrice());
-        Log.d("VegetableAdapter:", session.getVegetableDetails().get("vegetableId").toString());
-        Log.d("VegetableAdapter:", session.getVegetableDetails().get("price").toString());
+            if(radioButton.isChecked()){
+                session.createVegetableDetails(vegetable.getId(), vegetable.getPrice());
+                Log.d("WEWEWE", String.valueOf(vegetable.getId()));
+                Log.d("WEWEWE", String.valueOf(vegetable.getName()));
+            }
+    //        session.createVegetableDetails(vegetable.getId(), vegetable.getPrice());
+//        Log.d("WWWWW:", session.getVegetableDetails().get("vegetableId").toString());
+//        Log.d("KKKKK:", session.getVegetableDetails().get("price").toString());
 
         radioButton.setOnClickListener(new View.OnClickListener(){
 
@@ -93,11 +98,14 @@ public class VegetableAdapter extends ArrayAdapter {
                 post = position;
                 notifyDataSetChanged();
 
-                session.createVegetableDetails(vegetable.getId(), vegetable.getPrice());
-                Log.d("VegetableAdapter:", session.getVegetableDetails().get("vegetableId").toString());
-                Log.d("VegetableAdapter:", session.getVegetableDetails().get("price").toString());
+//                session.createVegetableDetails(vegetable.getId(), vegetable.getPrice());
+//                Log.d("VegetableAdapter:", session.getVegetableDetails().get("vegetableId").toString());
+//                Log.d("VegetableAdapter:", session.getVegetableDetails().get("price").toString());
             }
         });
+
+        //Log.d("WEWEWE", String.valueOf(vegetable.getId()));
+
         return row;
     }
     static class VegetableHolder{
