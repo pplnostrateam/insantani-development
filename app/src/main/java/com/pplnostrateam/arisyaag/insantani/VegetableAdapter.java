@@ -80,6 +80,9 @@ public class VegetableAdapter extends ArrayAdapter {
         //vegetableHolder.vPrice.setText(vegetable.getPrice());
         //vegetableHolder.vStock.setText(vegetable.getStock());
         radioButton.setChecked(post == position);
+        session.createVegetableDetails(vegetable.getId(), vegetable.getPrice());
+        Log.d("VegetableAdapter:", session.getVegetableDetails().get("vegetableId").toString());
+        Log.d("VegetableAdapter:", session.getVegetableDetails().get("price").toString());
 
         radioButton.setOnClickListener(new View.OnClickListener(){
 

@@ -89,6 +89,8 @@ public class OrderActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         session = new SessionManager(getApplicationContext());
+        Log.d("BEEELLL", session.getVegetableDetails().get("vegetableId").toString());
+        Log.d("LEEEEEK", session.getVegetableDetails().get("price").toString());
 
         tvPlaceAPI = (TextView) findViewById(R.id.tv_place_id);
         // ImageButton btPlacesAPI = (ImageButton) findViewById(R.id.bt_ppicker);
