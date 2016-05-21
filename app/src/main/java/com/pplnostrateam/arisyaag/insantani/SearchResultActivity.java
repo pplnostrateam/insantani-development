@@ -279,6 +279,7 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
             Intent intent = new Intent(this, SearchResultActivity.class);
             intent.putExtra("json_data", json_string);
             startActivity(intent);
+            finish();
         }
     }
 
@@ -292,5 +293,6 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
         Intent intent = new Intent(this, OrderActivity.class);
         intent.putExtra("json_data", json_string);
         startActivity(intent);
+        finish();
     }
 }

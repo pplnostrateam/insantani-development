@@ -160,6 +160,7 @@ public class SearchingActivity extends AppCompatActivity implements GlobalConfig
             Intent intent = new Intent(this, SearchResultActivity.class);
             intent.putExtra("json_data", json_string);
             startActivity(intent);
+            //finish();
         }
 
 //        Intent intent = new Intent(this, SearchResultActivity.class);
