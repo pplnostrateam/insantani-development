@@ -5,6 +5,7 @@ package com.pplnostrateam.arisyaag.insantani;
  * Created by desiratnamukti on 4/27/16.
  */
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.content.Intent;
+
 
 public class MyProfileFragment extends Fragment {
 
@@ -39,6 +43,14 @@ public class MyProfileFragment extends Fragment {
         userName.setText(session.getUserDetails().get("name"));
         userEmail = (TextView) myView.findViewById(R.id.my_profile_email);
         userEmail.setText(session.getUserDetails().get("email"));
+
+        ImageButton backButton = (ImageButton)myView.findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+        Intent intent = new Intent(getActivity(), OrderActivity.class);
+        startActivity(intent);
+            }
+        });
 
         return myView;
     }
