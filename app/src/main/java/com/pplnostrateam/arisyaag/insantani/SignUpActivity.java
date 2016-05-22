@@ -32,6 +32,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -449,13 +455,41 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
         try {
-            String queryURL = url + "create?email=" + email + "&name=" + name + "&password=" + computeSHAHash(password);
-            rest.postForLocation(queryURL, User.class, email, name, password);
+
+            User theUser = null;
+
+            User request = new User(email, name, computeSHAHash(password));
+
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<User> entity = new HttpEntity<>(request, headers);
+
+            ResponseEntity<User> loginResponse = rest.exchange(url + "create", HttpMethod.POST, entity, User.class);
+
+            Log.d("SignInActivity", "After post query");
+
+            if (loginResponse.getStatusCode() == HttpStatus.OK) {
+                String getterURL = url + "find?email={email}";
+                theUser = rest.getForObject(getterURL, User.class, email);
+
+                Log.d("SignInActivity", "After check query");
+
+                Log.d("Return ID", Long.toString(theUser.getId()));
+                Log.d("Return Name", theUser.getName());
+                Log.d("Return Email", theUser.getEmail());
+
+            } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                Log.d("statusCode", "HttpStatus.UNAUTHORIZED");
+            }
+
+            Log.d("Output#1", theUser.getName());
 
             String getterURL = url + "find?email={email}";
-            User theUser = rest.getForObject(getterURL, User.class, email);
+            theUser = rest.getForObject(getterURL, User.class, email);
 
-            Log.d("Output", theUser.getName());
+            Log.d("Output#2", theUser.getName());
 
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){

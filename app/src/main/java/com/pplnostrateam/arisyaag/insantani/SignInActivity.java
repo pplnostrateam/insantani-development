@@ -60,6 +60,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -797,17 +803,32 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         Log.d("#Debug", "Start");
 
         try {
-            String queryURL = url + "login?email=" + email + "&password=" + computeSHAHash(password);
-            User theUser = rest.getForObject(queryURL, User.class);
+            User theUser = null;
 
-            long userId = theUser.getId();
+            User request = new User(email, "", computeSHAHash(password));
 
-            Log.d("Return ID", Long.toString(theUser.getId()));
-            Log.d("Return Name", theUser.getName());
-            Log.d("Return Email", theUser.getEmail());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
-            session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+            HttpEntity<User> entity = new HttpEntity<>(request, headers);
 
+            ResponseEntity<User> loginResponse = rest.exchange(url + "login", HttpMethod.POST, entity, User.class);
+            if (loginResponse.getStatusCode() == HttpStatus.OK) {
+                theUser = loginResponse.getBody();
+
+                Log.d("Output#1", theUser.getEmail());
+
+                long userId = theUser.getId();
+
+                Log.d("Return ID", Long.toString(theUser.getId()));
+                Log.d("Return Name", theUser.getName());
+                Log.d("Return Email", theUser.getEmail());
+
+                session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+
+            } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                Log.d("statusCode", "HttpStatus.UNAUTHORIZED");
+            }
 
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){
@@ -890,29 +911,45 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         try {
             Log.d("SignInActivity", "Inside Try");
 
-            String queryURL = url + "create?email=" + email + "&name=" + name + "&password=" + computeSHAHash(password);
-            rest.postForLocation(queryURL, User.class, email, name, password);
+            User theUser = null;
+
+            User request = new User(email, "", computeSHAHash(password));
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            HttpEntity<User> entity = new HttpEntity<>(request, headers);
+
+            ResponseEntity<User> loginResponse = rest.exchange(url + "create", HttpMethod.POST, entity, User.class);
+
+            Log.d("Output#1", theUser.getName());
 
             Log.d("SignInActivity", "After post query");
 
+            if (loginResponse.getStatusCode() == HttpStatus.OK) {
+                String getterURL = url + "find?email={email}";
+                theUser = rest.getForObject(getterURL, User.class, email);
 
-            String getterURL = url + "find?email={email}";
-            User theUser = rest.getForObject(getterURL, User.class, email);
-
-            Log.d("SignInActivity", "After check query");
+                Log.d("SignInActivity", "After check query");
 
 
-            long userId = theUser.getId();
+                long userId = theUser.getId();
 
-            Log.d("Return ID", Long.toString(theUser.getId()));
-            Log.d("Return Name", theUser.getName());
-            Log.d("Return Email", theUser.getEmail());
+                Log.d("Return ID", Long.toString(theUser.getId()));
+                Log.d("Return Name", theUser.getName());
+                Log.d("Return Email", theUser.getEmail());
 
-            session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+                session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
 
-            Log.d("Session ID", session.getUserDetails().get("userId"));
-            Log.d("Session Name", session.getUserDetails().get("name"));
-            Log.d("Session Email", session.getUserDetails().get("email"));
+                Log.d("Session ID", session.getUserDetails().get("userId"));
+                Log.d("Session Name", session.getUserDetails().get("name"));
+                Log.d("Session Email", session.getUserDetails().get("email"));
+
+            } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                Log.d("statusCode", "HttpStatus.UNAUTHORIZED");
+            }
+
+
 
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){
