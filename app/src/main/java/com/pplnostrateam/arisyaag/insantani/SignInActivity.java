@@ -797,7 +797,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
     }
 
     public void loginUserRestServer(String email, String password) throws Exception {
-        String url = APP_SERVER_IP + "api/user/";
+        String url = APP_SERVER_IP + "api/user";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
         Log.d("#Debug", "Start");
@@ -812,7 +812,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
             HttpEntity<User> entity = new HttpEntity<>(request, headers);
 
-            ResponseEntity<User> loginResponse = rest.exchange(url + "login", HttpMethod.POST, entity, User.class);
+            ResponseEntity<User> loginResponse = rest.exchange(url + "/login", HttpMethod.POST, entity, User.class);
             if (loginResponse.getStatusCode() == HttpStatus.OK) {
                 theUser = loginResponse.getBody();
 
@@ -902,7 +902,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
     }
 
     public void registerUserRestServer(String email, String name, String password) throws Exception {
-        String url = APP_SERVER_IP + "api/user/";
+        String url = APP_SERVER_IP + "api/user";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
@@ -920,7 +920,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
             HttpEntity<User> entity = new HttpEntity<>(request, headers);
 
-            ResponseEntity<User> loginResponse = rest.exchange(url + "create", HttpMethod.POST, entity, User.class);
+            ResponseEntity<User> loginResponse = rest.exchange(url, HttpMethod.POST, entity, User.class);
 
             Log.d("Output#1", theUser.getName());
 
@@ -961,12 +961,12 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
     }
 
     public void checkUserDatabase(String email) throws Exception {
-        String url = APP_SERVER_IP + "api/user/";
+        String url = APP_SERVER_IP + "api/user";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
         try {
-            String getterURL = url + "find?email={email}";
+            String getterURL = url + "/find?email={email}";
             User theUser = rest.getForObject(getterURL, User.class, email);
 
             long userId = theUser.getId();

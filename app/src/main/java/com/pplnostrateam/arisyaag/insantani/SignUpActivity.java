@@ -450,7 +450,7 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
     }
 
     public void registerUserRestServer(String email, String name, String password) throws Exception {
-        String url = APP_SERVER_IP + "api/user/";
+        String url = APP_SERVER_IP + "api/user";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
@@ -466,12 +466,12 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
 
             HttpEntity<User> entity = new HttpEntity<>(request, headers);
 
-            ResponseEntity<User> loginResponse = rest.exchange(url + "create", HttpMethod.POST, entity, User.class);
+            ResponseEntity<User> loginResponse = rest.exchange(url, HttpMethod.POST, entity, User.class);
 
             Log.d("SignInActivity", "After post query");
 
             if (loginResponse.getStatusCode() == HttpStatus.OK) {
-                String getterURL = url + "find?email={email}";
+                String getterURL = url + "/find?email={email}";
                 theUser = rest.getForObject(getterURL, User.class, email);
 
                 Log.d("SignInActivity", "After check query");
