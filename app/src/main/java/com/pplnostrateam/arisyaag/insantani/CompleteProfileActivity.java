@@ -36,14 +36,14 @@ public class CompleteProfileActivity extends AppCompatActivity {
         assert mEmailView != null;
         Log.d("CompleteProfile", mEmailView.getText().toString());
         mEmailView.setText(session.getUserDetails().get("email"));
-        //Log.d("mEmailView:", session.getUserDetails().get("email"));
+        Log.d("mEmailView:", session.getUserDetails().get("email"));
 
         // user name
         mNameView = (TextView) findViewById(R.id.textView12);
         assert mNameView != null;
         Log.d("CompleteProfile", mNameView.getText().toString());
         mNameView.setText(session.getUserDetails().get("name"));
-        //Log.d("mNameView:", session.getUserDetails().get("name"));
+        Log.d("mNameView:", session.getUserDetails().get("name"));
 
         mPhoneView = (EditText) findViewById(R.id.editText);
 
