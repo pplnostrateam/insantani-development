@@ -885,8 +885,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
                 finish();
             } else {
-                Toast.makeText(getApplicationContext(),
-                        "Sign up failed...", Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(), "Sign up failed...", Toast.LENGTH_LONG).show();
                 // mPasswordView.setError(getString(R.string.error_sign_up_failed));
                 // mPasswordView.requestFocus();
             }
@@ -909,13 +908,42 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         try {
             Log.d("SignInActivity", "Inside Try");
 
-            User theUser = null;
+            User request = new User(email, name, computeSHAHash(password), phone);
 
-            String getterURL = url + "/find?email=" + email;
-            //theUser = rest.getForObject(getterURL, User.class, email);
-            ResponseEntity<User> response = rest.getForEntity(getterURL, User.class);
-            Log.d("find error:", response.getStatusCode().toString());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
+            HttpEntity<User> entity = new HttpEntity<>(request, headers);
+            ResponseEntity<User> response = rest.exchange(url, HttpMethod.POST, entity, User.class);
+
+            Log.d("CreateResponse", response.getStatusCode().toString());
+
+            String getterURL = url + "/find?email={email}";
+            response = rest.getForEntity(getterURL, User.class, email);
+
+            User theUser = response.getBody();
+
+            Log.d("Output#1", theUser.getEmail());
+
+            long userId = theUser.getId();
+
+            Log.d("Return ID", Long.toString(theUser.getId()));
+            Log.d("Return Name", theUser.getName());
+            Log.d("Return Email", theUser.getEmail());
+
+            session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+
+            Log.d("Session ID", session.getUserDetails().get("userId"));
+            Log.d("Session Name", session.getUserDetails().get("name"));
+            Log.d("Session Email", session.getUserDetails().get("email"));
+
+            //User theUser = null;
+            // String getterURL = url + "/find?email=" + email;
+            // theUser = rest.getForObject(getterURL, User.class, email);
+            // ResponseEntity<User> response = rest.getForEntity(getterURL, User.class);
+            // Log.d("find error:", response.getStatusCode().toString());
+
+            /*
             if (response.getStatusCode() == HttpStatus.OK) {
 
                 Log.d("Status;", "already exists");
@@ -975,13 +1003,14 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
                 }
             }
 
+*/
             // startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
 
         } catch (ResourceAccessException e) {
-
                // throw new Exception("Connection to server failed");
-            Log.d("Error SIgn up:", e.getMessage() );
+            Log.d("Error Sign up:", e.getMessage() );
         }
+
 
     }
 
