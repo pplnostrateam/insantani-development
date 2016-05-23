@@ -913,43 +913,47 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
             User theUser = null;
 
-            User request = new User(email, "", computeSHAHash(password));
+            String getterURL = url + "/find?email={email}";
+            //theUser = rest.getForObject(getterURL, User.class, email);
+            ResponseEntity<User> response = rest.getForEntity(getterURL, User.class, email);
+            if (response.getStatusCode() == HttpStatus.OK) {
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
+                Log.d("Status;", "already exists");
+            } else if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+                Log.d("Status;", "not exists yet");
 
-            HttpEntity<User> entity = new HttpEntity<>(request, headers);
+                User request = new User(email, name, computeSHAHash(password));
 
-            ResponseEntity<User> loginResponse = rest.exchange(url, HttpMethod.POST, entity, User.class);
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
 
-            Log.d("Output#1", theUser.getName());
+                HttpEntity<User> entity = new HttpEntity<>(request, headers);
+                ResponseEntity<User> loginResponse = rest.exchange(url, HttpMethod.POST, entity, User.class);
 
-            Log.d("SignInActivity", "After post query");
+                Log.d("Output#1", theUser.getName());
 
-            if (loginResponse.getStatusCode() == HttpStatus.OK) {
-                String getterURL = url + "find?email={email}";
-                theUser = rest.getForObject(getterURL, User.class, email);
+                Log.d("SignInActivity", "After post query");
 
-                Log.d("SignInActivity", "After check query");
+                if (loginResponse.getStatusCode() == HttpStatus.OK) {
 
+                    Log.d("SignInActivity", "After check query");
 
-                long userId = theUser.getId();
+                    long userId = theUser.getId();
 
-                Log.d("Return ID", Long.toString(theUser.getId()));
-                Log.d("Return Name", theUser.getName());
-                Log.d("Return Email", theUser.getEmail());
+                    Log.d("Return ID", Long.toString(theUser.getId()));
+                    Log.d("Return Name", theUser.getName());
+                    Log.d("Return Email", theUser.getEmail());
 
-                session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+                    session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
 
-                Log.d("Session ID", session.getUserDetails().get("userId"));
-                Log.d("Session Name", session.getUserDetails().get("name"));
-                Log.d("Session Email", session.getUserDetails().get("email"));
+                    Log.d("Session ID", session.getUserDetails().get("userId"));
+                    Log.d("Session Name", session.getUserDetails().get("name"));
+                    Log.d("Session Email", session.getUserDetails().get("email"));
 
-            } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-                Log.d("statusCode", "HttpStatus.UNAUTHORIZED");
+                } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    Log.d("statusCode", "HttpStatus.UNAUTHORIZED");
+                }
             }
-
-
 
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){

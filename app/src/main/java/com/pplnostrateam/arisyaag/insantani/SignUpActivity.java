@@ -472,7 +472,11 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
 
             if (loginResponse.getStatusCode() == HttpStatus.OK) {
                 String getterURL = url + "/find?email={email}";
-                theUser = rest.getForObject(getterURL, User.class, email);
+                //theUser = rest.getForObject(getterURL, User.class, email);
+                ResponseEntity<User> response = rest.getForEntity(getterURL, User.class, email);
+
+                Log.d("HttpResponse", response.getStatusCode().toString());
+                theUser = response.getBody();
 
                 Log.d("SignInActivity", "After check query");
 
@@ -485,9 +489,6 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
             }
 
             Log.d("Output#1", theUser.getName());
-
-            String getterURL = url + "find?email={email}";
-            theUser = rest.getForObject(getterURL, User.class, email);
 
             Log.d("Output#2", theUser.getName());
 
