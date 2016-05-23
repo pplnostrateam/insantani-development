@@ -271,7 +271,7 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserRegisterTask(email, name, password);
+            mAuthTask = new UserRegisterTask(email, name, password, phone);
             mAuthTask.execute((Void) null);
         }
     }
@@ -396,11 +396,13 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
         private final String mEmail;
         private final String mPassword;
         private final String mName;
+        private final String mPhone;
 
-        UserRegisterTask(String email, String name, String password) {
+        UserRegisterTask(String email, String name, String password, String phone) {
             mEmail = email;
             mPassword = password;
             mName = name;
+            mPhone = phone;
         }
 
         @Override
@@ -416,7 +418,7 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
 
 
             try {
-                registerUserRestServer(mEmail, mName, mPassword);
+                registerUserRestServer(mEmail, mName, mPassword, mPhone);
             } catch (Exception e) {
                 return false;
             }
@@ -449,7 +451,7 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
         }
     }
 
-    public void registerUserRestServer(String email, String name, String password) throws Exception {
+    public void registerUserRestServer(String email, String name, String password, String phone) throws Exception {
         String url = APP_SERVER_IP + "api/user";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -458,7 +460,7 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
 
             User theUser = null;
 
-            User request = new User(email, name, computeSHAHash(password));
+            User request = new User(email, name, computeSHAHash(password), phone);
 
 
             HttpHeaders headers = new HttpHeaders();
