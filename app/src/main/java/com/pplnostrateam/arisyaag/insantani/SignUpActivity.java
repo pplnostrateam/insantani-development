@@ -285,12 +285,15 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
     }
 
     private boolean isPasswordValid(String password) {
+        //spesial karakter diilangin
         final String passwordPattern =
-                "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
+                "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})";
 
         Pattern pattern = Pattern.compile(passwordPattern);
         Matcher matcher = pattern.matcher(password);
 
+        Log.d("WEKEKE", password);
+        Log.d("LALALA", String.valueOf(matcher.matches()));
         return matcher.matches();
     }
 
