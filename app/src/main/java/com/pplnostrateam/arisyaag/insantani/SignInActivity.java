@@ -905,22 +905,35 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         Log.d("SignInActivity", "registerUserRestServer");
 
         try {
-            Log.d("SignInActivity", "Inside Try");
+            User theUser = null;
 
-            User request = new User(email, name, computeSHAHash(password), phone);
+            String getterURL = url + "/find?email=" + email;
+            ResponseEntity<User> response = rest.getForEntity(getterURL, User.class);
+            Log.d("find error:", response.getStatusCode().toString());
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
+            if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
 
-            HttpEntity<User> entity = new HttpEntity<>(request, headers);
-            ResponseEntity<User> response = rest.exchange(url, HttpMethod.POST, entity, User.class);
+                Log.d("SignInActivity", "Inside Try");
 
-            Log.d("CreateResponse", response.getStatusCode().toString());
+                User request = new User(email, name, computeSHAHash(password), phone);
 
-            String getterURL = url + "/find?email={email}";
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+
+                HttpEntity<User> entity = new HttpEntity<>(request, headers);
+                response = rest.exchange(url, HttpMethod.POST, entity, User.class);
+
+                Log.d("CreateResponse", response.getStatusCode().toString());
+
+
+            } else if (response.getStatusCode() == HttpStatus.OK) {
+                Log.d("Status;", "already exists");
+            }
+
+            getterURL = url + "/find?email={email}";
             response = rest.getForEntity(getterURL, User.class, email);
 
-            User theUser = response.getBody();
+            theUser = response.getBody();
 
             Log.d("Output#1", theUser.getEmail());
 
@@ -936,80 +949,12 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             Log.d("Session Name", session.getUserDetails().get("name"));
             Log.d("Session Email", session.getUserDetails().get("email"));
 
-            //User theUser = null;
-            // String getterURL = url + "/find?email=" + email;
-            // theUser = rest.getForObject(getterURL, User.class, email);
-            // ResponseEntity<User> response = rest.getForEntity(getterURL, User.class);
-            // Log.d("find error:", response.getStatusCode().toString());
-
-            /*
-            if (response.getStatusCode() == HttpStatus.OK) {
-
-                Log.d("Status;", "already exists");
-
-                theUser = response.getBody();
-
-                Log.d("Output#1", theUser.getEmail());
-
-                long userId = theUser.getId();
-
-                Log.d("Return ID", Long.toString(theUser.getId()));
-                Log.d("Return Name", theUser.getName());
-                Log.d("Return Email", theUser.getEmail());
-
-                session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
-
-                Log.d("Session ID", session.getUserDetails().get("userId"));
-                Log.d("Session Name", session.getUserDetails().get("name"));
-                Log.d("Session Email", session.getUserDetails().get("email"));
-
-            }
-            // else if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-            else {
-
-                Log.d("Status;", "not exists yet");
-
-                User request = new User(email, name, computeSHAHash(password), phone);
-
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-
-                HttpEntity<User> entity = new HttpEntity<>(request, headers);
-                ResponseEntity<User> loginResponse = rest.exchange(url, HttpMethod.POST, entity, User.class);
-
-                Log.d("Output#1", theUser.getName());
-
-                Log.d("SignInActivity", "After post query");
-
-                if (loginResponse.getStatusCode() == HttpStatus.OK) {
-
-                    Log.d("SignInActivity", "After check query");
-
-                    long userId = theUser.getId();
-
-                    Log.d("Return ID", Long.toString(theUser.getId()));
-                    Log.d("Return Name", theUser.getName());
-                    Log.d("Return Email", theUser.getEmail());
-
-                    session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
-
-                    Log.d("Session ID", session.getUserDetails().get("userId"));
-                    Log.d("Session Name", session.getUserDetails().get("name"));
-                    Log.d("Session Email", session.getUserDetails().get("email"));
-
-                } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-                    Log.d("statusCode", "HttpStatus.UNAUTHORIZED");
-                }
-            }
-
-*/
-            // startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
+            startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
 
         } catch (ResourceAccessException e) {
                // throw new Exception("Connection to server failed");
             Log.d("Error Sign up:", e.getMessage() );
         }
-
 
     }
 
