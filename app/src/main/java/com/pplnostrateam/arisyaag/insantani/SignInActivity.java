@@ -356,12 +356,11 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             String gProfileName = acct.getDisplayName();
             String gEmail = acct.getEmail();
 
-            Toast.makeText(SignInActivity.this, gProfileName + " " + gEmail, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(SignInActivity.this, gProfileName + " " + gEmail, Toast.LENGTH_SHORT).show();
 
             mGTask = new UserRegisterTask(gEmail, gProfileName, "", "99999999");
             mGTask.execute((Void) null);
 
-            finish();
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);
