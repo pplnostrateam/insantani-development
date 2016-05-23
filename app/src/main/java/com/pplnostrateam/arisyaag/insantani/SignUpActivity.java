@@ -240,6 +240,7 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
             focusView = mPasswordView;
             cancel = true;
         } else if (!isPasswordValid(password)) {
+            Log.d("error password", mPasswordView.getText().toString());
             mPasswordView.setError(getString(R.string.error_invalid_password_format));
             focusView = mPasswordView;
             cancel = true;
@@ -286,7 +287,7 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
 
     private boolean isPasswordValid(String password) {
         final String passwordPattern =
-                "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
+                "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})";
 
         Pattern pattern = Pattern.compile(passwordPattern);
         Matcher matcher = pattern.matcher(password);

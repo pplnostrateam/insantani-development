@@ -215,7 +215,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
                                 Toast.makeText(SignInActivity.this, fbProfileName + " " + fbEmail + " " + fbUserID, Toast.LENGTH_SHORT).show();
 
-                                mFBTask = new UserRegisterTask(fbEmail, fbProfileName, "");
+                                mFBTask = new UserRegisterTask(fbEmail, fbProfileName, "", "9999999");
 
                                 //Log.d("Sign In Check", session.getUserDetails().get("name"));
                                 //Log.d("Sign In Check", session.getUserDetails().get("email"));
@@ -358,7 +358,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
             Toast.makeText(SignInActivity.this, gProfileName + " " + gEmail, Toast.LENGTH_SHORT).show();
 
-            mGTask = new UserRegisterTask(gEmail, gProfileName, "");
+            mGTask = new UserRegisterTask(gEmail, gProfileName, "", "99999999");
             mGTask.execute((Void) null);
 
             finish();
@@ -846,11 +846,13 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         private final String mEmail;
         private final String mPassword;
         private final String mName;
+        private final String mPhone;
 
-        UserRegisterTask(String email, String name, String password) {
+        UserRegisterTask(String email, String name, String password, String phone) {
             mEmail = email;
             mPassword = password;
             mName = name;
+            mPhone = phone;
         }
 
         @Override
@@ -865,11 +867,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             }
 
 
-            try {
-                registerUserRestServer(mEmail, mName, mPassword);
-            } catch (Exception e) {
-                return false;
-            }
+            registerUserRestServer(mEmail, mName, mPassword, mPhone);
 
             return true;
         }
@@ -901,7 +899,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         }
     }
 
-    public void registerUserRestServer(String email, String name, String password) throws Exception {
+    public void registerUserRestServer(String email, String name, String password, String phone)  {
         String url = APP_SERVER_IP + "api/user";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -913,9 +911,11 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
             User theUser = null;
 
-            String getterURL = url + "/find?email={email}";
+            String getterURL = url + "/find?email=" + email;
             //theUser = rest.getForObject(getterURL, User.class, email);
-            ResponseEntity<User> response = rest.getForEntity(getterURL, User.class, email);
+            ResponseEntity<User> response = rest.getForEntity(getterURL, User.class);
+            Log.d("find error:", response.getStatusCode().toString());
+
             if (response.getStatusCode() == HttpStatus.OK) {
 
                 Log.d("Status;", "already exists");
@@ -936,10 +936,13 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
                 Log.d("Session Name", session.getUserDetails().get("name"));
                 Log.d("Session Email", session.getUserDetails().get("email"));
 
-            } else if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            }
+            // else if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            else {
+
                 Log.d("Status;", "not exists yet");
 
-                User request = new User(email, name, computeSHAHash(password));
+                User request = new User(email, name, computeSHAHash(password), phone);
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
@@ -970,18 +973,14 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
                 } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
                     Log.d("statusCode", "HttpStatus.UNAUTHORIZED");
                 }
-
-
             }
 
             // startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
 
-        } catch (Exception e) {
-            if(e instanceof ResourceAccessException){
-                throw new Exception("Connection to server failed");
-            } else {
-                throw new Exception(e.getMessage());
-            }
+        } catch (ResourceAccessException e) {
+
+               // throw new Exception("Connection to server failed");
+            Log.d("Error SIgn up:", e.getMessage() );
         }
 
     }
@@ -992,8 +991,8 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
         try {
-            String getterURL = url + "/find?email={email}";
-            User theUser = rest.getForObject(getterURL, User.class, email);
+            String getterURL = url + "/find?email=" + email;
+            User theUser = rest.getForObject(getterURL, User.class);
 
             long userId = theUser.getId();
 
