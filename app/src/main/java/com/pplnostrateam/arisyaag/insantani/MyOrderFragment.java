@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.content.Intent;
 
@@ -50,6 +51,14 @@ public class MyOrderFragment extends Fragment implements GlobalConfig {
         ListView orderList = (ListView)myView.findViewById(R.id.orderList);
         orderAdapter = new OrderAdapter(this.getActivity(), R.layout.row_layout_order);
         orderList.setAdapter(orderAdapter);
+
+        ImageButton backButton = (ImageButton)myView.findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), OrderActivity.class);
+                startActivity(intent);
+            }
+        });
 
        /*Manggil dari api trus masukin ke adapter*/
 

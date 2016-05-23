@@ -100,7 +100,6 @@
         android:layout_alignParentRight="true"
         android:background="@color/colorPrimary"
 
-
         >
 
         <Button
@@ -129,11 +128,11 @@
             android:background="@drawable/round_edittext"
             android:singleLine="true"
             android:textAlignment="center"
-            android:layout_marginLeft="27dp"
-            android:layout_alignTop="@+id/button2"
+            android:layout_marginLeft="28dp"
+            android:layout_marginStart="28dp"
+            android:layout_alignBottom="@+id/button2"
             android:layout_toRightOf="@+id/textKg"
-            android:layout_toEndOf="@+id/textKg"
-            android:layout_marginStart="27dp" />
+            android:layout_toEndOf="@+id/textKg" />
 
         <TextView
             android:layout_width="wrap_content"
