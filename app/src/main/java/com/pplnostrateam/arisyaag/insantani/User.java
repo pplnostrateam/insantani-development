@@ -14,10 +14,9 @@ package com.pplnostrateam.arisyaag.insantani;
 
 
         public User() { }
+
         public User(String email, String name, String password) {
-            this.email = email;
-            this.name = name;
-            this.password = password;
+            this(email, name, password, "999999999");
         }
 
         public User(String email, String name, String password, String phone) {
@@ -59,5 +58,8 @@ package com.pplnostrateam.arisyaag.insantani;
             this.password = password;
         }
 
+        public String getPhone() { return phone; }
+
+        public void setPhone(String phone) { this.phone = phone; }
 }
 
