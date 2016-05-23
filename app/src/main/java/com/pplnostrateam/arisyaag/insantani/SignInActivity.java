@@ -204,9 +204,6 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-                startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
-
-
                 GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object,GraphResponse response) {
@@ -235,8 +232,6 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
                 parameters.putString("fields", "id,name,link,email,picture");
                 request.setParameters(parameters);
                 request.executeAsync();
-
-                finish();
             }
 
             @Override
@@ -361,7 +356,6 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             String gProfileName = acct.getDisplayName();
             String gEmail = acct.getEmail();
 
-            startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
             Toast.makeText(SignInActivity.this, gProfileName + " " + gEmail, Toast.LENGTH_SHORT).show();
 
             mGTask = new UserRegisterTask(gEmail, gProfileName, "");
@@ -826,6 +820,10 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
                 session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
 
+                Log.d("Session ID", session.getUserDetails().get("userId"));
+                Log.d("Session Name", session.getUserDetails().get("name"));
+                Log.d("Session Email", session.getUserDetails().get("email"));
+
             } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
                 Log.d("statusCode", "HttpStatus.UNAUTHORIZED");
             }
@@ -883,7 +881,9 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
             if (success) {
                 Toast.makeText(getApplicationContext(),
-                        "User has been successfully added.", Toast.LENGTH_LONG).show();
+                        "Login Success.", Toast.LENGTH_LONG).show();
+
+                startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
 
                 finish();
             } else {
@@ -919,6 +919,23 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             if (response.getStatusCode() == HttpStatus.OK) {
 
                 Log.d("Status;", "already exists");
+
+                theUser = response.getBody();
+
+                Log.d("Output#1", theUser.getEmail());
+
+                long userId = theUser.getId();
+
+                Log.d("Return ID", Long.toString(theUser.getId()));
+                Log.d("Return Name", theUser.getName());
+                Log.d("Return Email", theUser.getEmail());
+
+                session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+
+                Log.d("Session ID", session.getUserDetails().get("userId"));
+                Log.d("Session Name", session.getUserDetails().get("name"));
+                Log.d("Session Email", session.getUserDetails().get("email"));
+
             } else if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
                 Log.d("Status;", "not exists yet");
 
@@ -953,7 +970,11 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
                 } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
                     Log.d("statusCode", "HttpStatus.UNAUTHORIZED");
                 }
+
+
             }
+
+            // startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
 
         } catch (Exception e) {
             if(e instanceof ResourceAccessException){
@@ -962,6 +983,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
                 throw new Exception(e.getMessage());
             }
         }
+
     }
 
     public void checkUserDatabase(String email) throws Exception {
