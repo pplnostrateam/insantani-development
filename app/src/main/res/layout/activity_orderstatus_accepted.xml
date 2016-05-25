@@ -159,7 +159,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:id="@+id/status_section"
-                android:layout_above="@+id/return_search"
+                android:layout_above="@+id/footer"
+                android:layout_below="@+id/data_section"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true">
 
@@ -225,41 +226,51 @@
 
             </RelativeLayout>
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/view_all_order"
-        android:background="@drawable/round_button"
-        android:drawableRight="@drawable/ic_ordermade_rightarrow"
-        android:text="SEE MY ORDERS"
-        android:paddingLeft="8dp"
-        android:paddingRight="3dp"
-        android:textColor="#FFFFFF"
-        android:layout_alignTop="@+id/return_search"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="32dp"
-        android:layout_gravity="right|bottom"
-        android:layout_marginBottom="20dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/return_search"
-        android:background="@drawable/round_button"
-        android:drawableLeft="@drawable/ic_ordermade_leftarrow"
-        android:src="@drawable/ic_ordermade_left"
-        android:text="RETURN SEARCH"
-        android:paddingRight="8dp"
-        android:paddingLeft="3dp"
-        android:textColor="#FFFFFF"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="8dp"
-        android:layout_gravity="left|bottom" />
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout3">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/return_search"
+            android:background="@drawable/round_button"
+            android:drawableLeft="@drawable/ic_ordermade_leftarrow"
+            android:src="@drawable/ic_ordermade_left"
+            android:text="RETURN SEARCH"
+            android:paddingRight="8dp"
+            android:paddingLeft="3dp"
+            android:textColor="#FFFFFF"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="32dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="8dp"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/view_all_order"
+            android:background="@drawable/round_button"
+            android:drawableRight="@drawable/ic_ordermade_rightarrow"
+            android:text="SEE MY ORDERS"
+            android:paddingLeft="8dp"
+            android:paddingRight="3dp"
+            android:textColor="#FFFFFF"
+            android:layout_alignTop="@+id/return_search"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginBottom="20dp" />
+
+    </LinearLayout>
 
 
     </RelativeLayout>

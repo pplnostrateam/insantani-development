@@ -130,10 +130,7 @@ public class OrderMadeActivity extends AppCompatActivity
         if (id == R.id.nav_order) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new MyOrderFragment()).commit();
 
-        } else if (id == R.id.nav_wishlist) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new MyWishlistFragment()).commit();
-
-        } else if (id == R.id.nav_profile) {
+        }else if (id == R.id.nav_profile) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new MyProfileFragment()).commit();
 
         } else if (id == R.id.nav_logout) {

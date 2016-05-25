@@ -240,6 +240,7 @@ public class SignUpActivity extends AppCompatActivity implements GlobalConfig, L
             focusView = mPasswordView;
             cancel = true;
         } else if (!isPasswordValid(password)) {
+            Log.d("error password", mPasswordView.getText().toString());
             mPasswordView.setError(getString(R.string.error_invalid_password_format));
             focusView = mPasswordView;
             cancel = true;

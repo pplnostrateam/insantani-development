@@ -215,7 +215,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
                                 Toast.makeText(SignInActivity.this, fbProfileName + " " + fbEmail + " " + fbUserID, Toast.LENGTH_SHORT).show();
 
-                                mFBTask = new UserRegisterTask(fbEmail, fbProfileName, "");
+                                mFBTask = new UserRegisterTask(fbEmail, fbProfileName, "", "9999999");
 
                                 //Log.d("Sign In Check", session.getUserDetails().get("name"));
                                 //Log.d("Sign In Check", session.getUserDetails().get("email"));
@@ -356,12 +356,11 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             String gProfileName = acct.getDisplayName();
             String gEmail = acct.getEmail();
 
-            Toast.makeText(SignInActivity.this, gProfileName + " " + gEmail, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(SignInActivity.this, gProfileName + " " + gEmail, Toast.LENGTH_SHORT).show();
 
-            mGTask = new UserRegisterTask(gEmail, gProfileName, "");
+            mGTask = new UserRegisterTask(gEmail, gProfileName, "", "99999999");
             mGTask.execute((Void) null);
 
-            finish();
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);
@@ -846,11 +845,13 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         private final String mEmail;
         private final String mPassword;
         private final String mName;
+        private final String mPhone;
 
-        UserRegisterTask(String email, String name, String password) {
+        UserRegisterTask(String email, String name, String password, String phone) {
             mEmail = email;
             mPassword = password;
             mName = name;
+            mPhone = phone;
         }
 
         @Override
@@ -865,11 +866,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             }
 
 
-            try {
-                registerUserRestServer(mEmail, mName, mPassword);
-            } catch (Exception e) {
-                return false;
-            }
+            registerUserRestServer(mEmail, mName, mPassword, mPhone);
 
             return true;
         }
@@ -887,8 +884,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
                 finish();
             } else {
-                Toast.makeText(getApplicationContext(),
-                        "Sign up failed...", Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(), "Sign up failed...", Toast.LENGTH_LONG).show();
                 // mPasswordView.setError(getString(R.string.error_sign_up_failed));
                 // mPasswordView.requestFocus();
             }
@@ -901,7 +897,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         }
     }
 
-    public void registerUserRestServer(String email, String name, String password) throws Exception {
+    public void registerUserRestServer(String email, String name, String password, String phone)  {
         String url = APP_SERVER_IP + "api/user";
         RestTemplate rest = new RestTemplate();
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -909,79 +905,55 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         Log.d("SignInActivity", "registerUserRestServer");
 
         try {
-            Log.d("SignInActivity", "Inside Try");
-
             User theUser = null;
 
-            String getterURL = url + "/find?email={email}";
-            //theUser = rest.getForObject(getterURL, User.class, email);
-            ResponseEntity<User> response = rest.getForEntity(getterURL, User.class, email);
-            if (response.getStatusCode() == HttpStatus.OK) {
+            String getterURL = url + "/find?email=" + email;
+            ResponseEntity<User> response = rest.getForEntity(getterURL, User.class);
+            Log.d("find error:", response.getStatusCode().toString());
 
-                Log.d("Status;", "already exists");
+            if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
 
-                theUser = response.getBody();
+                Log.d("SignInActivity", "Inside Try");
 
-                Log.d("Output#1", theUser.getEmail());
-
-                long userId = theUser.getId();
-
-                Log.d("Return ID", Long.toString(theUser.getId()));
-                Log.d("Return Name", theUser.getName());
-                Log.d("Return Email", theUser.getEmail());
-
-                session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
-
-                Log.d("Session ID", session.getUserDetails().get("userId"));
-                Log.d("Session Name", session.getUserDetails().get("name"));
-                Log.d("Session Email", session.getUserDetails().get("email"));
-
-            } else if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-                Log.d("Status;", "not exists yet");
-
-                User request = new User(email, name, computeSHAHash(password));
+                User request = new User(email, name, computeSHAHash(password), phone);
 
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
 
                 HttpEntity<User> entity = new HttpEntity<>(request, headers);
-                ResponseEntity<User> loginResponse = rest.exchange(url, HttpMethod.POST, entity, User.class);
+                response = rest.exchange(url, HttpMethod.POST, entity, User.class);
 
-                Log.d("Output#1", theUser.getName());
-
-                Log.d("SignInActivity", "After post query");
-
-                if (loginResponse.getStatusCode() == HttpStatus.OK) {
-
-                    Log.d("SignInActivity", "After check query");
-
-                    long userId = theUser.getId();
-
-                    Log.d("Return ID", Long.toString(theUser.getId()));
-                    Log.d("Return Name", theUser.getName());
-                    Log.d("Return Email", theUser.getEmail());
-
-                    session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
-
-                    Log.d("Session ID", session.getUserDetails().get("userId"));
-                    Log.d("Session Name", session.getUserDetails().get("name"));
-                    Log.d("Session Email", session.getUserDetails().get("email"));
-
-                } else if (loginResponse.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-                    Log.d("statusCode", "HttpStatus.UNAUTHORIZED");
-                }
+                Log.d("CreateResponse", response.getStatusCode().toString());
 
 
+            } else if (response.getStatusCode() == HttpStatus.OK) {
+                Log.d("Status;", "already exists");
             }
 
-            // startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
+            getterURL = url + "/find?email={email}";
+            response = rest.getForEntity(getterURL, User.class, email);
 
-        } catch (Exception e) {
-            if(e instanceof ResourceAccessException){
-                throw new Exception("Connection to server failed");
-            } else {
-                throw new Exception(e.getMessage());
-            }
+            theUser = response.getBody();
+
+            Log.d("Output#1", theUser.getEmail());
+
+            long userId = theUser.getId();
+
+            Log.d("Return ID", Long.toString(theUser.getId()));
+            Log.d("Return Name", theUser.getName());
+            Log.d("Return Email", theUser.getEmail());
+
+            session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+
+            Log.d("Session ID", session.getUserDetails().get("userId"));
+            Log.d("Session Name", session.getUserDetails().get("name"));
+            Log.d("Session Email", session.getUserDetails().get("email"));
+
+            startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
+
+        } catch (ResourceAccessException e) {
+               // throw new Exception("Connection to server failed");
+            Log.d("Error Sign up:", e.getMessage() );
         }
 
     }
@@ -992,8 +964,8 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
         rest.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
         try {
-            String getterURL = url + "/find?email={email}";
-            User theUser = rest.getForObject(getterURL, User.class, email);
+            String getterURL = url + "/find?email=" + email;
+            User theUser = rest.getForObject(getterURL, User.class);
 
             long userId = theUser.getId();
 

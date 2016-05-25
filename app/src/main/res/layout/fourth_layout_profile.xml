@@ -102,8 +102,10 @@
             android:id="@+id/my_profile_email"
             android:textSize="24sp"
             android:textColor="@color/colorWhite"
-            android:layout_above="@+id/my_profile_phone"
-            android:layout_centerHorizontal="true" />
+            android:layout_below="@+id/my_profile_name"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="22dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -114,9 +116,9 @@
             android:id="@+id/my_profile_phone"
             android:textSize="24sp"
             android:textColor="@color/colorWhite"
-            android:layout_centerVertical="true"
-            android:layout_alignLeft="@+id/my_profile_email"
-            android:layout_alignStart="@+id/my_profile_email" />
+            android:layout_below="@+id/my_profile_email"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 
