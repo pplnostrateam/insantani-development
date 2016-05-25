@@ -11,10 +11,6 @@
             android:icon="@drawable/ic_menu_order"
             android:title="My Order" />
         <item
-            android:id="@+id/nav_wishlist"
-            android:icon="@drawable/ic_menu_wishlist"
-            android:title="Wishlist" />
-        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_menu_logout"
             android:title="Logout" />
