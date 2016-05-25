@@ -67,6 +67,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
@@ -877,8 +878,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             showProgress(false);
 
             if (success) {
-                Toast.makeText(getApplicationContext(),
-                        "Login Success.", Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(), "Login Success.", Toast.LENGTH_LONG).show();
 
                 startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
 
@@ -906,12 +906,36 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
         try {
             User theUser = null;
-
             String getterURL = url + "/find?email=" + email;
-            ResponseEntity<User> response = rest.getForEntity(getterURL, User.class);
-            Log.d("find error:", response.getStatusCode().toString());
+            ResponseEntity<User> response = null;
 
-            if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            try {
+
+                response = rest.getForEntity(getterURL, User.class);
+
+                Log.d("Status;", "already exists");
+
+                theUser = response.getBody();
+
+                Log.d("Output#1", theUser.getEmail());
+
+                long userId = theUser.getId();
+
+                Log.d("Return ID", Long.toString(theUser.getId()));
+                Log.d("Return Name", theUser.getName());
+                //Log.d("Return Email", theUser.getEmail());
+
+                session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+
+                Log.d("Session ID", session.getUserDetails().get("userId"));
+                Log.d("Session Name", session.getUserDetails().get("name"));
+                Log.d("Session Email", session.getUserDetails().get("email"));
+
+                startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
+
+            } catch (final HttpClientErrorException e) {
+                Log.d("Error", "");
+
 
                 Log.d("SignInActivity", "Inside Try");
 
@@ -925,31 +949,35 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
 
                 Log.d("CreateResponse", response.getStatusCode().toString());
 
+                theUser = response.getBody();
 
-            } else if (response.getStatusCode() == HttpStatus.OK) {
-                Log.d("Status;", "already exists");
+                Log.d("Output#1", theUser.getEmail());
+
+                long userId = theUser.getId();
+
+                Log.d("Return ID", Long.toString(theUser.getId()));
+                Log.d("Return Name", theUser.getName());
+                //Log.d("Return Email", theUser.getEmail());
+
+                session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+
+                Log.d("Session ID", session.getUserDetails().get("userId"));
+                Log.d("Session Name", session.getUserDetails().get("name"));
+                Log.d("Session Email", session.getUserDetails().get("email"));
+
+                startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
+
+            } finally {
+
+                getterURL = url + "/find?email={email}";
+                try {
+                    response = rest.getForEntity(getterURL, User.class, email);
+                } catch (HttpClientErrorException e) {
+
+                } finally {
+
+                }
             }
-
-            getterURL = url + "/find?email={email}";
-            response = rest.getForEntity(getterURL, User.class, email);
-
-            theUser = response.getBody();
-
-            Log.d("Output#1", theUser.getEmail());
-
-            long userId = theUser.getId();
-
-            Log.d("Return ID", Long.toString(theUser.getId()));
-            Log.d("Return Name", theUser.getName());
-            Log.d("Return Email", theUser.getEmail());
-
-            session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
-
-            Log.d("Session ID", session.getUserDetails().get("userId"));
-            Log.d("Session Name", session.getUserDetails().get("name"));
-            Log.d("Session Email", session.getUserDetails().get("email"));
-
-            startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
 
         } catch (ResourceAccessException e) {
                // throw new Exception("Connection to server failed");
