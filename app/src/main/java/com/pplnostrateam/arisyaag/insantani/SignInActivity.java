@@ -214,7 +214,7 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
                                 fbEmail = json.getString("email");
                                 Log.d(TAG, fbEmail);
 
-                                Toast.makeText(SignInActivity.this, fbProfileName + " " + fbEmail + " " + fbUserID, Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(SignInActivity.this, fbProfileName + " " + fbEmail + " " + fbUserID, Toast.LENGTH_SHORT).show();
 
                                 mFBTask = new UserRegisterTask(fbEmail, fbProfileName, "", "9999999");
 
@@ -770,15 +770,13 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
             if (success) {
                 startActivity(new Intent(SignInActivity.this, OrderActivity.class));
 
-                Toast.makeText(getApplicationContext(),
-                        "Login attempt success.", Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(), "Login attempt success.", Toast.LENGTH_LONG).show();
 
                 //session.createLoginSession(mEmail, mPassword);
 
                 finish();
             } else {
-                Toast.makeText(getApplicationContext(),
-                        "Email and password not found", Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(), "Email and password not found", Toast.LENGTH_LONG).show();
                 mPasswordView.requestFocus();
             }
         }
