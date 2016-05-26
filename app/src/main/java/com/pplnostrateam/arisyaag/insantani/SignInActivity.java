@@ -929,14 +929,14 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
                 Log.d("Session Name", session.getUserDetails().get("name"));
                 Log.d("Session Email", session.getUserDetails().get("email"));
 
-                startActivity(new Intent(SignInActivity.this, CompleteProfileActivity.class));
+                startActivity(new Intent(SignInActivity.this, OrderActivity.class));
 
             } catch (final HttpClientErrorException e) {
                 Log.d("Error", "");
 
-
                 Log.d("SignInActivity", "Inside Try");
 
+                /*
                 User request = new User(email, name, computeSHAHash(password), phone);
 
                 HttpHeaders headers = new HttpHeaders();
@@ -957,9 +957,9 @@ public class SignInActivity extends AppCompatActivity implements GlobalConfig, G
                 Log.d("Return Name", theUser.getName());
                 //Log.d("Return Email", theUser.getEmail());
 
-                session.createLoginSession(userId, theUser.getName(), theUser.getEmail());
+                */
+                session.createLoginSession(-1, name, email);
 
-                Log.d("Session ID", session.getUserDetails().get("userId"));
                 Log.d("Session Name", session.getUserDetails().get("name"));
                 Log.d("Session Email", session.getUserDetails().get("email"));
 
