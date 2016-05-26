@@ -91,14 +91,12 @@ public class CompleteProfileActivity extends AppCompatActivity implements Global
             @Override
             public void onClick(View view) {
                 //attemptSubmitProfile();
-                if (mPhoneView.getText().equals("")) {
+                if (mPhoneView.getText().length() < 10) {
                     mAuthTask = new UserRegisterTask(session.getUserDetails().get("email"),
                             session.getUserDetails().get("name"), "", mPhoneView.getText().toString());
                     mAuthTask.execute((Void) null);
                 }
-                   // emptyPhone();
-                else
-                    startActivity(new Intent(CompleteProfileActivity.this, OrderActivity.class));
+
             }
         });
     }
@@ -272,6 +270,8 @@ public class CompleteProfileActivity extends AppCompatActivity implements Global
                 throw new Exception(e.getMessage());
             }
         }
+
+        startActivity(new Intent(CompleteProfileActivity.this, OrderActivity.class));
     }
 
     private static String convertToHex(byte[] data) throws java.io.IOException {
