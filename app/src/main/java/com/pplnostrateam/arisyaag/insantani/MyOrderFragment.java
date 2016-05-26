@@ -77,6 +77,7 @@ public class MyOrderFragment extends Fragment implements GlobalConfig {
         //Order name2 = new Order("2fecd","2015/15/10","Cabai","Tangerang Utara",session.getUserDetails().get("userid"));
 
         getOrder();
+
         // orderAdapter.add(name);
         //orderAdapter.add(name2);
 
@@ -104,7 +105,7 @@ public class MyOrderFragment extends Fragment implements GlobalConfig {
                     try {
                         String jsondata = response.body().string();
                         if (response.isSuccessful()) {
-                            getCurrentOrders(jsondata);
+                            getCurrentOrders(jsondata); //
                         } else {
                             Toast.makeText(getActivity(), "Network is unavailable!", Toast.LENGTH_LONG);
                         }
@@ -140,15 +141,16 @@ public class MyOrderFragment extends Fragment implements GlobalConfig {
             JSONObject x = jsondata.getJSONObject(i);
             String vegetableName = x.getJSONObject("vegetable").getString("name");
             Log.d("wawawa", vegetableName);
-            String farmName = x.getJSONObject("farmer").getString("farmer");
+            String farmName = x.getJSONObject("farmer").getString("name");
             Log.d("zozozo", farmName);
             String orderDate = x.getString("created");
             Order newOrder = new Order();
             newOrder.setCreated(orderDate);
             newOrder.setFarmerName(farmName);
             newOrder.setVegetableName(vegetableName);
-            orderAdapter.add(newOrder);
+            orderAdapter.add(newOrder); //2
             Log.d("test", newOrder.getCreated()+newOrder.getVegetableName()+newOrder.getFarmerName());
+
         }
 
 

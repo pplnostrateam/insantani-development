@@ -23,7 +23,7 @@ import java.util.List;
     }
 
     public void add(Order object) {
-        super.add(object);
+        super.add(object); //1
         list.add(object);
     }
 
