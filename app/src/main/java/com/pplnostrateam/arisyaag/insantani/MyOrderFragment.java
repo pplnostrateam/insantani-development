@@ -64,7 +64,6 @@ public class MyOrderFragment extends Fragment implements GlobalConfig {
         session.getUserDetails().put("userid","3");
         ListView orderList = (ListView)myView.findViewById(R.id.orderList);
         orderAdapter = new OrderAdapter(this.getActivity(), R.layout.row_layout_order);
-        getOrder();
         orderList.setAdapter(orderAdapter);
 
         ImageButton backButton = (ImageButton)myView.findViewById(R.id.back_button);
@@ -74,17 +73,20 @@ public class MyOrderFragment extends Fragment implements GlobalConfig {
                 startActivity(intent);
             }
         });
-        Order name = new Order("2fecd","2015/15/10","Cabai","Tangerang Selatan",session.getUserDetails().get("userid"));
-        Order name2 = new Order("2fecd","2015/15/10","Cabai","Tangerang Utara",session.getUserDetails().get("userid"));
+        //Order name = new Order("2fecd","2015/15/10","Cabai","Tangerang Selatan",session.getUserDetails().get("userid"));
+        //Order name2 = new Order("2fecd","2015/15/10","Cabai","Tangerang Utara",session.getUserDetails().get("userid"));
 
-        orderAdapter.add(name);
-        orderAdapter.add(name2);
+        getOrder();
+        // orderAdapter.add(name);
+        //orderAdapter.add(name2);
 
         return myView;
     }
 
     private void getOrder() {
-        String apiURL = "http://l04.196.35.119:8080/api/order?userid="+session.getUserDetails().get("userid");
+       // String apiURL = APP_SERVER_IP +"api/order?userid="+session.getUserDetails().get("userid");
+        String apiURL = APP_SERVER_IP +"api/order?userid=3";
+        Log.d("HAHA", "panggil api api");
         if(isNetworkAvailable()) {
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder()
@@ -114,6 +116,7 @@ public class MyOrderFragment extends Fragment implements GlobalConfig {
                 }
             });
         } else {
+            Log.d("jjsj", "not avail");
             Toast.makeText(this.getActivity(), "Network is unavailable!", Toast.LENGTH_LONG);
         }
     }
@@ -136,13 +139,16 @@ public class MyOrderFragment extends Fragment implements GlobalConfig {
         for(int i = 0; i < jsondata.length();i++) {
             JSONObject x = jsondata.getJSONObject(i);
             String vegetableName = x.getJSONObject("vegetable").getString("name");
+            Log.d("wawawa", vegetableName);
             String farmName = x.getJSONObject("farmer").getString("farmer");
+            Log.d("zozozo", farmName);
             String orderDate = x.getString("created");
             Order newOrder = new Order();
             newOrder.setCreated(orderDate);
             newOrder.setFarmerName(farmName);
             newOrder.setVegetableName(vegetableName);
             orderAdapter.add(newOrder);
+            Log.d("test", newOrder.getCreated()+newOrder.getVegetableName()+newOrder.getFarmerName());
         }
 
 
