@@ -91,10 +91,12 @@ public class CompleteProfileActivity extends AppCompatActivity implements Global
             @Override
             public void onClick(View view) {
                 //attemptSubmitProfile();
-                if (mPhoneView.getText().length() < 10) {
+                if (mPhoneView.getText().length() > 8) {
                     mAuthTask = new UserRegisterTask(session.getUserDetails().get("email"),
                             session.getUserDetails().get("name"), "", mPhoneView.getText().toString());
                     mAuthTask.execute((Void) null);
+                } else {
+                    emptyPhone();
                 }
 
             }
