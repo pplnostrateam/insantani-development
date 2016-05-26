@@ -42,12 +42,8 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
     VegetableAdapter vegetableAdapter;
     EditText search_vegetable;
     EditText weight;
-
     SessionManager session;
 
-
-    //    ArrayList<Vegetable> arrayOfData = new ArrayList<Vegetable>();
-//    FancyAdapter aa = null;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
@@ -58,15 +54,11 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
                 SearchResultActivity.this.startActivity(intent);
             }
         });
-        //TextView textView3 = (TextView) findViewById(R.id.textView3);
-        // ListView searchResult = (ListView)findViewById(R.id.searchResult);
 
         ListView searchResult = (ListView)findViewById(R.id.searchResult);
         vegetableAdapter = new VegetableAdapter(this, R.layout.row_layout);
         searchResult.setAdapter(vegetableAdapter);
         search_vegetable = (EditText) findViewById(R.id.search_vegetable);
-
-
         weight = (EditText) findViewById(R.id.weight);
         weight.setFilters(new InputFilter[]{new InputFilterMinMax("1", "100")});
 
@@ -94,6 +86,7 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
 
         Button mContinueButton = (Button) findViewById(R.id.button2);
         assert mContinueButton != null;
+
         mContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,7 +125,6 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
 
 
     public void getConfirmation(View view){
-        //Intent intent = new Intent(this, SearchResultActivity.class);
         AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
         alertDialogue.setTitle("You have to sign in first");
         alertDialogue.setMessage("Are you sure you want to continue this order?");
@@ -158,6 +150,7 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
     }
+
     public void getData(View view){
         String vName = search_vegetable.getText().toString();
         if(vName.equals("")){
@@ -166,7 +159,6 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
         else{
             new BackgroundTask().execute();
         }
-
     }
 
     class BackgroundTask extends AsyncTask<Void, Void, String> {
@@ -189,13 +181,14 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuilder stringBuilder = new StringBuilder();
                 while((JSON_STRING = bufferedReader.readLine()) != null){
-
                     stringBuilder.append(JSON_STRING+"\n");
                 }
+
                 bufferedReader.close();
                 inputStream.close();
                 httpURLConnection.disconnect();
                 return stringBuilder.toString().trim();
+
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -260,8 +253,6 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
         dialog.show();
     }
 
-
-
     public void vegetableQueryResultChecking() {
         if (json_string.equals("[]")) {
             AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
@@ -279,6 +270,7 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
             Intent intent = new Intent(this, SearchResultActivity.class);
             intent.putExtra("json_data", json_string);
             startActivity(intent);
+            finish();
         }
     }
 
@@ -292,5 +284,6 @@ public class SearchResultActivity extends AppCompatActivity implements GlobalCon
         Intent intent = new Intent(this, OrderActivity.class);
         intent.putExtra("json_data", json_string);
         startActivity(intent);
+        finish();
     }
 }

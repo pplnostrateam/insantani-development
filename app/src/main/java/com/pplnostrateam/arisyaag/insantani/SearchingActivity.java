@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,22 +28,17 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class SearchingActivity extends AppCompatActivity implements GlobalConfig {
-    //private EditText editTextName;
     private EditText search_vegetable;
-    //private EditText editText;
     private Button button;
     private TextView textView2;
     private Activity activity;
     String json_string;
-    // String vName;
-    // private EditText editText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searching);
-        //    textView = (TextView) findViewById(R.id.textView);
         search_vegetable = (EditText) findViewById(R.id.search_vegetable);
-        //editText = (EditText) findViewById(R.id.editText);
 
         search_vegetable.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -65,7 +59,6 @@ public class SearchingActivity extends AppCompatActivity implements GlobalConfig
         });
     }
 
-
     public void getData(View view){
         String vName = search_vegetable.getText().toString();
         if(vName.equals("")){
@@ -74,7 +67,6 @@ public class SearchingActivity extends AppCompatActivity implements GlobalConfig
         else{
             new BackgroundTask().execute();
         }
-
     }
 
     class BackgroundTask extends AsyncTask<Void, Void, String> {
@@ -120,8 +112,6 @@ public class SearchingActivity extends AppCompatActivity implements GlobalConfig
 
         @Override
         protected void onPostExecute(String result) {
-            //textView2 = (TextView) findViewById(R.id.textView2);
-            //textView2.setText(result);
             json_string = result;
             move();
         }
@@ -140,8 +130,8 @@ public class SearchingActivity extends AppCompatActivity implements GlobalConfig
         AlertDialog dialog = alertDialogue.create();
         dialog.show();
     }
-    public void move(){
 
+    public void move(){
         if(json_string.equals("[]")){
             AlertDialog.Builder alertDialogue = new AlertDialog.Builder(this);
             alertDialogue.setMessage("vegetable not found");
@@ -155,15 +145,11 @@ public class SearchingActivity extends AppCompatActivity implements GlobalConfig
             AlertDialog dialog = alertDialogue.create();
             dialog.show();
         }
-
         else {
             Intent intent = new Intent(this, SearchResultActivity.class);
             intent.putExtra("json_data", json_string);
             startActivity(intent);
+            //finish();
         }
-
-//        Intent intent = new Intent(this, SearchResultActivity.class);
-//        intent.putExtra("json_data", json_string);
-//        startActivity(intent);
     }
 }
